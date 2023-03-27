@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/widgets/buttons/default_button.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -30,7 +31,7 @@ class WelcomePage extends StatelessWidget {
                 const SizedBox(height: 25),
                 DefaultButtonWidget(
                   text: 'Vamos lá',
-                  onPressed: () => {},
+                  onPressed: () => Modular.to.navigate('/home/rewards'),
                 ),
               ],
             ),
