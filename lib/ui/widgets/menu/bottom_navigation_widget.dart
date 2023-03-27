@@ -13,6 +13,12 @@ class BottomNavigationWidget extends StatefulWidget {
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _selectedIndex = 0;
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,14 +32,17 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                     width: 60,
                     height: 60,
                     child: GestureDetector(
-                      onTap: () => {widget.pages[i].onTap()},
+                      onTap: () {
+                        _onItemTapped(i);
+                        widget.pages[i].onTap();
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Theme.of(context).primaryColor,
                         ),
-                        child: const Icon(
-                          Icons.add,
+                        child: Icon(
+                          widget.pages[i].icon,
                           color: Colors.white,
                           size: 35,
                         ),
@@ -45,7 +54,10 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                     color: _selectedIndex == i
                         ? Theme.of(context).primaryColor
                         : Colors.grey,
-                    onPressed: () => {widget.pages[i].onTap()},
+                    onPressed: () {
+                      _onItemTapped(i);
+                      widget.pages[i].onTap();
+                    },
                   ),
         ],
       ),

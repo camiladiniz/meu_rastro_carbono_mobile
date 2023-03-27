@@ -26,7 +26,7 @@ class SurveyItemCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          color: color,
+          color: status == SurveyStatus.answered ? color : Colors.grey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

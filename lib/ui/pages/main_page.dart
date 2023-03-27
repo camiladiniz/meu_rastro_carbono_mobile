@@ -24,7 +24,11 @@ class MainPage extends StatelessWidget {
         textDirection: TextDirection.ltr,
         child: Scaffold(
             appBar: AppBar(
-              title: Text('Meu rastro'),
+              title: Text('Meu rastro',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 26
+              ),),
               centerTitle: true,
               backgroundColor: Colors.green,
             ),

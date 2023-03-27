@@ -9,33 +9,29 @@ class SurveysPage extends StatelessWidget {
 
   final List<CardItemModel> categories = [
     CardItemModel(
-        title: 'Sustainability',
-        subtitle: 'Learn how to help our planet',
-        icon: Icons.eco,
-        color: Colors.green,
-        onTap: () => {},
-        status: SurveyStatus.answered),
-    CardItemModel(
         title: 'Alimentação',
-        subtitle: 'Improve your health and wellbeing',
         icon: Icons.food_bank,
         color: Colors.pink,
         onTap: () => {},
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Eletrônicos',
-        subtitle: 'Expand your knowledge',
         icon: Icons.devices,
         color: Colors.blue,
         onTap: () => {},
         status: SurveyStatus.pending),
     CardItemModel(
-        title: 'Locomoção',
-        subtitle: 'Explore the latest trends',
+        title: 'Locomoção',        
         icon: Icons.directions_train,
         color: Colors.purple,
         onTap: () => {},
         status: SurveyStatus.pending),
+    CardItemModel(
+        title: 'Energia elétrica',        
+        icon: Icons.lightbulb,
+        color: Colors.indigo,
+        onTap: () => {},
+        status: SurveyStatus.answered),
   ];
 
   @override
@@ -44,6 +40,25 @@ class SurveysPage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(children: [
+          const Row(
+            children: [
+              Image(
+                image: AssetImage('lib/ui/assets/images/leaf.png'),
+                width: 115,
+              ),
+              Flexible(
+                child: Text(
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.normal,
+                    // color: Colors.black54,
+                  ),
+                  "Para ajudá-lo a reduzir sua pegada de carbono, preciso entender sua atual emissão de carbono. Vamos lá?",
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
           for (var chunk in _chunkedItems(categories, 2))
             Row(
               children: [
