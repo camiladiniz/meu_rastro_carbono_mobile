@@ -35,8 +35,8 @@ class _SurveyQuestionWidgetState extends State<SurveyQuestionWidget> {
   }
   List<Widget> _buildAnswerButtons() {
     List<Widget> buttons = [];
-    for (int i = 0; i < widget.question.answers.length; i++) {
-      String answer = widget.question.answers[i].answer;
+    for (int i = 0; i < widget.question.answerOptions.length; i++) {
+      String answer = widget.question.answerOptions[i].answer;
       buttons.add(
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
