@@ -31,7 +31,7 @@ ThemeData makeAppTheme() {
 
   // Body
   final TextStyle bodySmall = TextStyle(
-    fontSize: 22,
+    fontSize: 15,
     fontWeight: FontWeight.normal,
     color: greyColor,
   );

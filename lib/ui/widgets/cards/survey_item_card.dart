@@ -6,18 +6,20 @@ class SurveyItemCard extends StatelessWidget {
   final IconData icon;
   final Color color;
   final SurveyStatus status;
+  final Function onTap;
 
   const SurveyItemCard(
       {super.key,
       required this.title,
       required this.icon,
       required this.color,
-      required this.status});
+      required this.status,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {print('clicou')},
+      onTap: () => {onTap()},
       borderRadius: BorderRadius.circular(16.0),
       splashColor: Colors.white.withOpacity(0.5),
       highlightColor: Colors.transparent,

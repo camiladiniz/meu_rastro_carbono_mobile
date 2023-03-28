@@ -12,7 +12,7 @@ class SurveysPage extends StatelessWidget {
         title: 'Alimentação',
         icon: Icons.food_bank,
         color: Colors.pink,
-        onTap: () => {},
+        onTap: () => {Modular.to.navigate('/survey')},
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Eletrônicos',
@@ -68,6 +68,7 @@ class SurveysPage extends StatelessWidget {
                     icon: chunk[0].icon,
                     color: chunk[0].color,
                     status: chunk[0].status,
+                    onTap: chunk[0].onTap
                   ),
                 ),
                 Expanded(
@@ -76,6 +77,7 @@ class SurveysPage extends StatelessWidget {
                     icon: chunk[1].icon,
                     color: chunk[1].color,
                     status: chunk[1].status,
+                    onTap: chunk[1].onTap
                   ),
                 ),
               ],
