@@ -5,6 +5,8 @@ import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
 
 import '../ui/pages/survey_page.dart';
+import '../ui/pages/tips_page.dart';
+import '../ui/pages/user_metrics_page.dart';
 
 class AppModule extends Module {
   @override
@@ -12,16 +14,31 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        // ChildRoute('/', child: (context, args) => const WelcomePage()),
+        ChildRoute('/', child: (context, args) => const WelcomePage()),
         ChildRoute('/welcome', child: (context, args) => const WelcomePage()),
         ChildRoute('/home', child: (context, args) => MainPage(), children: [
-          ChildRoute('/rewards', child: (context, args) => Container(color: Colors.red)),
-          ChildRoute('/tips', child: (context, args) => Container(color: Colors.blue)),
+          ChildRoute('/rewards',
+              child: (context, args) => Container(color: Colors.red)),
+          ChildRoute('/tips',
+              child: (context, args) => CarbonWasteTipsScreen()),
           ChildRoute('/surveys', child: (context, args) => SurveysPage()),
-          ChildRoute('/metrics', child: (context, args) => Container(color: Colors.blue)),
-          ChildRoute('/profile', child: (context, args) => Container(color: Colors.blue)),
+          ChildRoute('/metrics',
+              child: (context, args) => EcoMetricsDashboard(
+                    energyUsage: 1500,
+                    transportationUsage: 0.8,
+                    wasteProduction: 25,
+                    waterUsage: 3000,
+                    foodProduction: 2.5,
+                    paperUsage: 1.2,
+                    plasticUsage: 0.8,
+                    airTravel: 1.5,
+                    meatConsumption: 0.5,
+                    clothingProduction: 0.3,
+                  )),
+          ChildRoute('/profile',
+              child: (context, args) => Container(color: Colors.blue)),
         ]),
         ChildRoute('/survey', child: (context, args) => SurveyPage()),
-        ChildRoute('/', child: (context, args) => SurveyPage()),
+        // ChildRoute('/', child: (context, args) => SurveyPage()),
       ];
 }

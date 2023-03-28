@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import '../../widgets/models/surveys/survey_question_model.dart';
-import './survey_question_widget.dart';
+import 'questions/question_any_text_type_widget.dart';
+import 'questions/question_options_type_widget.dart';
 
 class SurveyWidget extends StatefulWidget {
   final List<SurveyQuestionModel> surveyQuestions;
@@ -13,7 +15,7 @@ class SurveyWidget extends StatefulWidget {
 
 class _SurveyWidgetState extends State<SurveyWidget> {
   int _currentPageIndex = 0;
- 
+
   void _goToNextPage(context) {
     setState(() {
       if (_currentPageIndex < widget.surveyQuestions.length - 1) {
@@ -50,7 +52,10 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+              Modular.to.pop();
+            },
             child: const Text('OK'),
           ),
         ],
@@ -64,6 +69,30 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         _currentPageIndex--;
       }
     });
+  }
+
+  _surveyQuestionTemplate(SurveyQuestionType type) {
+    switch (type) {
+      case SurveyQuestionType.option:
+        return QuestionOptionTypeWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: () {
+            var history = Modular.to.navigateHistory;
+            print('respondido');
+          },
+        );
+      case SurveyQuestionType.anyText || SurveyQuestionType.anyNumber:
+        return QuestionAnyTextTypeWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: () {
+            print('respondido');
+          },
+        );
+      default:
+        return Container(
+          color: Colors.red,
+        );
+    }
   }
 
   @override
@@ -93,12 +122,8 @@ class _SurveyWidgetState extends State<SurveyWidget> {
                     children: [
                       Expanded(
                         flex: 5,
-                        child: SurveyQuestionWidget(
-                          question: widget.surveyQuestions[_currentPageIndex],
-                          onAnswered: () {
-                            print('respondido');
-                          },
-                        ),
+                        child: _surveyQuestionTemplate(widget
+                            .surveyQuestions[_currentPageIndex].questionType),
                       )
                     ],
                   ),
@@ -122,9 +147,10 @@ class _SurveyWidgetState extends State<SurveyWidget> {
                 FloatingActionButton(
                   heroTag: 'btn_next_page',
                   onPressed: () => _goToNextPage(context),
-                  child: Icon(_currentPageIndex < widget.surveyQuestions.length - 1
-                      ? Icons.arrow_forward
-                      : Icons.check),
+                  child: Icon(
+                      _currentPageIndex < widget.surveyQuestions.length - 1
+                          ? Icons.arrow_forward
+                          : Icons.check),
                 ),
               ],
             ),

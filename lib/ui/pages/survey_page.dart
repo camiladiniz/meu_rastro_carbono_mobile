@@ -11,63 +11,62 @@ class SurveyPage extends StatefulWidget {
 class _SurveyPageState extends State<SurveyPage> {
   final List<SurveyQuestionModel> _surveyQuestions = [
     SurveyQuestionModel(
-      question: 'Qual o aparelho eletrônico utilizado?',
-      questionType: SurveyQuestionType.option,
-      answerOptions: [
-        SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0),
-        SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
-        SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
-        SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),
-      ],
-      answerPrefix: '',
-      answerSuffix: ''
-    ),
+        question: 'Qual o aparelho eletrônico utilizado?',
+        questionType: SurveyQuestionType.option,
+        answerOptions: [
+          SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0),
+          SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
+          SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
+          SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),
+        ],
+        answerPrefix: '',
+        answerSuffix: ''),
     SurveyQuestionModel(
-      question: 'Qual a marca do dispositivo?',
-      questionType: SurveyQuestionType.anyText,
-      answerOptions: [],
-      answerPrefix: '',
-      answerSuffix: ''
-    ),
+        question: 'Qual a marca do dispositivo?',
+        questionType: SurveyQuestionType.anyText,
+        answerOptions: [],
+        answerPrefix: '',
+        answerSuffix: ''),
     SurveyQuestionModel(
-      question: 'Qual o modelo do dispositivo?',
-      questionType: SurveyQuestionType.anyText,
-      answerOptions: [],
-      answerPrefix: '',
-      answerSuffix: ''
-    ),
+        question: 'Qual o modelo do dispositivo?',
+        questionType: SurveyQuestionType.anyText,
+        answerOptions: [],
+        answerPrefix: '',
+        answerSuffix: ''),
     SurveyQuestionModel(
-      question: 'O equipamento foi utilizado por',
-      questionType: SurveyQuestionType.anyNumber,
-      answerOptions: [],
-      answerPrefix: '',
-      answerSuffix: 'minutos'
-    ),
+        question: 'O equipamento foi utilizado por',
+        questionType: SurveyQuestionType.anyNumber,
+        answerOptions: [],
+        answerPrefix: '',
+        answerSuffix: 'minutos'),
     SurveyQuestionModel(
-      question: 'Qual foi a fonte de energia utilizada?',
-      questionType: SurveyQuestionType.option,
-      answerOptions: [
-        SurveyAnswerModel(answer: 'Eletricidade', imagePath: '', value: 0),
-        SurveyAnswerModel(answer: 'Energia Solar', imagePath: '', value: 1),
-        SurveyAnswerModel(answer: 'Bateria', imagePath: '', value: 2),
-      ],
-      answerPrefix: '',
-      answerSuffix: ''
-    ),
+        question: 'Qual foi a fonte de energia utilizada?',
+        questionType: SurveyQuestionType.option,
+        answerOptions: [
+          SurveyAnswerModel(answer: 'Eletricidade', imagePath: '', value: 0),
+          SurveyAnswerModel(answer: 'Energia Solar', imagePath: '', value: 1),
+          SurveyAnswerModel(answer: 'Bateria', imagePath: '', value: 2),
+        ],
+        answerPrefix: '',
+        answerSuffix: ''),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Meu rastro',
-          style: TextStyle(color: Colors.white, fontSize: 26),
+        appBar: AppBar(
+          title: const Text(
+            'Meu rastro',
+            style: TextStyle(color: Colors.white, fontSize: 26),
+          ),
+          iconTheme: const IconThemeData(
+            color: Colors.white
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.green,
         ),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
-      body: SurveyWidget(surveyQuestions: _surveyQuestions,)
-    );
+        body: SurveyWidget(
+          surveyQuestions: _surveyQuestions,
+        ));
   }
 }
