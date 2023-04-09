@@ -2,51 +2,51 @@ import 'package:flutter/material.dart';
 
 ThemeData makeAppTheme() {
   // Colors
-  final primaryColor = Color.fromRGBO(171, 201, 87, 1);
-  final primaryColorDark = Color.fromRGBO(157, 196, 47, 1); // TODO
-  final primaryColorLight = Color.fromRGBO(19, 230, 0, 1); // TODO
-  final secondaryColor = Color.fromRGBO(154, 182, 77, 1);
-  final secondaryColorDark = Color.fromRGBO(15, 179, 0, 1); // TODO
-  final darkColor01 = Color.fromRGBO(2, 26, 0, 1);
-  final greyColor = Color.fromRGBO(103, 103, 101, 1);
+  const primaryColor = Color.fromRGBO(171, 201, 87, 1);
+  const primaryColorDark = Color.fromRGBO(157, 196, 47, 1); // TODO
+  const primaryColorLight = Color.fromRGBO(19, 230, 0, 1); // TODO
+  const secondaryColor = Color.fromRGBO(154, 182, 77, 1);
+  const secondaryColorDark = Color.fromRGBO(15, 179, 0, 1); // TODO
+  const darkColor01 = Color.fromRGBO(2, 26, 0, 1);
+  const greyColor = Color.fromRGBO(103, 103, 101, 1);
   final disabledColor = Colors.grey[400];
-  final dividerColor = Colors.grey;
+  const dividerColor = Colors.grey;
 
   // Titles
-  final TextStyle titleSmall = TextStyle(
+  const TextStyle titleSmall = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
     color: secondaryColor,
   );
-  final TextStyle titleMedium = TextStyle(
+  const TextStyle titleMedium = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: secondaryColor,
   );
-  final TextStyle titleLarge = TextStyle(
+  const TextStyle titleLarge = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
     color: secondaryColor,
   );
 
   // Body
-  final TextStyle bodySmall = TextStyle(
+  const TextStyle bodySmall = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.normal,
     color: greyColor,
   );
-  final TextStyle bodyMedium = TextStyle(
+  const TextStyle bodyMedium = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.normal,
     color: greyColor,
   );
-  final TextStyle bodyLarge = TextStyle(
+  const TextStyle bodyLarge = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.normal,
     color: greyColor,
   );
 
-  final textTheme = TextTheme(
+  const textTheme = TextTheme(
     titleSmall: titleSmall,
     titleMedium: titleMedium,
     titleLarge: titleLarge,
@@ -55,7 +55,7 @@ ThemeData makeAppTheme() {
     bodyLarge: bodyLarge,
   );
 
-  final inputDecorationTheme = InputDecorationTheme(
+  const inputDecorationTheme = InputDecorationTheme(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: primaryColorLight)),
       focusedBorder:
@@ -85,7 +85,7 @@ ThemeData makeAppTheme() {
     secondaryHeaderColor: secondaryColorDark,
     disabledColor: disabledColor,
     dividerColor: dividerColor,
-    colorScheme: ColorScheme.light(primary: primaryColor),
+    colorScheme: const ColorScheme.light(primary: primaryColor),
     textTheme: textTheme,
     inputDecorationTheme: inputDecorationTheme,
     buttonTheme: buttonTheme,

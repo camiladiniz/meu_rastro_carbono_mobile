@@ -4,9 +4,22 @@ import 'package:meu_rastro_carbono/ui/pages/main_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
 
+import '../ui/pages/rewards_page.dart';
 import '../ui/pages/survey_page.dart';
 import '../ui/pages/tips_page.dart';
 import '../ui/pages/user_metrics_page.dart';
+
+class Reward {
+  final String name;
+  final int pointsRequired;
+  final String imageUrl;
+
+  Reward({
+    required this.name,
+    required this.pointsRequired,
+    required this.imageUrl,
+  });
+}
 
 class AppModule extends Module {
   @override
@@ -18,7 +31,7 @@ class AppModule extends Module {
         ChildRoute('/welcome', child: (context, args) => const WelcomePage()),
         ChildRoute('/home', child: (context, args) => MainPage(), children: [
           ChildRoute('/rewards',
-              child: (context, args) => Container(color: Colors.red)),
+              child: (context, args) => RewardsWidget()),
           ChildRoute('/tips',
               child: (context, args) => CarbonWasteTipsScreen()),
           ChildRoute('/surveys', child: (context, args) => SurveysPage()),
