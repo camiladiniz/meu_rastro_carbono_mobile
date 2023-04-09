@@ -3,22 +3,20 @@ import 'package:meu_rastro_carbono/ui/widgets/models/menu_navigate_item_model.da
 
 class BottomNavigationWidget extends StatefulWidget {
   final List<NavigateItemModel> pages;
+  final int selectedIndex;
+  final Function onItemTapped;
 
-  BottomNavigationWidget({required this.pages});
+  const BottomNavigationWidget(
+      {super.key,
+      required this.pages,
+      required this.selectedIndex,
+      required this.onItemTapped});
 
   @override
   _BottomNavigationWidgetState createState() => _BottomNavigationWidgetState();
 }
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +31,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                     height: 60,
                     child: GestureDetector(
                       onTap: () {
-                        _onItemTapped(i);
+                        widget.onItemTapped(i);
                         widget.pages[i].onTap();
                       },
                       child: Container(
@@ -51,11 +49,11 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                   )
                 : IconButton(
                     icon: Icon(widget.pages[i].icon),
-                    color: _selectedIndex == i
+                    color: widget.selectedIndex == i
                         ? Theme.of(context).primaryColor
                         : Colors.grey,
                     onPressed: () {
-                      _onItemTapped(i);
+                      widget.onItemTapped(i);
                       widget.pages[i].onTap();
                     },
                   ),
