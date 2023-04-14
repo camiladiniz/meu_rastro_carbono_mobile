@@ -9,19 +9,19 @@ class RewardsWidget extends StatelessWidget {
       title: 'Transporte público',
       description: 'Utilizou meios de transporte públicos 3 vezes consecutivas',
       icon: Icons.directions_train,
-      color: Colors.pink,
+      color: Colors.purple,
     ),
     BadgeModel(
       title: 'Caminhada',
-      description: 'Caminhou por no mínimo 2 vezes na semana',
+      description: 'Caminhou o invés de usar veículo privado por no mínimo 2 vezes na semana',
       icon: Icons.directions_train,
-      color: Colors.pink,
+      color: Colors.purple,
     ),
     BadgeModel(
       title: 'Rodízio ecológico',
       description: 'Não utilizou carro por 2 semanas consecutivas',
       icon: Icons.directions_train,
-      color: Colors.pink,
+      color: Colors.purple,
     ),
   ];
 
@@ -37,14 +37,14 @@ class RewardsWidget extends StatelessWidget {
         title: 'Plantando a sementinha',
         pontuation: 0,
         number: '2',
-        imagePath: 'lib/ui/assets/images/leaf_02.png',
+        imagePath: 'lib/ui/assets/images/leaf_03.png',
         color: Colors.orange[100]!,
         isAvailable: true),
     LevelModel(
         title: 'Regando as sementes',
         pontuation: 0,
         number: '3',
-        imagePath: 'lib/ui/assets/images/leaf_03.png',
+        imagePath: 'lib/ui/assets/images/leaf_02.png',
         color: Colors.teal[100]!,
         isAvailable: true),
     LevelModel(

@@ -14,7 +14,7 @@ class _SurveyPageState extends State<SurveyPage> {
         question: 'Qual o aparelho eletrônico utilizado?',
         questionType: SurveyQuestionType.option,
         answerOptions: [
-          SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0),
+          SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0, description: 'Dispositivo móvel'),
           SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
           SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
           SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),

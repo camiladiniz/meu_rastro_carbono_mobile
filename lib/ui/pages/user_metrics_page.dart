@@ -45,8 +45,8 @@ class EcoMetricsDashboard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
                     child: Text(
-                      style: Theme.of(context).textTheme.titleSmall,
-                      "Atente-se ao tamanho de sua pegada de carbono!",
+                      style: Theme.of(context).textTheme.titleMedium,
+                      "Pegada de carbono semanal",
                     ),
                   ),
                 ),

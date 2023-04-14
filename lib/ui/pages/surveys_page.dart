@@ -18,7 +18,7 @@ class SurveysPage extends StatelessWidget {
         title: 'Eletrônicos',
         icon: Icons.devices,
         color: Colors.blue,
-        onTap: () => {},
+        onTap: () => {Modular.to.pushNamed('/survey')},
         status: SurveyStatus.pending),
     CardItemModel(
         title: 'Locomoção',        
