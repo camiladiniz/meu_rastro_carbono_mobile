@@ -12,25 +12,25 @@ class SurveysPage extends StatelessWidget {
         title: 'Alimentação',
         icon: Icons.food_bank,
         color: Colors.pink,
-        onTap: () => {Modular.to.pushNamed('/survey/Alimentação')},
+        onTap: () => {Modular.to.pushNamed('/survey/alimentos')},
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Eletrônicos',
         icon: Icons.devices,
         color: Colors.blue,
-        onTap: () => {Modular.to.pushNamed('/survey/Eletrônicos')},
+        onTap: () => {Modular.to.pushNamed('/survey/dispositivos')},
         status: SurveyStatus.pending),
     CardItemModel(
         title: 'Locomoção',        
         icon: Icons.directions_train,
         color: Colors.purple,
-        onTap: () => {Modular.to.pushNamed('/survey/Locomoção')},
+        onTap: () => {Modular.to.pushNamed('/survey/transporte')},
         status: SurveyStatus.pending),
     CardItemModel(
         title: 'Energia elétrica',        
         icon: Icons.lightbulb,
         color: Colors.indigo,
-        onTap: () => {Modular.to.pushNamed('/survey/Energia Elétrica')},
+        onTap: () => {Modular.to.pushNamed('/survey/eletricidade')},
         status: SurveyStatus.answered),
   ];
 

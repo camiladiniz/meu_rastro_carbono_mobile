@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/survey_widget.dart';
-import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_answer_model.dart';
 import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_question_model.dart';
+
+import '../../data/datasets/food_carbon_emission_dataset.dart';
+import '../../data/surveys/electronic_survey.dart';
+import '../../data/surveys/food_survey.dart';
 
 class SurveyPage extends StatefulWidget {
   final String surveyTheme;
@@ -13,51 +16,37 @@ class SurveyPage extends StatefulWidget {
 }
 
 class _SurveyPageState extends State<SurveyPage> {
-  final List<SurveyQuestionModel> _surveyQuestions = [
-    SurveyQuestionModel(
-        question: 'Qual o aparelho eletrônico utilizado?',
-        questionType: SurveyQuestionType.option,
-        answerOptions: [
-          SurveyAnswerModel(
-              answer: 'Celular',
-              imagePath: '',
-              value: 0,
-              description: 'Dispositivo móvel'),
-          SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
-          SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
-          SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),
-        ],
-        answerPrefix: '',
-        answerSuffix: ''),
-    SurveyQuestionModel(
-        question: 'Qual a marca do dispositivo?',
-        questionType: SurveyQuestionType.anyText,
-        answerOptions: [],
-        answerPrefix: '',
-        answerSuffix: ''),
-    SurveyQuestionModel(
-        question: 'Qual o modelo do dispositivo?',
-        questionType: SurveyQuestionType.anyText,
-        answerOptions: [],
-        answerPrefix: '',
-        answerSuffix: ''),
-    SurveyQuestionModel(
-        question: 'O equipamento foi utilizado por',
-        questionType: SurveyQuestionType.anyNumber,
-        answerOptions: [],
-        answerPrefix: '',
-        answerSuffix: 'minutos'),
-    SurveyQuestionModel(
-        question: 'Qual foi a fonte de energia utilizada?',
-        questionType: SurveyQuestionType.option,
-        answerOptions: [
-          SurveyAnswerModel(answer: 'Eletricidade', imagePath: '', value: 0),
-          SurveyAnswerModel(answer: 'Energia Solar', imagePath: '', value: 1),
-          SurveyAnswerModel(answer: 'Bateria', imagePath: '', value: 2),
-        ],
-        answerPrefix: '',
-        answerSuffix: ''),
-  ];
+  late List<SurveyQuestionModel> _surveyQuestions = [];
+  late Function _onFoodSurveyAnswered;
+
+  String onFoodSurveyAnswered(List<SurveyQuestionModel> survey) {
+    String finalAnswer = survey[1].userAnswer ?? '0';
+    double amountInGrams = double.parse(finalAnswer).toDouble();
+    var foodName = survey[0].userAnswer;
+
+    var consumptionInKg = amountInGrams/1000;
+    num carbonEmissionFactor = foodCarbonEmissionPerKgDataset[foodName] ?? 0;
+
+    // calculating emission (CO2e per kg)
+    double carbonEmissions = carbonEmissionFactor * consumptionInKg;
+    return 'Para essa refeição você emitiu $carbonEmissions CO2e na atmosfera';
+    // TODO: store metric
+  }
+
+  @override
+  initState() {
+    super.initState();
+    switch(widget.surveyTheme){
+      case 'alimentos':
+        _surveyQuestions = foodSurveyQuestions;
+        _onFoodSurveyAnswered = onFoodSurveyAnswered;
+        break;
+      default:
+        _surveyQuestions = electronicSurveyQuestions;
+        _onFoodSurveyAnswered = onFoodSurveyAnswered;
+      break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +59,7 @@ class _SurveyPageState extends State<SurveyPage> {
           backgroundColor: Colors.green,
         ),
         body: SurveyWidget(
-          surveyQuestions: _surveyQuestions,
+          surveyQuestions: _surveyQuestions, onSurveyAnswered: _onFoodSurveyAnswered,
         ));
   }
 }

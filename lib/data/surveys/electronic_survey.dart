@@ -1,15 +1,15 @@
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
 
-final List<SurveyQuestionModel> surveyQuestions = [
+final List<SurveyQuestionModel> electronicSurveyQuestions = [
     SurveyQuestionModel(
         question: 'Qual o aparelho eletrônico utilizado?',
         questionType: SurveyQuestionType.option,
         answerOptions: [
-          SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0, description: 'Dispositivo móvel'),
-          SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
-          SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
-          SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),
+          SurveyAnswerModel(id: 1, answer: 'Celular', imagePath: '', value: 0, description: 'Dispositivo móvel'),
+          SurveyAnswerModel(id: 1, answer: 'Computador', imagePath: '', value: 1),
+          SurveyAnswerModel(id: 1, answer: 'Tablet', imagePath: '', value: 2),
+          SurveyAnswerModel(id: 1, answer: 'TV', imagePath: '', value: 3),
         ],
         answerPrefix: '',
         answerSuffix: ''),
@@ -35,9 +35,9 @@ final List<SurveyQuestionModel> surveyQuestions = [
         question: 'Qual foi a fonte de energia utilizada?',
         questionType: SurveyQuestionType.option,
         answerOptions: [
-          SurveyAnswerModel(answer: 'Eletricidade', imagePath: '', value: 0),
-          SurveyAnswerModel(answer: 'Energia Solar', imagePath: '', value: 1),
-          SurveyAnswerModel(answer: 'Bateria', imagePath: '', value: 2),
+          SurveyAnswerModel(id: 1, answer: 'Eletricidade', imagePath: '', value: 0),
+          SurveyAnswerModel(id: 1, answer: 'Energia Solar', imagePath: '', value: 1),
+          SurveyAnswerModel(id: 1, answer: 'Bateria', imagePath: '', value: 2),
         ],
         answerPrefix: '',
         answerSuffix: ''),

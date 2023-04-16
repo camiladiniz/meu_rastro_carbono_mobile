@@ -6,13 +6,15 @@ class SurveyQuestionModel {
   final List<SurveyAnswerModel> answerOptions;
   final String answerPrefix;
   final String answerSuffix;
+  String? userAnswer;
 
   SurveyQuestionModel(
       {required this.question,
       required this.questionType,
       required this.answerOptions,
       required this.answerPrefix,
-      required this.answerSuffix});
+      required this.answerSuffix,
+      this.userAnswer});
 }
 
 enum SurveyQuestionType { textAndImage, anyNumber, anyText, option }

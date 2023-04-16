@@ -54,7 +54,7 @@ class _QuestionOptionTypeWidgetState extends State<QuestionOptionTypeWidget> {
                 setState(() {
                   _selectedAnswer = answer;
                 });
-                widget.onAnswered();
+                widget.onAnswered(_selectedAnswer);
               },
               style: _selectedAnswer == answer
                   ? ButtonStyle(

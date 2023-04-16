@@ -6,8 +6,9 @@ import 'questions/question_options_type_widget.dart';
 
 class SurveyWidget extends StatefulWidget {
   final List<SurveyQuestionModel> surveyQuestions;
+  final Function onSurveyAnswered;
 
-  const SurveyWidget({super.key, required this.surveyQuestions});
+  const SurveyWidget({super.key, required this.surveyQuestions, required this.onSurveyAnswered});
 
   @override
   _SurveyWidgetState createState() => _SurveyWidgetState();
@@ -15,6 +16,21 @@ class SurveyWidget extends StatefulWidget {
 
 class _SurveyWidgetState extends State<SurveyWidget> {
   int _currentPageIndex = 0;
+  List<SurveyQuestionModel> surveyWithAnswers = [];
+
+  @override
+  initState() {
+    super.initState();
+    surveyWithAnswers = widget.surveyQuestions;
+  }
+
+  void _updateSurveyState(int index, String response) {
+    var survey = surveyWithAnswers;
+    survey[index].userAnswer = response;
+    setState(() {
+      surveyWithAnswers: survey;
+    });
+  }
 
   void _goToNextPage(context) {
     setState(() {
@@ -26,7 +42,16 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     });
   }
 
+  void _goToPreviousPage() {
+    setState(() {
+      if (_currentPageIndex > 0) {
+        _currentPageIndex--;
+      }
+    });
+  }
+
   void showAnswerSurveyDialog(context) {
+    var calculationResponse = widget.onSurveyAnswered(surveyWithAnswers);
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -38,16 +63,17 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(calculationResponse),
             const Image(
               image: AssetImage('lib/ui/assets/images/leaf.png'),
               width: 115,
             ),
             const SizedBox(height: 15),
             Text(
-              'Vou analisar suas respostas e te informar o tamanho da sua pegada de carbono, bem como recomendações de como minimizá-lá!',
+              'Com base em seu consumo vou te dar dicas de como reduzir sua pegada de carbono!',
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
-            )
+            ),
           ],
         ),
         actions: [
@@ -63,29 +89,23 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     );
   }
 
-  void _goToPreviousPage() {
-    setState(() {
-      if (_currentPageIndex > 0) {
-        _currentPageIndex--;
-      }
-    });
-  }
-
   _surveyQuestionTemplate(SurveyQuestionType type) {
     switch (type) {
       case SurveyQuestionType.option:
         return QuestionOptionTypeWidget(
           question: widget.surveyQuestions[_currentPageIndex],
-          onAnswered: () {
+          onAnswered: (String answer) {
             var history = Modular.to.navigateHistory;
-            print('respondido');
+            print('respondido $answer');
+            _updateSurveyState(_currentPageIndex, answer);
           },
         );
       case SurveyQuestionType.anyText || SurveyQuestionType.anyNumber:
         return QuestionAnyTextTypeWidget(
           question: widget.surveyQuestions[_currentPageIndex],
-          onAnswered: () {
-            print('respondido');
+          onAnswered: (String answer) {
+            print('respondido $answer');
+            _updateSurveyState(_currentPageIndex, answer);
           },
         );
       default:

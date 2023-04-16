@@ -25,6 +25,9 @@ class _QuestionAnyTextTypeWidgetState extends State<QuestionAnyTextTypeWidget> {
         ),
         const SizedBox(height: 24.0),
         TextFormField(
+          onChanged: (text) {
+            widget.onAnswered(text);
+          },
           keyboardType:
               widget.question.questionType == SurveyQuestionType.anyNumber
                   ? TextInputType.number
