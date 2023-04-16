@@ -28,8 +28,8 @@ class _SurveyPageState extends State<SurveyPage> {
     num carbonEmissionFactor = foodCarbonEmissionPerKgDataset[foodName] ?? 0;
 
     // calculating emission (CO2e per kg)
-    double carbonEmissions = carbonEmissionFactor * consumptionInKg;
-    return 'Para essa refeição você emitiu $carbonEmissions CO2e na atmosfera';
+    String carbonEmissions = (carbonEmissionFactor * consumptionInKg).toStringAsFixed(3);
+    return 'Para essa refeição você emitiu $carbonEmissions CO2 na atmosfera';
     // TODO: store metric
   }
 

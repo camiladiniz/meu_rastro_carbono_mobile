@@ -1,17 +1,17 @@
 const foodCarbonEmissionPerKgDataset = {
   'Carne bovina': 60,
-  'Carne de cordeiro': 24,
-  'Carne de porco': 7.6,
-  'Frango': 6.9,
-  'Peixe': 3.7,
-  'Ovos': 4.8,
-  'Leite': 1.3, // per liter
-  'Queijo': 13.5,
-  'Arroz': 4.6,
-  'Pão (derivado do trigo)': 1.0,
+  'Carne de cordeiro': 11.8,
+  'Carne de porco': 3.8,
+  'Frango': 3.7,
+  'Peixe': 1.7,
+  'Ovos': 2.9,
+  'Leite': 1.2, // per liter
+  'Queijo': 11.9,
+  'Arroz': 3.3,
+  'Pão': 0.8,
   'Batata': 0.2,
-  'Tomate': 0.7,
+  'Tomate': 0.3,
   'Maça': 0.2,
-  'Banana': 0.3
+  'Banana': 0.2
 };
 // value: CO2e per kg
