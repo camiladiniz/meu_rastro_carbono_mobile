@@ -4,8 +4,10 @@ import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_question_mod
 
 import '../../data/datasets/electronic_carbon_emission_dataset.dart';
 import '../../data/datasets/food_carbon_emission_dataset.dart';
+import '../../data/datasets/water_carbon_emission_dataset.dart';
 import '../../data/surveys/electronic_survey.dart';
 import '../../data/surveys/food_survey.dart';
+import '../../data/surveys/water_survey.dart';
 
 class SurveyPage extends StatefulWidget {
   final String surveyTheme;
@@ -35,6 +37,38 @@ class _SurveyPageState extends State<SurveyPage> {
     // TODO: store metric
   }
 
+  String onWaterSurveyAnswered(List<SurveyQuestionModel> survey) {
+    String showersAmountAnswer = survey[0].userAnswer ?? '0';
+    bool usaAguaQuente = survey[1].userAnswer == 'Sim' ? true : false;
+    String duracaoBanhoMinutosAnswer = survey[2].userAnswer ?? '0';
+    double duracaoBanhoMinutos = double.parse(duracaoBanhoMinutosAnswer);
+    String taxaFluxoAguaAnswered = survey[3].userAnswer ?? '0';
+    double taxaFluxoAgua = double.parse(taxaFluxoAguaAnswered);
+    double showersAmount = double.parse(showersAmountAnswer);
+
+    // double areaCasaMetrosQuadrados = ...;
+    // double tamanhoJardimMetrosQuadrados = ...;
+    // bool usaAguaLavarRoupa = ...;
+    // bool usaAguaLavarLouca = ...;
+    // double energiaConsumidaKWh = ...;
+
+    // cálculo da pegada de carbono do banho em kg CO2e
+    double consumoAguaBanhoLitros = duracaoBanhoMinutos * taxaFluxoAgua / 1000.0; // taxaFluxoAgua em L/min
+    double pegadaCarbonoAguaQuente = usaAguaQuente ? consumoAguaBanhoLitros * EMISSAO_AGUA_QUENTE : 0.0;
+    
+    double pegadaCarbonoBanhoTratamentoAgua = consumoAguaBanhoLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA;
+    double pegadaCarbonoBanhoTotal = (pegadaCarbonoAguaQuente + pegadaCarbonoBanhoTratamentoAgua) * showersAmount;
+
+    // TODO: CALCULAR GASTO DE ÁGUA COM LOUÇA E LAVAGEM DE ROUPA
+    // double pegadaCarbonoEnergiaTratamentoAgua = (consumoAguaBanhoLitros + ) * EMISSAO_ENERGIA_TRATAMENTO_AGUA;
+    // double pegadaCarbonoTransporteAgua = consumoAguaDiarioLitros * EMISSAO_TRANSPORTE_AGUA;
+    // double pegadaCarbonoLavagemRoupa = usaAguaLavarRoupa ? consumoAguaDiarioLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA : 0.0;
+    // double pegadaCarbonoLavagemLouca = usaAguaLavarLouca ? consumoAguaDiarioLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA : 0.0;
+    // double pegadaCarbonoTotalDiaria = pegadaCarbonoEnergiaTratamentoAgua + pegadaCarbonoTransporteAgua + pegadaCarbonoAguaQuente + pegadaCarbonoLavagemRoupa + pegadaCarbonoLavagemLouca;
+
+    return 'A pegada de carbono diária do uso de água no banho é de ${pegadaCarbonoBanhoTotal} kg CO2e.';
+  }
+
   String onElectronicSurveyAnswered(List<SurveyQuestionModel> survey) {
     String energySource = survey[4].userAnswer ?? 'Eletricidade';
     String phoneUsageAnswer = survey[0].userAnswer ?? '0';
@@ -59,7 +93,7 @@ class _SurveyPageState extends State<SurveyPage> {
       tvCarbon = tvUsage * ELECTRICITY_EMISSIONS_RATE_PER_KG;
       consoleCarbon = consoleGameUsage * ELECTRICITY_EMISSIONS_RATE_PER_KG;
     } else {
-      // batery or solar power
+      // battery or solar power
       phoneCarbon = phoneUsage * SOLAR_EMISSIONS_RATE_PER_KG;
       computerCarbon = computerUsage * SOLAR_EMISSIONS_RATE_PER_KG;
       tvCarbon = tvUsage * SOLAR_EMISSIONS_RATE_PER_KG;
@@ -86,6 +120,10 @@ class _SurveyPageState extends State<SurveyPage> {
       case 'dispositivos':
         _surveyQuestions = electronicSurveyQuestions;
         _onFoodSurveyAnswered = onElectronicSurveyAnswered;
+        break;
+      case 'agua':
+        _surveyQuestions = waterSurveyQuestions;
+        _onFoodSurveyAnswered = onWaterSurveyAnswered;
         break;
       default:
         _surveyQuestions = electronicSurveyQuestions;

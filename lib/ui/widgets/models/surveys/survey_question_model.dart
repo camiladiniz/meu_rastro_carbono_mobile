@@ -6,6 +6,7 @@ class SurveyQuestionModel {
   final List<SurveyAnswerModel> answerOptions;
   final String answerPrefix;
   final String answerSuffix;
+  String? description;
   String? userAnswer;
 
   SurveyQuestionModel(
@@ -14,6 +15,7 @@ class SurveyQuestionModel {
       required this.answerOptions,
       required this.answerPrefix,
       required this.answerSuffix,
+      this.description,
       this.userAnswer});
 }
 
