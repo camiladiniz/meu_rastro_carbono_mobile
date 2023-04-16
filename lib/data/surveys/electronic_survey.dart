@@ -1,28 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:meu_rastro_carbono/ui/components/surveys/survey_widget.dart';
-import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_answer_model.dart';
-import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_question_model.dart';
+import '../../ui/widgets/models/surveys/survey_answer_model.dart';
+import '../../ui/widgets/models/surveys/survey_question_model.dart';
 
-class SurveyPage extends StatefulWidget {
-  final String surveyTheme;
-
-  const SurveyPage({super.key, required this.surveyTheme});
-
-  @override
-  _SurveyPageState createState() => _SurveyPageState();
-}
-
-class _SurveyPageState extends State<SurveyPage> {
-  final List<SurveyQuestionModel> _surveyQuestions = [
+final List<SurveyQuestionModel> surveyQuestions = [
     SurveyQuestionModel(
         question: 'Qual o aparelho eletrônico utilizado?',
         questionType: SurveyQuestionType.option,
         answerOptions: [
-          SurveyAnswerModel(
-              answer: 'Celular',
-              imagePath: '',
-              value: 0,
-              description: 'Dispositivo móvel'),
+          SurveyAnswerModel(answer: 'Celular', imagePath: '', value: 0, description: 'Dispositivo móvel'),
           SurveyAnswerModel(answer: 'Computador', imagePath: '', value: 1),
           SurveyAnswerModel(answer: 'Tablet', imagePath: '', value: 2),
           SurveyAnswerModel(answer: 'TV', imagePath: '', value: 3),
@@ -58,19 +42,3 @@ class _SurveyPageState extends State<SurveyPage> {
         answerPrefix: '',
         answerSuffix: ''),
   ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Meu rastro',
-              style: TextStyle(color: Colors.white, fontSize: 26)),
-          iconTheme: const IconThemeData(color: Colors.white),
-          centerTitle: true,
-          backgroundColor: Colors.green,
-        ),
-        body: SurveyWidget(
-          surveyQuestions: _surveyQuestions,
-        ));
-  }
-}

@@ -51,7 +51,7 @@ class AppModule extends Module {
           ChildRoute('/profile',
               child: (context, args) => Container(color: Colors.blue)),
         ]),
-        ChildRoute('/survey', child: (context, args) => SurveyPage()),
+        ChildRoute('/survey/:id', child: (context, args) => SurveyPage(surveyTheme: args.params['id'])),
         // ChildRoute('/', child: (context, args) => SurveyPage()),
       ];
 }
