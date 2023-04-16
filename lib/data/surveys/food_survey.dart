@@ -18,7 +18,12 @@ final List<SurveyQuestionModel> foodSurveyQuestions = [
         SurveyAnswerModel(id: 7, answer: 'Leite', imagePath: '', value: 6),
         SurveyAnswerModel(id: 8, answer: 'Queijo', imagePath: '', value: 7),
         SurveyAnswerModel(id: 9, answer: 'Arroz', imagePath: '', value: 8),
-        SurveyAnswerModel(id: 10, answer: 'Pão', imagePath: '', value: 9, description: 'Derivado do trigo'),
+        SurveyAnswerModel(
+            id: 10,
+            answer: 'Pão',
+            imagePath: '',
+            value: 9,
+            description: 'Derivado do trigo'),
         SurveyAnswerModel(id: 11, answer: 'Batata', imagePath: '', value: 10),
         SurveyAnswerModel(id: 12, answer: 'Tomate', imagePath: '', value: 11),
         SurveyAnswerModel(id: 13, answer: 'Maça', imagePath: '', value: 12),

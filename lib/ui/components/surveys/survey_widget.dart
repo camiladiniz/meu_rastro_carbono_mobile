@@ -8,7 +8,10 @@ class SurveyWidget extends StatefulWidget {
   final List<SurveyQuestionModel> surveyQuestions;
   final Function onSurveyAnswered;
 
-  const SurveyWidget({super.key, required this.surveyQuestions, required this.onSurveyAnswered});
+  const SurveyWidget(
+      {super.key,
+      required this.surveyQuestions,
+      required this.onSurveyAnswered});
 
   @override
   _SurveyWidgetState createState() => _SurveyWidgetState();
@@ -28,7 +31,8 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     var survey = surveyWithAnswers;
     survey[index].userAnswer = response;
     setState(() {
-      surveyWithAnswers: survey;
+      surveyWithAnswers:
+      survey;
     });
   }
 
@@ -63,7 +67,9 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(calculationResponse),
+            Text(calculationResponse,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 15),
             const Image(
               image: AssetImage('lib/ui/assets/images/leaf.png'),
               width: 115,

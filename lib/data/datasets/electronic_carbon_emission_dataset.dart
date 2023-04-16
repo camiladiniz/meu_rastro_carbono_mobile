@@ -1,0 +1,4 @@
+//  0.527 kg CO2e/kWh
+final double ELECTRICITY_EMISSIONS_RATE_PER_KG = 0.527;
+final double SOLAR_EMISSIONS_RATE_PER_KG = 0;
+final double BATTERY_EMISSIONS_RATE_PER_KG = 0;
