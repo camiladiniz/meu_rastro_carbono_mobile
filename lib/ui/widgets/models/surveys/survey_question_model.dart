@@ -1,6 +1,7 @@
 import 'survey_answer_model.dart';
 
 class SurveyQuestionModel {
+  final String? identification;
   final String question;
   final SurveyQuestionType questionType;
   final List<SurveyAnswerModel> answerOptions;
@@ -10,7 +11,8 @@ class SurveyQuestionModel {
   String? userAnswer;
 
   SurveyQuestionModel(
-      {required this.question,
+      {this.identification,
+      required this.question,
       required this.questionType,
       required this.answerOptions,
       required this.answerPrefix,

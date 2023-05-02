@@ -4,9 +4,9 @@ import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_question_mod
 
 import '../../data/datasets/electronic_carbon_emission_dataset.dart';
 import '../../data/datasets/food_carbon_emission_dataset.dart';
-import '../../data/datasets/water_carbon_emission_dataset.dart';
 import '../../data/surveys/electronic_survey.dart';
 import '../../data/surveys/food_survey.dart';
+import '../../data/surveys/transportation_survey.dart';
 import '../../data/surveys/water_survey.dart';
 
 class SurveyPage extends StatefulWidget {
@@ -21,6 +21,8 @@ class SurveyPage extends StatefulWidget {
 class _SurveyPageState extends State<SurveyPage> {
   late List<SurveyQuestionModel> _surveyQuestions = [];
   late Function _onFoodSurveyAnswered;
+
+  String _pageTitle = 'Meu rastro';
 
   String onFoodSurveyAnswered(List<SurveyQuestionModel> survey) {
     String finalAnswer = survey[1].userAnswer ?? '0';
@@ -37,36 +39,34 @@ class _SurveyPageState extends State<SurveyPage> {
     // TODO: store metric
   }
 
-  String onWaterSurveyAnswered(List<SurveyQuestionModel> survey) {
-    String showersAmountAnswer = survey[0].userAnswer ?? '0';
-    bool usaAguaQuente = survey[1].userAnswer == 'Sim' ? true : false;
-    String duracaoBanhoMinutosAnswer = survey[2].userAnswer ?? '0';
-    double duracaoBanhoMinutos = double.parse(duracaoBanhoMinutosAnswer);
-    String taxaFluxoAguaAnswered = survey[3].userAnswer ?? '0';
-    double taxaFluxoAgua = double.parse(taxaFluxoAguaAnswered);
-    double showersAmount = double.parse(showersAmountAnswer);
 
-    // double areaCasaMetrosQuadrados = ...;
-    // double tamanhoJardimMetrosQuadrados = ...;
-    // bool usaAguaLavarRoupa = ...;
-    // bool usaAguaLavarLouca = ...;
-    // double energiaConsumidaKWh = ...;
 
-    // cálculo da pegada de carbono do banho em kg CO2e
-    double consumoAguaBanhoLitros = duracaoBanhoMinutos * taxaFluxoAgua / 1000.0; // taxaFluxoAgua em L/min
-    double pegadaCarbonoAguaQuente = usaAguaQuente ? consumoAguaBanhoLitros * EMISSAO_AGUA_QUENTE : 0.0;
-    
-    double pegadaCarbonoBanhoTratamentoAgua = consumoAguaBanhoLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA;
-    double pegadaCarbonoBanhoTotal = (pegadaCarbonoAguaQuente + pegadaCarbonoBanhoTratamentoAgua) * showersAmount;
+  String onTransportationSurveyAnswered(List<SurveyQuestionModel> survey) {
+    final String transportation = survey[0].userAnswer ?? '';
+    final double distance = double.parse((survey[2].userAnswer ?? '0'));
+    final double peopleAmount = double.parse((survey[3].userAnswer ?? '0'));
+    final double consumoCombustivelMedio = double.parse((survey[1].userAnswer ?? '0'));
+    final String formaDeConsumo = survey[4].userAnswer ?? '';
 
-    // TODO: CALCULAR GASTO DE ÁGUA COM LOUÇA E LAVAGEM DE ROUPA
-    // double pegadaCarbonoEnergiaTratamentoAgua = (consumoAguaBanhoLitros + ) * EMISSAO_ENERGIA_TRATAMENTO_AGUA;
-    // double pegadaCarbonoTransporteAgua = consumoAguaDiarioLitros * EMISSAO_TRANSPORTE_AGUA;
-    // double pegadaCarbonoLavagemRoupa = usaAguaLavarRoupa ? consumoAguaDiarioLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA : 0.0;
-    // double pegadaCarbonoLavagemLouca = usaAguaLavarLouca ? consumoAguaDiarioLitros * EMISSAO_ENERGIA_TRATAMENTO_AGUA : 0.0;
-    // double pegadaCarbonoTotalDiaria = pegadaCarbonoEnergiaTratamentoAgua + pegadaCarbonoTransporteAgua + pegadaCarbonoAguaQuente + pegadaCarbonoLavagemRoupa + pegadaCarbonoLavagemLouca;
+    double carbonEmission;
 
-    return 'A pegada de carbono diária do uso de água no banho é de ${pegadaCarbonoBanhoTotal} kg CO2e.';
+    switch (transportation) {
+      case 'Carro':
+      const double emissionFactor = 2.62;
+      // Fator de emissão: 2,32 kg CO2e/litro de gasolina ou 2,62 kg CO2e/litro de etanol, de acordo com o IPCC (Painel Intergovernamental sobre Mudanças Climáticas) de 2013
+        carbonEmission = (distance * consumoCombustivelMedio * emissionFactor) / peopleAmount;
+
+        break;
+      case 'Ônibus':
+        break;
+      case 'Metrô':
+        break;
+      case 'Trem':
+        break;
+      default:
+        break;
+    }
+    return 'Você emitiu CO2 na atmosfera durante sua locomoção';
   }
 
   String onElectronicSurveyAnswered(List<SurveyQuestionModel> survey) {
@@ -123,7 +123,14 @@ class _SurveyPageState extends State<SurveyPage> {
         break;
       case 'agua':
         _surveyQuestions = waterSurveyQuestions;
-        _onFoodSurveyAnswered = onWaterSurveyAnswered;
+        _onFoodSurveyAnswered = waterFootprintCalculation;
+        setState(() {
+          _pageTitle = 'Pegada hídrica diária';
+        });
+        break;
+      case 'transporte':
+        _surveyQuestions = transportationSurveyQuestions;
+        _onFoodSurveyAnswered = onTransportationSurveyAnswered;
         break;
       default:
         _surveyQuestions = electronicSurveyQuestions;
@@ -136,8 +143,8 @@ class _SurveyPageState extends State<SurveyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Meu rastro',
-              style: TextStyle(color: Colors.white, fontSize: 26)),
+          title: Text(_pageTitle,
+              style: const TextStyle(color: Colors.white, fontSize: 26)),
           iconTheme: const IconThemeData(color: Colors.white),
           centerTitle: true,
           backgroundColor: Colors.green,
