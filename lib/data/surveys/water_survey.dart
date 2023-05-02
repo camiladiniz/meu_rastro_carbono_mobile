@@ -49,16 +49,17 @@ final List<SurveyQuestionModel> waterSurveyQuestions = [
     double taxaFluxoAguaLitrosPorMin = double.parse(taxaFluxoAguaAnswered);
     double quantidadeDeBanhos = double.parse(quantidadeDeBanhosAnswered);
 
-    double diferencialDeTemperatura = 0;
+    double diferencialDeTemperatura = 1;
     if (usaAguaQuente) {
       diferencialDeTemperatura = temperaturaAguaAposAquecimentoDefault - temperaturaAguaNaturalDefault;
     }
 
     // convertendo Kg CO2 para MJ: fatoremissao * (1 kWh/3.6 MJ);
     double fatorEnergiaEmMJ = 4.18;
-    double fatorEmissaoCarbono = fatorEmissaoCarbonoNaGeracaoEletricidadeBrasilKgCO2PorkWh * (1 /3.6);
+    double fatorEmissaoCarbono = fatorEmissaoCarbonoNaGeracaoEletricidadeBrasilKgCO2PorMJ;
 
-    double emissaodiariaCO2emKg = (quantidadeDeBanhos * duracaoDoBanhoEmMinutos * taxaFluxoAguaLitrosPorMin * fatorEnergiaEmMJ * fatorEmissaoCarbono * diferencialDeTemperatura) / (1000); //100 liters per cubic meter
+    double emissaodiariaCO2emKg = (quantidadeDeBanhos * duracaoDoBanhoEmMinutos * taxaFluxoAguaLitrosPorMin * fatorEnergiaEmMJ * fatorEmissaoCarbono * diferencialDeTemperatura) / 1000; //100 liters per cubic meter
+    //  Daily CO2 emissions (kg) = 29999.992 / 1000 Daily CO2 emissions (kg) ≈ 30
     // Where: 
     // - quantidadeDeBanhos - quantidade de banho total tomados no dia
     // - duracaoDoBanhoEmMinutos - duração aproximada de cada um dos banhos tomados no dia
@@ -67,5 +68,5 @@ final List<SurveyQuestionModel> waterSurveyQuestions = [
     // - fatorEmissaoCarbono - depende da fonte de energia utilizada para o aquecimento da água (eletricidade, gás natural, etc.) e é expressa em kg CO2 por MJ. (método padrão selecionado foi eletricidade)
     // - diferencialDeTemperatura - diferença entre a temparatura da água gelada e a temperatura alcançada após o aquecimento do chuveiro em graus Celsius. Padrão de 30 graus foi aplicado
 
-    return 'A pegada de carbono diária do uso de água no seu banho é de $emissaodiariaCO2emKg kg CO2e';
+    return 'A pegada de carbono diária do uso de água no seu banho é de ${emissaodiariaCO2emKg.toStringAsFixed(3)} kg CO2e';
   }
