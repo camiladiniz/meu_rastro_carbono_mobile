@@ -54,7 +54,7 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       answerSuffix: ''),
   SurveyQuestionModel(
       identification: 'motorcycleFuel',
-      question: 'Qual o combustível que você utiliza?',
+      question: 'Qual o combustível que você utiliza na sua moto?',
       questionType: SurveyQuestionType.option,
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
@@ -70,7 +70,7 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       answerSuffix: ''),
   SurveyQuestionModel(
       identification: 'motorCycleMotor',
-      question: 'Qual é o motor da sua moto?',
+      question: 'Que motor sua moto utiliza?',
       questionType: SurveyQuestionType.option,
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
@@ -88,17 +88,136 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       description: '',
       answerSuffix: ''),
   SurveyQuestionModel(
-      identification: '',
-      question: 'Consumo médio de combustível',
+      identification: 'carFuel',
+      question: 'Qual o combustível/tipo do seu carro?',
+      questionType: SurveyQuestionType.option,
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+              .firstWhere((q) => q.identification == 'transportType')
+              .userAnswer !=
+          'Carro',
+      answerOptions: [
+        SurveyAnswerModel(id: 1, answer: 'Diesel', imagePath: '', value: 1),
+        SurveyAnswerModel(id: 2, answer: 'Etanol', imagePath: '', value: 2),
+        SurveyAnswerModel(id: 3, answer: 'Gasolina', imagePath: '', value: 3),
+        SurveyAnswerModel(id: 4, answer: 'GNV', imagePath: '', value: 4),
+        SurveyAnswerModel(id: 5, answer: 'Elétrico', imagePath: '', value: 5),
+        SurveyAnswerModel(id: 6, answer: 'Híbrido', imagePath: '', value: 6),
+      ],
+      answerPrefix: '',
+      description: '',
+      answerSuffix: ''),
+  SurveyQuestionModel(
+      identification: 'carMotor',
+      question: 'Qual o motor do seu carro?',
+      questionType: SurveyQuestionType.option,
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Carro' ||
+          (questions
+                      .firstWhere((q) => q.identification == 'carFuel')
+                      .userAnswer !=
+                  'Diesel' &&
+              questions
+                      .firstWhere((q) => q.identification == 'carFuel')
+                      .userAnswer !=
+                  'Etanol' &&
+              questions
+                      .firstWhere((q) => q.identification == 'carFuel')
+                      .userAnswer !=
+                  'Gasolina' &&
+              questions
+                      .firstWhere((q) => q.identification == 'carFuel')
+                      .userAnswer !=
+                  'GNV'),
+      answerOptions: [
+        SurveyAnswerModel(id: 1, answer: '1.0 a 1.5', imagePath: '', value: 1),
+        SurveyAnswerModel(id: 2, answer: '1.6 a 2.0', imagePath: '', value: 2),
+        SurveyAnswerModel(
+            id: 3, answer: 'Maior que 2.0', imagePath: '', value: 3),
+      ],
+      answerPrefix: '',
+      description: '',
+      answerSuffix: ''),
+  SurveyQuestionModel(
+      identification: 'carElectricFuel',
+      question: 'Qual é o modelo do seu carro elétrico?',
+      questionType: SurveyQuestionType.option,
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Carro' ||
+          questions
+                  .firstWhere((q) => q.identification == 'carFuel')
+                  .userAnswer !=
+              'Elétrico',
+      answerOptions: [
+        SurveyAnswerModel(
+            id: 1, answer: 'Renault Zoe', imagePath: '', value: 1),
+        SurveyAnswerModel(
+            id: 2, answer: 'Cherry Arrizo 5e', imagePath: '', value: 2),
+        SurveyAnswerModel(id: 3, answer: 'JAC iEV40', imagePath: '', value: 3),
+        SurveyAnswerModel(
+            id: 4, answer: 'Nissan Leaf', imagePath: '', value: 4),
+        SurveyAnswerModel(id: 5, answer: 'BMW i3', imagePath: '', value: 5),
+        SurveyAnswerModel(
+            id: 6, answer: 'Chevrolet Bolt', imagePath: '', value: 6),
+        SurveyAnswerModel(
+            id: 7, answer: 'Jaguar I-Pace', imagePath: '', value: 7),
+        SurveyAnswerModel(id: 8, answer: 'Outro', imagePath: '', value: 8),
+      ],
+      answerPrefix: '',
+      description: '',
+      answerSuffix: ''),
+  SurveyQuestionModel(
+      identification: 'carHybridFuel',
+      question: 'Qual é o combustível do seu carro híbrido?',
+      questionType: SurveyQuestionType.option,
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Carro' ||
+          questions
+                  .firstWhere((q) => q.identification == 'carFuel')
+                  .userAnswer !=
+              'Híbrido',
+      answerOptions: [
+        SurveyAnswerModel(id: 1, answer: 'Gasolina', imagePath: '', value: 1),
+        SurveyAnswerModel(id: 2, answer: 'Diesel', imagePath: '', value: 2),
+        SurveyAnswerModel(id: 3, answer: 'Etanol', imagePath: '', value: 3),
+      ],
+      answerPrefix: '',
+      description: '',
+      answerSuffix: ''),
+  SurveyQuestionModel(
+      identification: 'carHybridFuel',
+      question: 'Qual a autonomia do seu carro?',
       questionType: SurveyQuestionType.anyNumber,
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Carro' ||
+          questions
+                  .firstWhere((q) => q.identification == 'carFuel')
+                  .userAnswer !=
+              'Híbrido',
       answerOptions: [],
       answerPrefix: '',
-      description:
-          'O consumo médio de combustível varia bastante entre diferentes veículos, dependendo de fatores como modelo, ano de fabricação, tipo de combustível, entre outros.',
-      answerSuffix: 'km/L'),
+      description: 'A média de autonomia de um carro híbrido é de 20 km/litro',
+      answerSuffix: 'km/litro'),
   SurveyQuestionModel(
       identification: 'distanceKm',
-      question: 'A distância percorrida foi de',
+      question: 'A distância percorrida no dia foi de',
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer ==
+              'Nenhum',
       questionType: SurveyQuestionType.anyNumber,
       answerOptions: [],
       answerPrefix: '',
@@ -107,29 +226,21 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
   SurveyQuestionModel(
       identification: 'amountOfPeople',
       question: 'Quantas pessoas compartilharam o transporte?',
+      skipQuestion: (List<SurveyQuestionModel> questions) =>
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Carro' ||
+          questions
+                  .firstWhere((q) => q.identification == 'transportType')
+                  .userAnswer !=
+              'Moto',
       questionType: SurveyQuestionType.option,
       answerOptions: [
         SurveyAnswerModel(
             id: 1, answer: 'Estava sozinho(a)', imagePath: '', value: 1),
         SurveyAnswerModel(id: 2, answer: '2 pessoas', imagePath: '', value: 2),
         SurveyAnswerModel(id: 3, answer: '3 ou mais', imagePath: '', value: 3),
-      ],
-      answerPrefix: '',
-      answerSuffix: ''),
-  SurveyQuestionModel(
-      identification: 'consumptionModel',
-      question: 'Qual a forma de consumo do meio de transporte utilizado?',
-      questionType: SurveyQuestionType.option,
-      answerOptions: [
-        SurveyAnswerModel(
-            id: 1, answer: ' Carro a gasolina', imagePath: '', value: 1),
-        SurveyAnswerModel(
-            id: 2, answer: ' Carro flex', imagePath: '', value: 2),
-        SurveyAnswerModel(
-            id: 3, answer: ' Carro elétrico', imagePath: '', value: 3),
-        SurveyAnswerModel(id: 4, answer: ' Ônibus', imagePath: '', value: 4),
-        SurveyAnswerModel(id: 5, answer: ' Trem', imagePath: '', value: 5),
-        SurveyAnswerModel(id: 6, answer: ' Metrô', imagePath: '', value: 6),
       ],
       answerPrefix: '',
       answerSuffix: ''),

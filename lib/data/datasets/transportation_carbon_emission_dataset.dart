@@ -9,4 +9,8 @@ enum TransportationTypes {
   train,
 }
 
+class ElectricCarTypes {
+  // static double get RenaultZoe => 7;
+}
+
 const double fatorEmissaoPorKmBicicleta = 0;

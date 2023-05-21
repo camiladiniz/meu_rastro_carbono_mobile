@@ -146,7 +146,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(1.5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -156,6 +156,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
             child: Stepper(
               elevation: 0,
               currentStep: _currentPageIndex,
+              onStepTapped: (step){},
               controlsBuilder: (context, controller) {
                 return const SizedBox.shrink();
               },
@@ -169,7 +170,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
                   content: Row(
                     children: [
                       Expanded(
-                        flex: 5,
+                        flex: 3,
                         child: _surveyQuestionTemplate(widget
                             .surveyQuestions[_currentPageIndex].questionType),
                       )
@@ -181,6 +182,8 @@ class _SurveyWidgetState extends State<SurveyWidget> {
           ),
           Expanded(
             flex: 1,
+            child: Padding(
+      padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -201,7 +204,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
                           : Icons.check),
                 ),
               ],
-            ),
+            )),
           ),
         ],
       ),
