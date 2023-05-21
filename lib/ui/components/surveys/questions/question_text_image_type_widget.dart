@@ -32,7 +32,7 @@ class _QuestionTextImageTypeWidgetState
             _selectedAnswer ?? "",
             style: const TextStyle(fontSize: 18.0),
           ),
-
+          const SizedBox(height: 12.0),
         SelectGroupCard(context,
             titles: widget.question.answerOptions
                 .map((answer) => answer.answer)

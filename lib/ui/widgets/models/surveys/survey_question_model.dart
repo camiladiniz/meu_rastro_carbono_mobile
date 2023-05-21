@@ -9,6 +9,7 @@ class SurveyQuestionModel {
   final String answerSuffix;
   String? description;
   String? userAnswer;
+  Function? skipQuestion;
 
   SurveyQuestionModel(
       {this.identification,
@@ -18,7 +19,8 @@ class SurveyQuestionModel {
       required this.answerPrefix,
       required this.answerSuffix,
       this.description,
-      this.userAnswer});
+      this.userAnswer,
+      this.skipQuestion});
 }
 
 enum SurveyQuestionType { textAndImage, anyNumber, anyText, option }

@@ -37,10 +37,20 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     });
   }
 
+  bool _skipQuestionValidation() {
+    if (widget.surveyQuestions[_currentPageIndex].skipQuestion != null) {
+      return widget.surveyQuestions[_currentPageIndex].skipQuestion!(widget.surveyQuestions);
+    }
+    return false;
+  }
+
   void _goToNextPage(context) {
     setState(() {
       if (_currentPageIndex < widget.surveyQuestions.length - 1) {
         _currentPageIndex++;
+        if (_skipQuestionValidation()) {
+          _goToNextPage(context);
+        }
       } else {
         showAnswerSurveyDialog(context);
       }
@@ -51,6 +61,9 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     setState(() {
       if (_currentPageIndex > 0) {
         _currentPageIndex--;
+        if (_skipQuestionValidation()) {
+          _goToPreviousPage();
+        }
       }
     });
   }

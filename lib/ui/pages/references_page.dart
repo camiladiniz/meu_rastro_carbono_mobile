@@ -35,8 +35,8 @@ class ReferencesPage extends StatelessWidget {
           title: 'Mascotes - Freepik',
           link:
               'https://www.freepik.com/free-vector/happy-green-friends_797855.htm#query=cute%20tree&position=45&from_view=search&track=ais'),
-      ReferenceItemModel(title: 'Motocicleta - Freepik', link: 'https://www.flaticon.com/free-icons/motorcycle'),
       ReferenceItemModel(title: 'Bicicleta - Freepik', link: 'https://www.flaticon.com/free-icons/bicycle'),
+      ReferenceItemModel(title: 'Motocicleta - Freepik', link: 'https://www.flaticon.com/free-icons/motorcycle'),
       ReferenceItemModel(title: 'Pedestre - Freepik', link: 'https://www.flaticon.com/free-icons/walk'),
       ReferenceItemModel(title: 'Ônibus - Freepik', link: 'https://www.flaticon.com/free-icons/bus'),
       ReferenceItemModel(title: 'Trem - Freepik', link: 'https://www.flaticon.com/free-icons/train'),

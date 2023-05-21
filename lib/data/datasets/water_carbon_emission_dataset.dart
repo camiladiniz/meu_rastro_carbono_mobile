@@ -1,5 +1,5 @@
-const double temperaturaAguaNaturalDefault = 10; // reference: https://app.eraclimate.com/emissions-estimator?gclid=CjwKCAjwxr2iBhBJEiwAdXECw_F2nzVA-4RtpcQRVkiwGTOBFZSzAOVCPirtp2nExOZzN3Dc4kWbLhoCwsMQAvD_BwE
-const double temperaturaAguaAposAquecimentoDefault = 40; // reference: https://www.gov.br/ebserh/pt-br/hospitais-universitarios/regiao-centro-oeste/hc-ufg/comunicacao/noticias/qual-e-a-temperatura-ideal-para-o-banho#:~:text=Segundo%20Camilla%20de%20Barros%20Borges,de%20dores%20musculares%20e%20articulares.
+const double temperaturaAguaNaturalDefault = 10; // fonte: https://app.eraclimate.com/emissions-estimator?gclid=CjwKCAjwxr2iBhBJEiwAdXECw_F2nzVA-4RtpcQRVkiwGTOBFZSzAOVCPirtp2nExOZzN3Dc4kWbLhoCwsMQAvD_BwE
+const double temperaturaAguaAposAquecimentoDefault = 40; // fonte: https://www.gov.br/ebserh/pt-br/hospitais-universitarios/regiao-centro-oeste/hc-ufg/comunicacao/noticias/qual-e-a-temperatura-ideal-para-o-banho#:~:text=Segundo%20Camilla%20de%20Barros%20Borges,de%20dores%20musculares%20e%20articulares.
 const double fatorEmissaoCarbonoNaGeracaoEletricidadeBrasilKgCO2PorMJ = 0.0239; // dado de 2020 reference:
 // https://app.eraclimate.com/emissions-estimator?gclid=CjwKCAjwxr2iBhBJEiwAdXECw_F2nzVA-4RtpcQRVkiwGTOBFZSzAOVCPirtp2nExOZzN3Dc4kWbLhoCwsMQAvD_BwE
 
