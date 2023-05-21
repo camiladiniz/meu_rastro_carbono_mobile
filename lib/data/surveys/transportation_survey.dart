@@ -31,9 +31,14 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
             value: TransportationTypes.car.index),
         SurveyAnswerModel(
             id: TransportationTypes.bus.index,
-            answer: 'Ônibus',
+            answer: 'Ônibus Municipal',
             imagePath: 'lib/ui/assets/images/transportation/bus.png',
             value: TransportationTypes.bus.index),
+        SurveyAnswerModel(
+            id: TransportationTypes.travelBus.index,
+            answer: 'Ônibus de Viagem',
+            imagePath: 'lib/ui/assets/images/transportation/bus.png',
+            value: TransportationTypes.travelBus.index),
         SurveyAnswerModel(
             id: TransportationTypes.subway.index,
             answer: 'Metrô',
@@ -78,11 +83,11 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
               .userAnswer !=
           'Moto',
       answerOptions: [
-        SurveyAnswerModel(id: 1, answer: 'Até 155cc', imagePath: '', value: 1),
+        SurveyAnswerModel(id: 1, answer: defaultMotocycleMotor1, imagePath: '', value: 1),
         SurveyAnswerModel(
-            id: 2, answer: 'De 126cc a 250cc', imagePath: '', value: 2),
+            id: 2, answer: defaultMotocycleMotor2, imagePath: '', value: 2),
         SurveyAnswerModel(
-            id: 3, answer: 'De 151cc em diante', imagePath: '', value: 3),
+            id: 3, answer: defaultMotocycleMotor3, imagePath: '', value: 3),
       ],
       answerPrefix: '',
       description: '',
@@ -133,10 +138,12 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
                       .userAnswer !=
                   'GNV'),
       answerOptions: [
-        SurveyAnswerModel(id: 1, answer: '1.0 a 1.5', imagePath: '', value: 1),
-        SurveyAnswerModel(id: 2, answer: '1.6 a 2.0', imagePath: '', value: 2),
         SurveyAnswerModel(
-            id: 3, answer: 'Maior que 2.0', imagePath: '', value: 3),
+            id: 1, answer: defaultCarMotor1, imagePath: '', value: 1),
+        SurveyAnswerModel(
+            id: 2, answer: defaultCarMotor2, imagePath: '', value: 2),
+        SurveyAnswerModel(
+            id: 3, answer: defaultCarMotor3, imagePath: '', value: 3),
       ],
       answerPrefix: '',
       description: '',
@@ -156,18 +163,36 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
               'Elétrico',
       answerOptions: [
         SurveyAnswerModel(
-            id: 1, answer: 'Renault Zoe', imagePath: '', value: 1),
+            id: 1,
+            answer: ElectricCarModels.renaultZoe,
+            imagePath: '',
+            value: 1),
         SurveyAnswerModel(
-            id: 2, answer: 'Cherry Arrizo 5e', imagePath: '', value: 2),
-        SurveyAnswerModel(id: 3, answer: 'JAC iEV40', imagePath: '', value: 3),
+            id: 2,
+            answer: ElectricCarModels.cherryArrizo5e,
+            imagePath: '',
+            value: 2),
         SurveyAnswerModel(
-            id: 4, answer: 'Nissan Leaf', imagePath: '', value: 4),
-        SurveyAnswerModel(id: 5, answer: 'BMW i3', imagePath: '', value: 5),
+            id: 3, answer: ElectricCarModels.jACiEV40, imagePath: '', value: 3),
         SurveyAnswerModel(
-            id: 6, answer: 'Chevrolet Bolt', imagePath: '', value: 6),
+            id: 4,
+            answer: ElectricCarModels.nissanLeaf,
+            imagePath: '',
+            value: 4),
         SurveyAnswerModel(
-            id: 7, answer: 'Jaguar I-Pace', imagePath: '', value: 7),
-        SurveyAnswerModel(id: 8, answer: 'Outro', imagePath: '', value: 8),
+            id: 5, answer: ElectricCarModels.bMWi3, imagePath: '', value: 5),
+        SurveyAnswerModel(
+            id: 6,
+            answer: ElectricCarModels.chevroletBolt,
+            imagePath: '',
+            value: 6),
+        SurveyAnswerModel(
+            id: 7,
+            answer: ElectricCarModels.jaguarIPace,
+            imagePath: '',
+            value: 7),
+        SurveyAnswerModel(
+            id: 8, answer: ElectricCarModels.outro, imagePath: '', value: 8),
       ],
       answerPrefix: '',
       description: '',
@@ -194,7 +219,7 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       description: '',
       answerSuffix: ''),
   SurveyQuestionModel(
-      identification: 'carHybridFuel',
+      identification: 'carHybridAutonomy',
       question: 'Qual a autonomia do seu carro?',
       questionType: SurveyQuestionType.anyNumber,
       skipQuestion: (List<SurveyQuestionModel> questions) =>
@@ -215,64 +240,146 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       question: 'A distância percorrida no dia foi de',
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
-                  .firstWhere((q) => q.identification == 'transportType')
-                  .userAnswer ==
-              'Nenhum',
+              .firstWhere((q) => q.identification == 'transportType')
+              .userAnswer ==
+          'Nenhum',
       questionType: SurveyQuestionType.anyNumber,
       answerOptions: [],
       answerPrefix: '',
       description: '',
       answerSuffix: 'km'),
-  SurveyQuestionModel(
-      identification: 'amountOfPeople',
-      question: 'Quantas pessoas compartilharam o transporte?',
-      skipQuestion: (List<SurveyQuestionModel> questions) =>
-          questions
-                  .firstWhere((q) => q.identification == 'transportType')
-                  .userAnswer !=
-              'Carro' ||
-          questions
-                  .firstWhere((q) => q.identification == 'transportType')
-                  .userAnswer !=
-              'Moto',
-      questionType: SurveyQuestionType.option,
-      answerOptions: [
-        SurveyAnswerModel(
-            id: 1, answer: 'Estava sozinho(a)', imagePath: '', value: 1),
-        SurveyAnswerModel(id: 2, answer: '2 pessoas', imagePath: '', value: 2),
-        SurveyAnswerModel(id: 3, answer: '3 ou mais', imagePath: '', value: 3),
-      ],
-      answerPrefix: '',
-      answerSuffix: ''),
+  // SurveyQuestionModel(
+  //     identification: 'amountOfPeople',
+  //     question: 'Quantas pessoas compartilharam o transporte?',
+  //     skipQuestion: (List<SurveyQuestionModel> questions) =>
+  //         questions
+  //                 .firstWhere((q) => q.identification == 'transportType')
+  //                 .userAnswer !=
+  //             'Carro' ||
+  //         questions
+  //                 .firstWhere((q) => q.identification == 'transportType')
+  //                 .userAnswer !=
+  //             'Moto',
+  //     questionType: SurveyQuestionType.option,
+  //     answerOptions: [
+  //       SurveyAnswerModel(
+  //           id: 1, answer: 'Estava sozinho(a)', imagePath: '', value: 1),
+  //       SurveyAnswerModel(id: 2, answer: '2 pessoas', imagePath: '', value: 2),
+  //       SurveyAnswerModel(id: 3, answer: '3 ou mais', imagePath: '', value: 3),
+  //     ],
+  //     answerPrefix: '',
+  //     answerSuffix: ''),
 ];
 
 String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
-  final String transportation = survey[0].userAnswer ?? '';
-  final double distance = double.parse((survey[2].userAnswer ?? '0'));
-  final double peopleAmount = double.parse((survey[3].userAnswer ?? '0'));
-  final double consumoCombustivelMedio =
-      double.parse((survey[1].userAnswer ?? '0'));
-  final String formaDeConsumo = survey[4].userAnswer ?? '';
+  // shared
+  var transport =
+      survey.firstWhere((s) => s.identification == 'transportType').userAnswer;
+  var distanceKmResponse =
+      survey.firstWhere((s) => s.identification == 'distanceKm').userAnswer ??
+          '0'; // except by none
+  var distanceKm = double.parse(distanceKmResponse);
+  // var amountOfPeople = survey.firstWhere((s) => s.identification == 'amountOfPeople').userAnswer; // for car and motorcycle
 
-  double carbonEmission = 0;
+  //motorcycle
+  var motorcycleFuel = survey.firstWhere((s) => s.identification == 'motorcycleFuel').userAnswer ?? '0';
 
-  switch (transportation) {
+  var motorCycleMotor = survey.firstWhere((s) => s.identification == 'motorCycleMotor').userAnswer ?? '0';
+
+  // car
+  var carFuel =
+      survey.firstWhere((s) => s.identification == 'carFuel').userAnswer;
+  var carMotor =
+      survey.firstWhere((s) => s.identification == 'carMotor').userAnswer;
+  // electric car
+  var carElectricFuelModel = survey
+      .firstWhere((s) => s.identification == 'carElectricFuel')
+      .userAnswer;
+  // hybrid car
+  var carHybridFuel = survey
+          .firstWhere((s) => s.identification == 'carHybridFuel')
+          .userAnswer;
+  var carHybridAutonomyResponse = survey
+          .firstWhere((s) => s.identification == 'carHybridAutonomy')
+          .userAnswer ??
+      '0';
+  var carHybridAutonomy = double.parse(carHybridAutonomyResponse);
+
+  double carbonEmissionKgPerCO = 0;
+  double fuelEmission = 0;
+
+  switch (transport) {
+    case 'Nenhum':
+    case 'A pé':
+    case 'Bicicleta':
+      break;
+
     case 'Carro':
-      const double emissionFactor = 2.62;
-      // Fator de emissão: 2,32 kg CO2e/litro de gasolina ou 2,62 kg CO2e/litro de etanol, de acordo com o IPCC (Painel Intergovernamental sobre Mudanças Climáticas) de 2013
-      carbonEmission =
-          (distance * consumoCombustivelMedio * emissionFactor) / peopleAmount;
+      switch (carFuel) {
+        case 'Diesel':
+          fuelEmission = dieselKgCOEmission[carMotor] ?? 0;
+          break;
 
+        case 'Etanol':
+          fuelEmission = dieselKgCOEmission[etanolKgCOEmission] ?? 0;
+          break;
+
+        case 'Gasolina':
+          fuelEmission = dieselKgCOEmission[gasolinaKgCOEmission] ?? 0;
+          break;
+
+        case 'GNV':
+          fuelEmission = dieselKgCOEmission[gnvKgCOEmission] ?? 0;
+          break;
+
+        case 'Elétrico':
+          fuelEmission = carElectricKgCOPerModel[carElectricFuelModel] ?? 0;
+          break;
+
+        case 'Híbrido':
+          // fator de emissão por km é calculado considerando emissão/autonomia
+          double carHybridFuelFactor = hybridCarKgCOEmission[carHybridFuel] ?? 0;
+          fuelEmission = carHybridFuelFactor / carHybridAutonomy;
+          break;
+      }
+
+      carbonEmissionKgPerCO = fuelEmission * distanceKm;
       break;
-    case 'Ônibus':
+
+    case 'Ônibus Municipal':
+      carbonEmissionKgPerCO = CollectiveTransport.municipalBus * distanceKm;
       break;
+
+    case 'Ônibus de Viagem':
+      carbonEmissionKgPerCO = CollectiveTransport.travelBus * distanceKm;
+      break;
+
     case 'Metrô':
+      carbonEmissionKgPerCO = CollectiveTransport.subway * distanceKm;
       break;
+
+    case 'Moto':
+      switch (motorcycleFuel) {
+        case 'Gasolina':
+          fuelEmission = motocyleGasolinaKgCOEmission[motorCycleMotor] ?? 0;
+          break;
+
+        case 'Etanol':
+          fuelEmission = motocyleEtanolKgCOEmission[motorCycleMotor] ?? 0;
+          break;
+      }
+
+      carbonEmissionKgPerCO = distanceKm * fuelEmission;
+      break;
+
     case 'Trem':
+      carbonEmissionKgPerCO = CollectiveTransport.train * distanceKm;
       break;
+
     default:
       break;
   }
 
-  return 'Para sua locomoção você emitiu ${carbonEmission.toStringAsFixed(3)} kg CO2e na atmosfera.';
+  return carbonEmissionKgPerCO == 0 ? 'Parabéns! Você não emitiu CO2e na atmosfera para realizar suas atividades hoje'
+  : 'Para sua locomoção você emitiu ${carbonEmissionKgPerCO.toStringAsFixed(4).replaceFirst('.', ',')} kg CO2e na atmosfera.';
 }
