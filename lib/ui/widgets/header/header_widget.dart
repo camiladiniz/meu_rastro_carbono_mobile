@@ -8,5 +8,6 @@ AppBar HeaderWidget(String pageName) {
     ),
     centerTitle: true,
     backgroundColor: Colors.green,
+    iconTheme: const IconThemeData(color: Colors.white),
   );
 }

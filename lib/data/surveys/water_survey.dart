@@ -59,8 +59,7 @@ final List<SurveyQuestionModel> waterSurveyQuestions = [
     double fatorEmissaoCarbono = fatorEmissaoCarbonoNaGeracaoEletricidadeBrasilKgCO2PorMJ;
 
     double emissaodiariaCO2emKg = (quantidadeDeBanhos * duracaoDoBanhoEmMinutos * taxaFluxoAguaLitrosPorMin * fatorEnergiaEmMJ * fatorEmissaoCarbono * diferencialDeTemperatura) / 1000; //100 liters per cubic meter
-    //  Daily CO2 emissions (kg) = 29999.992 / 1000 Daily CO2 emissions (kg) ≈ 30
-    // Where: 
+    // onde: 
     // - quantidadeDeBanhos - quantidade de banho total tomados no dia
     // - duracaoDoBanhoEmMinutos - duração aproximada de cada um dos banhos tomados no dia
     // - taxaFluxoAguaLitrosPorMin - quantidade de agua usada por minuto
@@ -68,5 +67,5 @@ final List<SurveyQuestionModel> waterSurveyQuestions = [
     // - fatorEmissaoCarbono - depende da fonte de energia utilizada para o aquecimento da água (eletricidade, gás natural, etc.) e é expressa em kg CO2 por MJ. (método padrão selecionado foi eletricidade)
     // - diferencialDeTemperatura - diferença entre a temparatura da água gelada e a temperatura alcançada após o aquecimento do chuveiro em graus Celsius. Padrão de 30 graus foi aplicado
 
-    return 'A pegada de carbono diária do uso de água no seu banho é de ${emissaodiariaCO2emKg.toStringAsFixed(3)} kg CO2e';
+    return 'A sua pegada de carbono diária proveniente do banho é de ${emissaodiariaCO2emKg.toStringAsFixed(3)} kg CO2e';
   }

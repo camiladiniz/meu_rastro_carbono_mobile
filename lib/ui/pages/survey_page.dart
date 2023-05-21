@@ -20,54 +20,9 @@ class SurveyPage extends StatefulWidget {
 
 class _SurveyPageState extends State<SurveyPage> {
   late List<SurveyQuestionModel> _surveyQuestions = [];
-  late Function _onFoodSurveyAnswered;
+  late Function _onSurveyAnswered;
 
   String _pageTitle = 'Meu rastro';
-
-  String onFoodSurveyAnswered(List<SurveyQuestionModel> survey) {
-    String finalAnswer = survey[1].userAnswer ?? '0';
-    double amountInGrams = double.parse(finalAnswer).toDouble();
-    var foodName = survey[0].userAnswer;
-
-    var consumptionInKg = amountInGrams / 1000;
-    num carbonEmissionFactor = foodCarbonEmissionPerKgDataset[foodName] ?? 0;
-
-    // calculating emission (CO2e per kg)
-    String carbonEmissions =
-        (carbonEmissionFactor * consumptionInKg).toStringAsFixed(3);
-    return 'Para essa refeição você emitiu $carbonEmissions CO2 na atmosfera';
-    // TODO: store metric
-  }
-
-
-
-  String onTransportationSurveyAnswered(List<SurveyQuestionModel> survey) {
-    final String transportation = survey[0].userAnswer ?? '';
-    final double distance = double.parse((survey[2].userAnswer ?? '0'));
-    final double peopleAmount = double.parse((survey[3].userAnswer ?? '0'));
-    final double consumoCombustivelMedio = double.parse((survey[1].userAnswer ?? '0'));
-    final String formaDeConsumo = survey[4].userAnswer ?? '';
-
-    double carbonEmission;
-
-    switch (transportation) {
-      case 'Carro':
-      const double emissionFactor = 2.62;
-      // Fator de emissão: 2,32 kg CO2e/litro de gasolina ou 2,62 kg CO2e/litro de etanol, de acordo com o IPCC (Painel Intergovernamental sobre Mudanças Climáticas) de 2013
-        carbonEmission = (distance * consumoCombustivelMedio * emissionFactor) / peopleAmount;
-
-        break;
-      case 'Ônibus':
-        break;
-      case 'Metrô':
-        break;
-      case 'Trem':
-        break;
-      default:
-        break;
-    }
-    return 'Você emitiu CO2 na atmosfera durante sua locomoção';
-  }
 
   String onElectronicSurveyAnswered(List<SurveyQuestionModel> survey) {
     String energySource = survey[4].userAnswer ?? 'Eletricidade';
@@ -115,27 +70,38 @@ class _SurveyPageState extends State<SurveyPage> {
     switch (widget.surveyTheme) {
       case 'alimentos':
         _surveyQuestions = foodSurveyQuestions;
-        _onFoodSurveyAnswered = onFoodSurveyAnswered;
-        break;
-      case 'dispositivos':
-        _surveyQuestions = electronicSurveyQuestions;
-        _onFoodSurveyAnswered = onElectronicSurveyAnswered;
-        break;
-      case 'agua':
-        _surveyQuestions = waterSurveyQuestions;
-        _onFoodSurveyAnswered = waterFootprintCalculation;
+        _onSurveyAnswered = mealsFootprintCalculation;
         setState(() {
           _pageTitle = 'Pegada hídrica diária';
         });
         break;
+
+      case 'dispositivos':
+        _surveyQuestions = electronicSurveyQuestions;
+        _onSurveyAnswered = onElectronicSurveyAnswered;
+        setState(() {
+          _pageTitle = 'Pegada hídrica diária';
+        });
+        break;
+
+      case 'agua':
+        _surveyQuestions = waterSurveyQuestions;
+        _onSurveyAnswered = waterFootprintCalculation;
+        setState(() {
+          _pageTitle = 'Pegada hídrica diária';
+        });
+        break;
+
       case 'transporte':
         _surveyQuestions = transportationSurveyQuestions;
-        _onFoodSurveyAnswered = onTransportationSurveyAnswered;
+        _onSurveyAnswered = transportationFootprintCalculation;
+        setState(() {
+          _pageTitle = 'Pegada por transporte diário';
+        });
         break;
       default:
-        _surveyQuestions = electronicSurveyQuestions;
-        _onFoodSurveyAnswered = onElectronicSurveyAnswered;
         break;
+
     }
   }
 
@@ -151,7 +117,7 @@ class _SurveyPageState extends State<SurveyPage> {
         ),
         body: SurveyWidget(
           surveyQuestions: _surveyQuestions,
-          onSurveyAnswered: _onFoodSurveyAnswered,
+          onSurveyAnswered: _onSurveyAnswered,
         ));
   }
 }

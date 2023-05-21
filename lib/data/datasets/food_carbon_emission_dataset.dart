@@ -15,3 +15,7 @@ const foodCarbonEmissionPerKgDataset = {
   'Banana': 0.2
 };
 // value: CO2e per kg
+
+/// References
+/// Water proofpoint per food: https://mundoeducacao.uol.com.br/biologia/pegada-hidrica.htm
+/// 

@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/widgets/header/header_widget.dart';
 import 'package:meu_rastro_carbono/ui/widgets/menu/bottom_navigation_widget.dart';
 import 'package:meu_rastro_carbono/ui/widgets/models/menu_navigate_item_model.dart';
+import 'package:meu_rastro_carbono/ui/widgets/drawer/drawer_widget.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -32,6 +33,7 @@ class _MainPageState extends State<MainPage> {
         textDirection: TextDirection.ltr,
         child: Scaffold(
             appBar: HeaderWidget(pages[_selectedMenuIndex].title),
+            drawer: drawerWidget(context),
             body: const Row(children: [
               Expanded(child: RouterOutlet()),
             ]),

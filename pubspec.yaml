@@ -36,6 +36,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  url_launcher: ^6.1.11
+  select_card: ^0.0.9
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +54,7 @@ flutter:
   uses-material-design: true
   assets:
     - lib/ui/assets/images/
+    - lib/ui/assets/images/transportation/
 
   # fonts:
   #   - family: Schyler

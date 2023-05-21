@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/pages/main_page.dart';
+import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
 
+import '../ui/pages/references_page.dart';
 import '../ui/pages/rewards_page.dart';
 import '../ui/pages/survey_page.dart';
 import '../ui/pages/tips_page.dart';
@@ -49,9 +50,11 @@ class AppModule extends Module {
                     clothingProduction: 0.3,
                   )),
           ChildRoute('/profile',
-              child: (context, args) => Container(color: Colors.blue)),
+              child: (context, args) => ProfilePage()),
         ]),
         ChildRoute('/survey/:id', child: (context, args) => SurveyPage(surveyTheme: args.params['id'])),
+        ChildRoute('/references',
+            child: (context, args) => ReferencesPage()),
         // ChildRoute('/', child: (context, args) => SurveyPage()),
       ];
 }

@@ -1,5 +1,6 @@
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
+import '../datasets/food_carbon_emission_dataset.dart';
 
 final List<SurveyQuestionModel> foodSurveyQuestions = [
   SurveyQuestionModel(
@@ -47,3 +48,18 @@ final List<SurveyQuestionModel> foodSurveyQuestions = [
   //   SurveyAnswerModel("Agricultura comercial", "assets/images/transportation/subway.png"),
   // ], ""),
 ];
+
+String mealsFootprintCalculation(List<SurveyQuestionModel> survey) {
+    String finalAnswer = survey[1].userAnswer ?? '0';
+    double amountInGrams = double.parse(finalAnswer).toDouble();
+    var foodName = survey[0].userAnswer;
+
+    var consumptionInKg = amountInGrams / 1000;
+    num carbonEmissionFactor = foodCarbonEmissionPerKgDataset[foodName] ?? 0;
+
+    // calculating emission (CO2e per kg)
+    String carbonEmissions =
+        (carbonEmissionFactor * consumptionInKg).toStringAsFixed(3);
+    return 'Para essa refeição você emitiu $carbonEmissions CO2 na atmosfera';
+    // TODO: store metric
+  }
