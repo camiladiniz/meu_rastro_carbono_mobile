@@ -31,7 +31,7 @@ class WelcomePage extends StatelessWidget {
                 const SizedBox(height: 25),
                 DefaultButtonWidget(
                   text: 'Vamos lá',
-                  onPressed: () => Modular.to.navigate('/home/rewards'),
+                  onPressed: () => Modular.to.navigate('/home/surveys'),
                 ),
               ],
             ),

@@ -23,4 +23,16 @@ class SurveyQuestionModel {
       this.skipQuestion});
 }
 
-enum SurveyQuestionType { textAndImage, anyNumber, anyText, option }
+enum SurveyQuestionType {
+  textAndImage,
+  anyNumber,
+  anyText,
+  option,
+  turnOnLamps,
+  yesOrNo
+}
+
+class QuestionTypeYesOrNo {
+  static String get yes => 'Sim';
+  static String get no => 'Não';
+}

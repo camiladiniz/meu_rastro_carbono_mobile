@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_text_image_type_widget.dart';
+import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_turnon_lamps_widget.dart';
+import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_yes_or_no_type_widget.dart';
 import '../../widgets/models/surveys/survey_question_model.dart';
 import 'questions/question_any_text_type_widget.dart';
 import 'questions/question_options_type_widget.dart';
@@ -39,7 +41,8 @@ class _SurveyWidgetState extends State<SurveyWidget> {
 
   bool _skipQuestionValidation() {
     if (widget.surveyQuestions[_currentPageIndex].skipQuestion != null) {
-      return widget.surveyQuestions[_currentPageIndex].skipQuestion!(widget.surveyQuestions);
+      bool skipQuestion = widget.surveyQuestions[_currentPageIndex].skipQuestion!(widget.surveyQuestions);
+      return skipQuestion;
     }
     return false;
   }
@@ -115,8 +118,6 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         return QuestionOptionTypeWidget(
           question: widget.surveyQuestions[_currentPageIndex],
           onAnswered: (String answer) {
-            // var history = Modular.to.navigateHistory;
-            // print('respondido $answer');
             _updateSurveyState(_currentPageIndex, answer);
           },
         );
@@ -124,7 +125,6 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         return QuestionAnyTextTypeWidget(
           question: widget.surveyQuestions[_currentPageIndex],
           onAnswered: (String answer) {
-            // print('respondido $answer');
             _updateSurveyState(_currentPageIndex, answer);
           },
         );
@@ -132,7 +132,20 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         return QuestionTextImageTypeWidget(
           question: widget.surveyQuestions[_currentPageIndex],
           onAnswered: (String answer) {
-            // print('respondido $answer');
+            _updateSurveyState(_currentPageIndex, answer);
+          },
+        );
+      case SurveyQuestionType.turnOnLamps:
+        return TurnOnLampsWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: (String answer) {
+            _updateSurveyState(_currentPageIndex, answer);
+          },
+        );
+      case SurveyQuestionType.yesOrNo:
+        return QuestionYesOrNoTypeWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: (String answer) {
             _updateSurveyState(_currentPageIndex, answer);
           },
         );

@@ -9,40 +9,49 @@ class ReferencesPage extends StatelessWidget {
   ReferencesPage({super.key});
 
   final references = [
-    ReferenceModel(
-        theme: "Emissão de carbono da água",
-        references: [
-          ReferenceItemModel(
-              title: 'Definição do cálculo e fatores- Eraclimate',
-              link:
-                  'https://app.eraclimate.com/emissions-estimator'),
-          ReferenceItemModel(
-              title: 'Recomendações - WaterFootprint',
-              link:
-                  'https://www.waterfootprint.org/resources/TheWaterFootprintAssessmentManual_Portuguese.pdf'),
-        ]),
-    ReferenceModel(
-        theme: "Emissão de carbono do transporte",
-        references: [
-          ReferenceItemModel(
-              title: 'Definição do cálculo e fatores - Iniciativa verde',
-              link:
-                  'https://iniciativaverde.org.br/calculadora'),
-          ReferenceItemModel(title: '', link: ''),
-        ]),
+    ReferenceModel(theme: "Emissão de carbono da água", references: [
+      ReferenceItemModel(
+          title: 'Definição do cálculo e fatores- Eraclimate',
+          link: 'https://app.eraclimate.com/emissions-estimator'),
+      ReferenceItemModel(
+          title: 'Recomendações - WaterFootprint',
+          link:
+              'https://www.waterfootprint.org/resources/TheWaterFootprintAssessmentManual_Portuguese.pdf'),
+    ]),
+    ReferenceModel(theme: "Emissão de carbono por locomoção", references: [
+      ReferenceItemModel(
+          title: 'Definição do cálculo e fatores - Iniciativa verde',
+          link: 'https://iniciativaverde.org.br/calculadora')
+    ]),
     ReferenceModel(theme: "Imagens", references: [
       ReferenceItemModel(
           title: 'Mascotes - Freepik',
           link:
               'https://www.freepik.com/free-vector/happy-green-friends_797855.htm#query=cute%20tree&position=45&from_view=search&track=ais'),
-      ReferenceItemModel(title: 'Bicicleta - Freepik', link: 'https://www.flaticon.com/free-icons/bicycle'),
-      ReferenceItemModel(title: 'Motocicleta - Freepik', link: 'https://www.flaticon.com/free-icons/motorcycle'),
-      ReferenceItemModel(title: 'Pedestre - Freepik', link: 'https://www.flaticon.com/free-icons/walk'),
-      ReferenceItemModel(title: 'Ônibus - Freepik', link: 'https://www.flaticon.com/free-icons/bus'),
-      ReferenceItemModel(title: 'Trem - Freepik', link: 'https://www.flaticon.com/free-icons/train'),
-      ReferenceItemModel(title: 'Metrô - Freepik', link: 'https://www.flaticon.com/free-icons/subway'),
-      ReferenceItemModel(title: 'Carro - Freepik', link: 'https://www.flaticon.com/free-icons/car'),
-      ReferenceItemModel(title: 'Nenhuma opção - Freepik', link: 'https://www.flaticon.com/free-icons/block'),
+      ReferenceItemModel(
+          title: 'Bicicleta - Freepik',
+          link: 'https://www.flaticon.com/free-icons/bicycle'),
+      ReferenceItemModel(
+          title: 'Motocicleta - Freepik',
+          link: 'https://www.flaticon.com/free-icons/motorcycle'),
+      ReferenceItemModel(
+          title: 'Pedestre - Freepik',
+          link: 'https://www.flaticon.com/free-icons/walk'),
+      ReferenceItemModel(
+          title: 'Ônibus - Freepik',
+          link: 'https://www.flaticon.com/free-icons/bus'),
+      ReferenceItemModel(
+          title: 'Trem - Freepik',
+          link: 'https://www.flaticon.com/free-icons/train'),
+      ReferenceItemModel(
+          title: 'Metrô - Freepik',
+          link: 'https://www.flaticon.com/free-icons/subway'),
+      ReferenceItemModel(
+          title: 'Carro - Freepik',
+          link: 'https://www.flaticon.com/free-icons/car'),
+      ReferenceItemModel(
+          title: 'Nenhuma opção - Freepik',
+          link: 'https://www.flaticon.com/free-icons/block'),
     ]),
   ];
 
@@ -78,26 +87,25 @@ class ReferencesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_pageTitle,
-            style: const TextStyle(color: Colors.white, fontSize: 26)),
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        child: 
-        SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Para saber mais:',
-                style: Theme.of(context).textTheme.bodyMedium),
-            ...buildReferences(context)
-          ],
+        appBar: AppBar(
+          title: Text(_pageTitle,
+              style: const TextStyle(color: Colors.white, fontSize: 26)),
+          iconTheme: const IconThemeData(color: Colors.white),
+          centerTitle: true,
+          backgroundColor: Colors.green,
         ),
-      ),
-    ));
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Para saber mais:',
+                    style: Theme.of(context).textTheme.bodyMedium),
+                ...buildReferences(context)
+              ],
+            ),
+          ),
+        ));
   }
 }
