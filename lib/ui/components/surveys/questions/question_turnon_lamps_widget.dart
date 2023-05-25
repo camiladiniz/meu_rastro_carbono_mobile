@@ -14,7 +14,7 @@ class TurnOnLampsWidget extends StatefulWidget {
 }
 
 class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
-  String? _selectedAnswer;
+
   List<LampData> lampsData =
       List.generate(9, (index) => LampData(isOn: false, operationTime: 0.0));
 
@@ -29,6 +29,19 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
     'Lâmpada do jardim',
     'Lâmpada da garagem',
   ];
+
+  updateWidgetAnswer() {
+    var operationTime = "";
+    for (var l in lampsData) {
+      if(l.operationTime > 0.0) {
+        if(operationTime != "") {
+          operationTime += ",";
+        }
+        operationTime += l.operationTime.toString();
+      }
+    }
+    widget.onAnswered(operationTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +71,7 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
                         lampsData[index].isOn = !lampsData[index].isOn;
                         lampsData[index].operationTime = 0.0;
                       });
+                      updateWidgetAnswer();
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: lampsData[index].isOn
@@ -94,6 +108,7 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
                     setState(() {
                       lampsData[index].operationTime = double.parse(value);
                     });
+                    updateWidgetAnswer();
                   },
                   decoration: InputDecoration(
                     labelText: 'Uso em horas',

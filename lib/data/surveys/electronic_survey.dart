@@ -140,14 +140,14 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
       answerPrefix: '',
       answerSuffix: 'GB'),
   SurveyQuestionModel(
-      identification: 'televisionUsageInMinutes',
-      question: 'A televisão foi utilizada por',
+      identification: 'streamingUsageInMinutes',
+      question: 'Quantos minutos você passou assistindo streaming hoje?',
       questionType: SurveyQuestionType.anyNumber,
       answerOptions: [],
       answerPrefix: '',
       answerSuffix: 'minutos'),
   SurveyQuestionModel(
-      identification: 'lampsUsageInHours',
+      identification: 'lampsOperationTime',
       question: 'Indique as lâmpadas ligadas e o respectivo tempo de uso:',
       questionType: SurveyQuestionType.turnOnLamps,
       answerOptions: [],
@@ -157,7 +157,11 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
       identification: 'lampType',
       question: 'Qual é o tipo de lâmpada utilizada?',
       questionType: SurveyQuestionType.option,
-      answerOptions: [],
+      answerOptions: [
+        SurveyAnswerModel(
+            id: 1, answer: 'Incandescente', imagePath: '', value: 1),
+        SurveyAnswerModel(id: 2, answer: 'LED', imagePath: '', value: 2),
+      ],
       answerPrefix: '',
       answerSuffix: ''),
 ];
@@ -206,21 +210,27 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
           .firstWhere((s) => s.identification == 'computerAvailableMemory')
           .userAnswer ??
       '0';
-  int computerAvailableMemory =
-      int.parse(computerAvailableMemoryResponse);
+  int computerAvailableMemory = int.parse(computerAvailableMemoryResponse);
 
-  String televisionUsageInMinutesResponse = survey
-          .firstWhere((s) => s.identification == 'televisionUsageInMinutes')
+  String streamingUsageInMinutesResponse = survey
+          .firstWhere((s) => s.identification == 'streamingUsageInMinutes')
           .userAnswer ??
       '0';
-  double televisionUsageInMinutes =
-      double.parse(televisionUsageInMinutesResponse);
+  double streamingUsageInMinutes =
+      double.parse(streamingUsageInMinutesResponse);
 
-  String lampsUsageInHoursResponse = survey
-          .firstWhere((s) => s.identification == 'lampsUsageInHours')
+  String lampsOperationTimesResponse = survey
+          .firstWhere((s) => s.identification == 'lampsOperationTime')
           .userAnswer ??
       '0';
-  double lampsUsageInHours = double.parse(lampsUsageInHoursResponse);
+  List<double> lampsOperationTimes = [];
+
+  if (lampsOperationTimesResponse.isNotEmpty) {
+    lampsOperationTimes = lampsOperationTimesResponse
+        .split(",")
+        .map((o) => double.parse(o))
+        .toList();
+  }
 
   String lampType =
       survey.firstWhere((s) => s.identification == 'lampType').userAnswer ?? '';
@@ -229,19 +239,21 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
   double phoneCarbon = 0;
   double computerCarbon = 0;
   double tvCarbon = 0;
-  double consoleCarbon = 0;
+  double lampsCarbon = 0;
 
   // ----- cellphone charging -----
-  double maintenanceModePowerTime = 24 - phoneUsageInHours;
+  if (phoneUsageInHours > 0) {
+    double maintenanceModePowerTime = 24 - phoneUsageInHours;
 
-  // ex: [14.46 Wh – (22 hours x 0.13 Watts)] x 1 kWh/1,000 Wh = 0.012 kWh/smartphone charged
-  double energy = (phoneBatteryConsumption24HourEnergyInWattHours -
-          (maintenanceModePowerTime * maintenanceModePowerFactorInWatts)) *
-      1 /
-      1000;
+    // ex: [14.46 Wh – (22 hours x 0.13 Watts)] x 1 kWh/1,000 Wh = 0.012 kWh/smartphone charged
+    double energy = (phoneBatteryConsumption24HourEnergyInWattHours -
+            (maintenanceModePowerTime * maintenanceModePowerFactorInWatts)) *
+        1 /
+        1000;
 
-  // ex: 0.012 kWh/charge x 1,562.4 pounds CO2/MWh delivered electricity x 1 MWh/1,000 kWh x 1 metric ton/2,204.6 lbs = 8.22 x 10-6 metric tons CO2/smartphone charged
-  phoneCarbon = energy * 1562.4 * (1 / 1000) * (1 / 2204.6);
+    // ex: 0.012 kWh/charge x 1,562.4 pounds CO2/MWh delivered electricity x 1 MWh/1,000 kWh x 1 metric ton/2,204.6 lbs = 8.22 x 10-6 metric tons CO2/smartphone charged
+    phoneCarbon = energy * 1562.4 * (1 / 1000) * (1 / 2204.6);
+  }
 
   // ----- computer usage calculation -----
   var computerFootprintResponse = calculateComputerFootprint(
@@ -255,12 +267,28 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
   computerCarbon = computerFootprintResponse.carbonEmissionsInGrams / 1000;
 
   //  ----- television usage calculation -----
+  double televisionTimeInHours = streamingUsageInMinutes / 60;
+  tvCarbon = televisionTimeInHours * streamingCarbonEmissionPerHourInKg;
 
   //  ----- lamps usage calculation -----
+  var lampEnergyInWatts = lampType == 'LED'
+      ? LampEnergyInWatts.led
+      : LampEnergyInWatts.incandescente;
+  double lampEnergyConsumptionInWattHour = 0;
+
+  lampsOperationTimes.forEach((operationTime) {
+    lampEnergyConsumptionInWattHour += operationTime * lampEnergyInWatts;
+  });
+
+  var lampEnergyConsumptionInQuiloWattHour =
+      lampEnergyConsumptionInWattHour / 1000;
+
+  lampsCarbon = lampEnergyConsumptionInQuiloWattHour *
+      electricityCarbonEmissionFactorPerkWh;
 
   //  ----- Summing up carbon footprints for all devices -----
   String totalCarbonFootprint =
-      (phoneCarbon + computerCarbon + tvCarbon + consoleCarbon)
+      (phoneCarbon + computerCarbon + tvCarbon + lampsCarbon)
           .toStringAsFixed(3);
 
   return 'Você emitiu $totalCarbonFootprint CO2 na atmosfera utilizando dispositivos';
@@ -290,7 +318,7 @@ ComputerEmissionModel calculateComputerFootprint(
   double psf_used;
   double powerNeeded;
 
-    actual_runTime_hours = runTime_minutes / 60;
+  actual_runTime_hours = runTime_minutes / 60;
 
   runTime = actual_runTime_hours;
 
@@ -302,7 +330,6 @@ ComputerEmissionModel calculateComputerFootprint(
 
   if (coreType == ComputerCoreTypes.cpu ||
       coreType == ComputerCoreTypes.ambos) {
-
     cpuPower = ComputerDataset.computerCoreTypes
         .firstWhere((c) => c.model == cpuModel)
         .tdpPerCore;

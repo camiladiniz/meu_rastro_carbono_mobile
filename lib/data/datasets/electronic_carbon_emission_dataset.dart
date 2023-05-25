@@ -2,13 +2,14 @@
 import 'electronic/computer_cores_dataset.dart';
 import 'electronic/computer_gpus_dataset.dart';
 
-const double electricityCarbonEmissionFactorPerKg = 0.5; // fonte: https://ghgprotocol.org/sites/default/files/2023-03/Scope3_Calculation_Guidance_0%5B1%5D.pdf
+const double electricityCarbonEmissionFactorPerkWh = 0.5; // fonte: https://ghgprotocol.org/sites/default/files/2023-03/Scope3_Calculation_Guidance_0%5B1%5D.pdf
 const double solarCarbonEmissionFactorPerKg = 0;
 
 // cellphone charge (https://www.epa.gov/energy/greenhouse-gases-equivalencies-calculator-calculations-and-references)
 const double phoneBatteryConsumption24HourEnergyInWattHours = 14.46; // Watt-hours
 const double maintenanceModePowerFactorInWatts = 0.13; // Watts
 
+// Computer emission 
 class ComputerCoreTypes {
   static String get cpu => 'CPU';
   static String get gpu => 'GPU';
@@ -88,4 +89,12 @@ class ComputerEmissionModel {
 
   ComputerEmissionModel();
   
+}
+
+// Streaming emisison factors
+const double streamingCarbonEmissionPerHourInKg = 0.015;
+
+class LampEnergyInWatts {
+  static double get incandescente => 40; // https://www.abilumi.org.br/tabela-de-equivalencia-abilumi-2020/
+  static double get led => 7;
 }
