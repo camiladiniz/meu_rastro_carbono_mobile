@@ -1,4 +1,4 @@
-import '../electronic_carbon_emission_dataset.dart';
+import 'electronic_carbon_emission_dataset.dart';
 
 List<ComputerCoreTypesModel> computerCoreTypesDataset = [
   ComputerCoreTypesModel('Outro', 0, 0, 12.0, ''),

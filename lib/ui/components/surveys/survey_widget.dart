@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_food_consumption_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_text_image_type_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_turnon_lamps_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_yes_or_no_type_widget.dart';
@@ -144,6 +145,20 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         );
       case SurveyQuestionType.yesOrNo:
         return QuestionYesOrNoTypeWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: (String answer) {
+            _updateSurveyState(_currentPageIndex, answer);
+          },
+        );
+      case SurveyQuestionType.yesOrNo:
+        return QuestionYesOrNoTypeWidget(
+          question: widget.surveyQuestions[_currentPageIndex],
+          onAnswered: (String answer) {
+            _updateSurveyState(_currentPageIndex, answer);
+          },
+        );
+      case SurveyQuestionType.foodConsumption:
+        return QuestionFoodConsumption(
           question: widget.surveyQuestions[_currentPageIndex],
           onAnswered: (String answer) {
             _updateSurveyState(_currentPageIndex, answer);

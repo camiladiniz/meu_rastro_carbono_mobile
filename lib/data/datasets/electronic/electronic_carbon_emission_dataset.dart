@@ -1,6 +1,6 @@
 //  0.527 kg CO2e/kWh
-import 'electronic/computer_cores_dataset.dart';
-import 'electronic/computer_gpus_dataset.dart';
+import 'computer_cores_dataset.dart';
+import 'computer_gpus_dataset.dart';
 
 const double electricityCarbonEmissionFactorPerkWh = 0.5; // fonte: https://ghgprotocol.org/sites/default/files/2023-03/Scope3_Calculation_Guidance_0%5B1%5D.pdf
 const double solarCarbonEmissionFactorPerKg = 0;

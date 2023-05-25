@@ -9,6 +9,12 @@ class SurveysPage extends StatelessWidget {
 
   final List<CardItemModel> categories = [
     CardItemModel(
+        title: 'Água',        
+        icon: Icons.water,
+        color: Colors.blue,
+        onTap: () => {Modular.to.pushNamed('/survey/agua')},
+        status: SurveyStatus.answered),
+    CardItemModel(
         title: 'Alimentação',
         icon: Icons.food_bank,
         color: Colors.pink,
@@ -25,12 +31,6 @@ class SurveysPage extends StatelessWidget {
         icon: Icons.directions_train,
         color: Colors.purple,
         onTap: () => {Modular.to.pushNamed('/survey/transporte')},
-        status: SurveyStatus.answered),
-    CardItemModel(
-        title: 'Água',        
-        icon: Icons.water,
-        color: Colors.blue,
-        onTap: () => {Modular.to.pushNamed('/survey/agua')},
         status: SurveyStatus.answered),
   ];
 

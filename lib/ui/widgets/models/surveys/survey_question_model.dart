@@ -29,7 +29,8 @@ enum SurveyQuestionType {
   anyText,
   option,
   turnOnLamps,
-  yesOrNo
+  yesOrNo,
+  foodConsumption
 }
 
 class QuestionTypeYesOrNo {

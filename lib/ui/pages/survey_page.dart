@@ -30,7 +30,7 @@ class _SurveyPageState extends State<SurveyPage> {
         _surveyQuestions = foodSurveyQuestions;
         _onSurveyAnswered = mealsFootprintCalculation;
         setState(() {
-          _pageTitle = 'Pegada hídrica diária';
+          _pageTitle = 'Rastro alimentar';
         });
         break;
 
@@ -38,7 +38,7 @@ class _SurveyPageState extends State<SurveyPage> {
         _surveyQuestions = electronicSurveyQuestions;
         _onSurveyAnswered = electricFootprintCalculation;
         setState(() {
-          _pageTitle = 'Consumo de energia';
+          _pageTitle = 'Rastro elétrico';
         });
         break;
 
@@ -46,7 +46,7 @@ class _SurveyPageState extends State<SurveyPage> {
         _surveyQuestions = waterSurveyQuestions;
         _onSurveyAnswered = waterFootprintCalculation;
         setState(() {
-          _pageTitle = 'Pegada hídrica diária';
+          _pageTitle = 'Rastro hídrico';
         });
         break;
 
@@ -54,12 +54,9 @@ class _SurveyPageState extends State<SurveyPage> {
         _surveyQuestions = transportationSurveyQuestions;
         _onSurveyAnswered = transportationFootprintCalculation;
         setState(() {
-          _pageTitle = 'Pegada por transporte diário';
+          _pageTitle = 'Rastro por locomoção';
         });
         break;
-      default:
-        break;
-
     }
   }
 

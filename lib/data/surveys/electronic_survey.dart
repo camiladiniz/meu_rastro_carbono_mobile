@@ -1,6 +1,6 @@
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
-import '../datasets/electronic_carbon_emission_dataset.dart';
+import '../datasets/electronic/electronic_carbon_emission_dataset.dart';
 
 final List<SurveyQuestionModel> electronicSurveyQuestions = [
   SurveyQuestionModel(
