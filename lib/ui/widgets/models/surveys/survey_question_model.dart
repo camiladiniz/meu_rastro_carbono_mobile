@@ -12,7 +12,7 @@ class SurveyQuestionModel {
   Function? skipQuestion;
 
   SurveyQuestionModel(
-      {this.identification,
+      {required this.identification,
       required this.question,
       required this.questionType,
       required this.answerOptions,

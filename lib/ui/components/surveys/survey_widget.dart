@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_food_consumption_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_text_image_type_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_turnon_lamps_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_yes_or_no_type_widget.dart';
+import '../../../data/datasets/food/menu_dataset.dart';
 import '../../widgets/models/surveys/survey_question_model.dart';
 import 'questions/question_any_text_type_widget.dart';
 import 'questions/question_options_type_widget.dart';
@@ -35,7 +38,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     var survey = surveyWithAnswers;
     survey[index].userAnswer = response;
     setState(() {
-      surveyWithAnswers:
+      // surveyWithAnswers:
       survey;
     });
   }
@@ -159,6 +162,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
         );
       case SurveyQuestionType.foodConsumption:
         return QuestionFoodConsumption(
+          menu: mealsDataset,
           question: widget.surveyQuestions[_currentPageIndex],
           onAnswered: (String answer) {
             _updateSurveyState(_currentPageIndex, answer);

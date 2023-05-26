@@ -55,6 +55,7 @@ flutter:
   assets:
     - lib/ui/assets/images/
     - lib/ui/assets/images/transportation/
+    - lib/ui/assets/images/food/
 
   # fonts:
   #   - family: Schyler

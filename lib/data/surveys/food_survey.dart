@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
-import '../datasets/food_carbon_emission_dataset.dart';
+import '../models/food/meal_model.dart';
 
 final List<SurveyQuestionModel> foodSurveyQuestions = [
   SurveyQuestionModel(
-      question: 'Informe o que você consumiu no dia',
+      identification: 'foodPortions',
+      question: 'Informe o que você consumiu',
       questionType: SurveyQuestionType.foodConsumption,
       answerOptions: [],
       answerPrefix: '',
@@ -11,16 +14,20 @@ final List<SurveyQuestionModel> foodSurveyQuestions = [
 ];
 
 String mealsFootprintCalculation(List<SurveyQuestionModel> survey) {
-  String finalAnswer = survey[1].userAnswer ?? '0';
-  double amountInGrams = double.parse(finalAnswer).toDouble();
-  var foodName = survey[0].userAnswer;
+  var foodResponse =
+      survey.firstWhere((s) => s.identification == 'foodPortions').userAnswer ?? '[]';
+  var f = json.decode(foodResponse);
 
-  var consumptionInKg = amountInGrams / 1000;
-  num carbonEmissionFactor = foodCarbonEmissionPerKgDataset[foodName] ?? 0;
+  double emissiongCO2eqPerPortion = 0;
 
-  // calculating emission (CO2e per kg)
-  String carbonEmissions =
-      (carbonEmissionFactor * consumptionInKg).toStringAsFixed(3);
-  return 'Para essa refeição você emitiu $carbonEmissions CO2 na atmosfera';
+  List<MealModel> foodPortions = List<MealModel>.from(f.map((model)=> MealModel.fromJson(model)));
+
+  foodPortions.forEach((meals) =>
+    meals.mealOptions.forEach((food) =>
+      emissiongCO2eqPerPortion += food.emissiongCO2eqPerPortion * food.userPortionAmount
+    )
+  );
+
+  return 'Para essa refeição você emitiu $emissiongCO2eqPerPortion gCO2 na atmosfera';
   // TODO: store metric
 }
