@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/ui/pages/login_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/main_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
@@ -28,7 +29,8 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/', child: (context, args) => const WelcomePage()),
+        ChildRoute('/', child: (context, args) => LoginPage()),
+        ChildRoute('/login', child: (context, args) => LoginPage()),
         ChildRoute('/welcome', child: (context, args) => const WelcomePage()),
         ChildRoute('/home', child: (context, args) => MainPage(), children: [
           ChildRoute('/rewards',
