@@ -26,25 +26,25 @@ class _SurveysPageState extends State<SurveysPage> {
         title: 'Água',
         icon: Icons.water,
         color: Colors.blue,
-        onTap: () => {Modular.to.pushNamed('/survey/agua')},
+        surveyName: 'agua',
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Alimentação',
         icon: Icons.food_bank,
         color: Colors.pink,
-        onTap: () => {Modular.to.pushNamed('/survey/alimentos')},
+        surveyName: 'alimentos',
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Eletrônicos',
         icon: Icons.electrical_services,
         color: Colors.indigo,
-        onTap: () => {Modular.to.pushNamed('/survey/dispositivos')},
+        surveyName: 'dispositivos',
         status: SurveyStatus.answered),
     CardItemModel(
         title: 'Locomoção',
         icon: Icons.directions_train,
         color: Colors.purple,
-        onTap: () => {Modular.to.pushNamed('/survey/transporte')},
+        surveyName: 'transporte',
         status: SurveyStatus.answered),
   ];
 
@@ -140,7 +140,7 @@ class _SurveysPageState extends State<SurveysPage> {
                       icon: chunk[0].icon,
                       color: chunk[0].color,
                       status: chunk[0].status,
-                      onTap: chunk[0].onTap),
+                      onTap: () => {Modular.to.pushNamed('/survey/${chunk[0].surveyName}?datetime=$filterDate').then((_) => loadSurveyData())}),
                 ),
                 Expanded(
                   child: SurveyItemCard(
@@ -148,7 +148,7 @@ class _SurveysPageState extends State<SurveysPage> {
                       icon: chunk[1].icon,
                       color: chunk[1].color,
                       status: chunk[1].status,
-                      onTap: chunk[1].onTap),
+                      onTap: () => {Modular.to.pushNamed('/survey/${chunk[1].surveyName}?datetime=$filterDate').then((_) => loadSurveyData())}),
                 ),
               ],
             ),

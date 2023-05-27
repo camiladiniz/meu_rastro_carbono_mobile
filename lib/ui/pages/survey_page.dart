@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/survey_widget.dart';
 import 'package:meu_rastro_carbono/ui/widgets/models/surveys/survey_question_model.dart';
 
@@ -19,6 +20,7 @@ class SurveyPage extends StatefulWidget {
 class _SurveyPageState extends State<SurveyPage> {
   late List<SurveyQuestionModel> _surveyQuestions = [];
   late Function _onSurveyAnswered;
+  final answerDatetime = Modular.args.queryParams['datetime'];
 
   String _pageTitle = 'Meu rastro';
 
@@ -73,6 +75,7 @@ class _SurveyPageState extends State<SurveyPage> {
         body: SurveyWidget(
           surveyQuestions: _surveyQuestions,
           onSurveyAnswered: _onSurveyAnswered,
+          answerDatetime:  DateTime.parse(answerDatetime ?? DateTime.now().toIso8601String())
         ));
   }
 }

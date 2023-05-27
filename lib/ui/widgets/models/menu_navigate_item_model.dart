@@ -11,14 +11,14 @@ class NavigateItemModel {
 class CardItemModel {
   final String title;
   final IconData icon;
-  final Function onTap;
+  final String surveyName;
   final Color color;
   SurveyStatus status;
 
   CardItemModel(
       {required this.title,
       required this.icon,
-      required this.onTap,
+      required this.surveyName,
       required this.color,
       required this.status});
 }

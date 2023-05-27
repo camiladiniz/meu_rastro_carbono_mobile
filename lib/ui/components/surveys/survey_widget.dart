@@ -14,11 +14,13 @@ import 'questions/question_options_type_widget.dart';
 class SurveyWidget extends StatefulWidget {
   final List<SurveyQuestionModel> surveyQuestions;
   final Function onSurveyAnswered;
+  final DateTime answerDatetime;
 
   const SurveyWidget(
       {super.key,
       required this.surveyQuestions,
-      required this.onSurveyAnswered});
+      required this.onSurveyAnswered,
+      required this.answerDatetime});
 
   @override
   _SurveyWidgetState createState() => _SurveyWidgetState();
@@ -75,8 +77,9 @@ class _SurveyWidgetState extends State<SurveyWidget> {
     });
   }
 
-  void showAnswerSurveyDialog(context) {
-    var calculationResponse = widget.onSurveyAnswered(surveyWithAnswers);
+  void showAnswerSurveyDialog(context) async {
+    var calculationResponse = await widget.onSurveyAnswered(surveyWithAnswers, widget.answerDatetime);
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
