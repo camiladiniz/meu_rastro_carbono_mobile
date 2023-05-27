@@ -10,7 +10,9 @@ import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
 import '../data/repositories/account_repository.dart';
 import '../data/repositories/evolution_repository.dart';
+import '../data/repositories/survey_repository.dart';
 import '../infra/shared_preference_service.dart';
+import '../stores/survey_controller.dart';
 import '../stores/user_evolution_controller.dart';
 import '../ui/pages/references_page.dart';
 import '../ui/pages/evolution_page.dart';
@@ -31,10 +33,12 @@ class AppModule extends Module {
         // repositories
         Bind.lazySingleton((i) => AccountRepository(i())),
         Bind.lazySingleton((i) => UserRevolutionRepository(i())),
+        Bind.lazySingleton((i) => SurveyRepository(i())),
 
         // controllers
         Bind((i) => UserController()),
         Bind((i) => UserEvolutionController()),
+        Bind((i) => SurveyController()),
       ];
 
   @override

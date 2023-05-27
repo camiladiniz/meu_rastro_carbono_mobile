@@ -18,7 +18,7 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
       answerPrefix: '',
       answerSuffix: ''),
   SurveyQuestionModel(
-      identification: 'computerUsageInMinutes',
+      identification: 'computerTurnedOnInMinutes',
       question: 'Por quanto tempo o computador (ou notebook) ficou ligado?',
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
@@ -179,11 +179,11 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
       QuestionTypeYesOrNo.no;
   bool hadUsedComputer = hadUsedComputerResponse == QuestionTypeYesOrNo.yes;
 
-  String computerUsageInMinutesResponse = survey
-          .firstWhere((s) => s.identification == 'computerUsageInMinutes')
+  String computerTurnedOnInMinutesResponse = survey
+          .firstWhere((s) => s.identification == 'computerTurnedOnInMinutes')
           .userAnswer ??
       '0';
-  double computerUsageInMinutes = double.parse(computerUsageInMinutesResponse);
+  double computerTurnedOnInMinutes = double.parse(computerTurnedOnInMinutesResponse);
 
   String computerCoreType = survey
           .firstWhere((s) => s.identification == 'computerCoreType')
@@ -262,7 +262,7 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
       computerCPUModel,
       computerGPUModel,
       computerAvailableMemory,
-      computerUsageInMinutes);
+      computerTurnedOnInMinutes);
 
   computerCarbon = computerFootprintResponse.carbonEmissionsInGrams / 1000;
 

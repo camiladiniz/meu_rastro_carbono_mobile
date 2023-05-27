@@ -236,7 +236,7 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       description: 'A média de autonomia de um carro híbrido é de 20 km/litro',
       answerSuffix: 'km/litro'),
   SurveyQuestionModel(
-      identification: 'distanceKm',
+      identification: 'carHybridAutonomy',
       question: 'A distância percorrida no dia foi de',
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
@@ -248,27 +248,6 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       answerPrefix: '',
       description: '',
       answerSuffix: 'km'),
-  // SurveyQuestionModel(
-  //     identification: 'amountOfPeople',
-  //     question: 'Quantas pessoas compartilharam o transporte?',
-  //     skipQuestion: (List<SurveyQuestionModel> questions) =>
-  //         questions
-  //                 .firstWhere((q) => q.identification == 'transportType')
-  //                 .userAnswer !=
-  //             'Carro' ||
-  //         questions
-  //                 .firstWhere((q) => q.identification == 'transportType')
-  //                 .userAnswer !=
-  //             'Moto',
-  //     questionType: SurveyQuestionType.option,
-  //     answerOptions: [
-  //       SurveyAnswerModel(
-  //           id: 1, answer: 'Estava sozinho(a)', imagePath: '', value: 1),
-  //       SurveyAnswerModel(id: 2, answer: '2 pessoas', imagePath: '', value: 2),
-  //       SurveyAnswerModel(id: 3, answer: '3 ou mais', imagePath: '', value: 3),
-  //     ],
-  //     answerPrefix: '',
-  //     answerSuffix: ''),
 ];
 
 String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {

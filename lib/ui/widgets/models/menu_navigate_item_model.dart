@@ -13,7 +13,7 @@ class CardItemModel {
   final IconData icon;
   final Function onTap;
   final Color color;
-  final SurveyStatus status;
+  SurveyStatus status;
 
   CardItemModel(
       {required this.title,

@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
     NavigateItemModel('Perfil', Icons.person, () => {Modular.to.navigate('./profile')}),
   ];
 
-  int _selectedMenuIndex = 0;
+  int _selectedMenuIndex = 2;
 
   void _onMenuItemTapped(int index) {
     setState(() {

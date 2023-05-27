@@ -19,7 +19,7 @@ class SurveyItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {onTap()},
+      onTap: () => { status == SurveyStatus.pending ? onTap() : () => {}},
       borderRadius: BorderRadius.circular(16.0),
       splashColor: Colors.white.withOpacity(0.5),
       highlightColor: Colors.transparent,
@@ -28,7 +28,7 @@ class SurveyItemCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          color: status == SurveyStatus.answered ? color : Colors.grey,
+          color: status == SurveyStatus.answered ? Colors.grey : color,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
