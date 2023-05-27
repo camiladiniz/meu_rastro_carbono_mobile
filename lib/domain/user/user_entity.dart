@@ -1,10 +1,18 @@
-
 class UserEntity {
-  String email = "";
-  String password = "";
+  final String email;
+  final String password;
 
-  void signIn(String email, String password) {
-    email = email;
-    password = password;
+  const UserEntity({required this.email, required this.password});
+
+  factory UserEntity.fromJson(Map<String, dynamic> json) {
+    return UserEntity(
+      email: json['email'],
+      password: json['password'],
+    );
   }
+
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'password': password,
+      };
 }

@@ -31,7 +31,6 @@ class _LoginFormState extends State<LoginForm> {
 
   signIn() {
     userController.authenticate(txtEmailCtrl.text, txtPasswordCtrl.text);
-    Modular.to.navigate('/home/surveys');
   }
 
   @override

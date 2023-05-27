@@ -1,4 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/data/repositories/account_repository.dart';
+import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
 import 'package:meu_rastro_carbono/infra/shared_preference_service.dart';
 import 'package:mobx/mobx.dart';
 
@@ -8,15 +10,16 @@ part 'user_controller.g.dart';
 class UserController = _UserController with _$UserController;
 
 abstract class _UserController extends Disposable with Store {
-  final SharedPreferencesService sharedPreferencesService =
+  final SharedPreferencesService localStorage =
       Modular.get<SharedPreferencesService>();
+  final AccountRepository accountRepo = Modular.get<AccountRepository>();
 
   _UserController() {
     initializeSharedPreferences();
   }
 
   Future<void> initializeSharedPreferences() async {
-    await sharedPreferencesService.initializeSharedPreferences();
+    await localStorage.initializeSharedPreferences();
     getName();
   }
 
@@ -33,18 +36,29 @@ abstract class _UserController extends Disposable with Store {
   String name = "";
 
   @action
-  void authenticate(String email, String password) {
-    email = email;
-    password = password;
-    name = "Camila";
+  Future authenticate(String userEmail, String userPassword) async {
+    try {
+      var response = await accountRepo.login(UserEntity(email: userEmail, password: userPassword));
+
+      await localStorage.setBoolValue(
+          SharedPreferenceConstants.isAuthenticated, true);
+      await localStorage.setStringValue(
+          SharedPreferenceConstants.name, response.name);
+      await localStorage.setStringValue(
+          SharedPreferenceConstants.token, response.token);
+      Modular.to.navigate('/home/surveys');
+    } catch (ex) {
+      // TODO
+      var a = 0;
+    }
   }
 
   @action
   Future<bool> isAuthenticated() async {
-    var isAuthenticated = sharedPreferencesService
-        .getBoolValue(SharedPreferenceConstants.isAuthenticated);
-    var userName = await sharedPreferencesService
-        .getStringValue(SharedPreferenceConstants.name);
+    var isAuthenticated =
+        localStorage.getBoolValue(SharedPreferenceConstants.isAuthenticated);
+    var userName =
+        await localStorage.getStringValue(SharedPreferenceConstants.name);
 
     if (isAuthenticated == true && userName != "") {
       return true;
@@ -54,7 +68,6 @@ abstract class _UserController extends Disposable with Store {
 
   @action
   Future<void> getName() async {
-    name = await sharedPreferencesService
-        .getStringValue(SharedPreferenceConstants.name);
+    name = await localStorage.getStringValue(SharedPreferenceConstants.name);
   }
 }

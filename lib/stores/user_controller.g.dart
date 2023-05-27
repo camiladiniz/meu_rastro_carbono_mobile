@@ -56,6 +56,15 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$authenticateAsyncAction =
+      AsyncAction('_UserController.authenticate', context: context);
+
+  @override
+  Future<dynamic> authenticate(String userEmail, String userPassword) {
+    return _$authenticateAsyncAction
+        .run(() => super.authenticate(userEmail, userPassword));
+  }
+
   late final _$isAuthenticatedAsyncAction =
       AsyncAction('_UserController.isAuthenticated', context: context);
 
@@ -70,20 +79,6 @@ mixin _$UserController on _UserController, Store {
   @override
   Future<void> getName() {
     return _$getNameAsyncAction.run(() => super.getName());
-  }
-
-  late final _$_UserControllerActionController =
-      ActionController(name: '_UserController', context: context);
-
-  @override
-  void authenticate(String email, String password) {
-    final _$actionInfo = _$_UserControllerActionController.startAction(
-        name: '_UserController.authenticate');
-    try {
-      return super.authenticate(email, password);
-    } finally {
-      _$_UserControllerActionController.endAction(_$actionInfo);
-    }
   }
 
   @override

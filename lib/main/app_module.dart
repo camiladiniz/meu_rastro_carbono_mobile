@@ -1,11 +1,14 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:meu_rastro_carbono/stores/user_controller.dart';
 import 'package:meu_rastro_carbono/ui/pages/login_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/main_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../data/repositories/account_repository.dart';
 import '../infra/shared_preference_service.dart';
 import '../ui/pages/references_page.dart';
 import '../ui/pages/rewards_page.dart';
@@ -20,6 +23,8 @@ class AppModule extends Module {
             (i) async => SharedPreferences.getInstance()),
         Bind((i) => SharedPreferencesService()),
         Bind((i) => UserController()),
+        Bind.lazySingleton((i) => http.Client()),
+        Bind.lazySingleton((i) => AccountRepository(i())),
       ];
 
   @override
