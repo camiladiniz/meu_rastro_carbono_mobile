@@ -46,6 +46,8 @@ abstract class _UserController extends Disposable with Store {
           SharedPreferenceConstants.name, response.name);
       await localStorage.setStringValue(
           SharedPreferenceConstants.token, response.token);
+      await localStorage.setStringValue(
+          SharedPreferenceConstants.userId, response.userId);
       Modular.to.navigate('/home/surveys');
     } catch (ex) {
       // TODO
@@ -59,8 +61,9 @@ abstract class _UserController extends Disposable with Store {
         localStorage.getBoolValue(SharedPreferenceConstants.isAuthenticated);
     var userName =
         await localStorage.getStringValue(SharedPreferenceConstants.name);
+        var userId = await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
-    if (isAuthenticated == true && userName != "") {
+    if (isAuthenticated == true && userName != "" && userId != "") {
       return true;
     }
     return false;

@@ -9,9 +9,11 @@ import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/surveys_page.dart';
 import 'package:meu_rastro_carbono/ui/pages/welcome_page.dart';
 import '../data/repositories/account_repository.dart';
+import '../data/repositories/evolution_repository.dart';
 import '../infra/shared_preference_service.dart';
+import '../stores/user_evolution_controller.dart';
 import '../ui/pages/references_page.dart';
-import '../ui/pages/rewards_page.dart';
+import '../ui/pages/evolution_page.dart';
 import '../ui/pages/survey_page.dart';
 import '../ui/pages/tips_page.dart';
 import '../ui/pages/user_metrics_page.dart';
@@ -19,12 +21,20 @@ import '../ui/pages/user_metrics_page.dart';
 class AppModule extends Module {
   @override
   List<Bind> get binds => [
+        
+        // services
         AsyncBind<SharedPreferences>(
             (i) async => SharedPreferences.getInstance()),
         Bind((i) => SharedPreferencesService()),
-        Bind((i) => UserController()),
         Bind.lazySingleton((i) => http.Client()),
+
+        // repositories
         Bind.lazySingleton((i) => AccountRepository(i())),
+        Bind.lazySingleton((i) => UserRevolutionRepository(i())),
+
+        // controllers
+        Bind((i) => UserController()),
+        Bind((i) => UserEvolutionController()),
       ];
 
   @override
