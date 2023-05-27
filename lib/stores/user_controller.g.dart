@@ -56,6 +56,14 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$isAuthenticatedAsyncAction =
+      AsyncAction('_UserController.isAuthenticated', context: context);
+
+  @override
+  Future<bool> isAuthenticated() {
+    return _$isAuthenticatedAsyncAction.run(() => super.isAuthenticated());
+  }
+
   late final _$getNameAsyncAction =
       AsyncAction('_UserController.getName', context: context);
 
@@ -73,17 +81,6 @@ mixin _$UserController on _UserController, Store {
         name: '_UserController.authenticate');
     try {
       return super.authenticate(email, password);
-    } finally {
-      _$_UserControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void isAuthenticated(String email, String password) {
-    final _$actionInfo = _$_UserControllerActionController.startAction(
-        name: '_UserController.isAuthenticated');
-    try {
-      return super.isAuthenticated(email, password);
     } finally {
       _$_UserControllerActionController.endAction(_$actionInfo);
     }

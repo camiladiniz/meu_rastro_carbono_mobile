@@ -16,27 +16,16 @@ import '../ui/pages/user_metrics_page.dart';
 class AppModule extends Module {
   @override
   List<Bind> get binds => [
-        // AsyncBind<SharedPreferences>((i) => SharedPreferences.getInstance()),
-        // Bind.lazySingleton<SharedPreferencesService>(
-        //   (i) => SharedPreferencesService(i.get<SharedPreferences>()),
-        // ),
-        // Bind((i) => SharedPreferences.getInstance()), // Bind SharedPreferences
-        // Bind((i) => SharedPreferencesService(i.get<SharedPreferences>())),
         AsyncBind<SharedPreferences>(
             (i) async => SharedPreferences.getInstance()),
-        // AsyncBind<SharedPreferencesService>(
-            // (i) async => SharedPreferences.getInstance()),
-        // Bind.factory(
-        //     (i) => SharedPreferencesService(i.get<SharedPreferences>())),
         Bind((i) => SharedPreferencesService()),
         Bind((i) => UserController()),
       ];
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute('/', child: (context, args) => LoginPage()),
+        ChildRoute('/', child: (context, args) => WelcomePage()),
         ChildRoute('/login', child: (context, args) => LoginPage()),
-        ChildRoute('/welcome', child: (context, args) => const WelcomePage()),
         ChildRoute('/home', child: (context, args) => MainPage(), children: [
           ChildRoute('/rewards', child: (context, args) => RewardsWidget()),
           ChildRoute('/tips',

@@ -2,8 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/ui/widgets/buttons/default_button.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+import '../../stores/user_controller.dart';
+
+class WelcomePage extends StatefulWidget {
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  final UserController userController = Modular.get<UserController>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadAuthData();
+  }
+
+  Future<void> loadAuthData() async {
+    await userController.initializeSharedPreferences();
+    var userIsAuthenticated = await userController.isAuthenticated();
+    if (userIsAuthenticated == true) {
+      Modular.to.navigate('/home/surveys');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +51,7 @@ class WelcomePage extends StatelessWidget {
                 const SizedBox(height: 25),
                 DefaultButtonWidget(
                   text: 'Vamos lá',
-                  onPressed: () => Modular.to.navigate('/home/surveys'),
+                  onPressed: () => Modular.to.navigate('/login'),
                 ),
               ],
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/infra/shared_preference_service.dart';
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../infra/shared_preference_constants.dart';
 part 'user_controller.g.dart';
@@ -9,8 +8,8 @@ part 'user_controller.g.dart';
 class UserController = _UserController with _$UserController;
 
 abstract class _UserController extends Disposable with Store {
-    final SharedPreferencesService sharedPreferencesService = Modular.get<SharedPreferencesService>();
-
+  final SharedPreferencesService sharedPreferencesService =
+      Modular.get<SharedPreferencesService>();
 
   _UserController() {
     initializeSharedPreferences();
@@ -18,7 +17,7 @@ abstract class _UserController extends Disposable with Store {
 
   Future<void> initializeSharedPreferences() async {
     await sharedPreferencesService.initializeSharedPreferences();
-    await getName();
+    getName();
   }
 
   @override
@@ -41,13 +40,21 @@ abstract class _UserController extends Disposable with Store {
   }
 
   @action
-  void isAuthenticated(String email, String password) {
-    email = email;
-    password = password;
+  Future<bool> isAuthenticated() async {
+    var isAuthenticated = sharedPreferencesService
+        .getBoolValue(SharedPreferenceConstants.isAuthenticated);
+    var userName = await sharedPreferencesService
+        .getStringValue(SharedPreferenceConstants.name);
+
+    if (isAuthenticated == true && userName != "") {
+      return true;
+    }
+    return false;
   }
 
   @action
   Future<void> getName() async {
-    name = await sharedPreferencesService.getStringValue(SharedPreferenceConstants.name);
+    name = await sharedPreferencesService
+        .getStringValue(SharedPreferenceConstants.name);
   }
 }
