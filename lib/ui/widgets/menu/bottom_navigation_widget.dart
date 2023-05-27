@@ -20,6 +20,10 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(boxShadow: <BoxShadow>[
+        BoxShadow(
+            color: Colors.black54, blurRadius: 3.0, offset: Offset(0.0, 0.95))
+      ], color: Colors.white),
       height: 60,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -5,16 +5,19 @@ import 'input_container_widget.dart';
 class RoundedPasswordInput extends StatelessWidget {
   const RoundedPasswordInput({
     Key? key,
-    required this.hint
+    required this.hint,
+    required this.controller,
   }) : super(key: key);
 
   final String hint;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return InputContainer(
       backgroundColor: true,
       child: TextField(
+        controller: controller,
         cursorColor: makeAppTheme().primaryColor,
         obscureText: true,
         decoration: InputDecoration(

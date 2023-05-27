@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../assets/styles/app_theme.dart';
 import '../components/login/cancel_button_widget.dart';
@@ -16,7 +15,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   bool isLogin = true;
   late Animation<double> containerSize;
   AnimationController? animationController;
-  Duration animationDuration = Duration(milliseconds: 270);
+  Duration animationDuration = const Duration(milliseconds: 270);
 
   @override
   void initState() {
@@ -43,7 +42,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     return Scaffold(
       body: Stack(
         children: [
-          // Lets add some decorations
           Positioned(
             top: 100,
             right: -50,
@@ -116,7 +114,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         width: double.infinity,
         height: containerSize.value,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(100),
             topRight: Radius.circular(100),
           ),
@@ -132,7 +130,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               isLogin = !isLogin;
             });
           },
-          child: isLogin ? Text(
+          child: isLogin ? const Text(
             "Não tem uma conta? Cadastre-se!",
             style: TextStyle(
               color: Colors.white,

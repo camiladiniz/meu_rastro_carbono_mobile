@@ -47,33 +47,38 @@ class _QuestionAnyTextTypeWidgetState extends State<QuestionAnyTextTypeWidget> {
             ? Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: InkWell(
-                  child: Icon(
-                    Icons.info,
-                    color: Theme.of(context).primaryColor,
-                    size: 21,
-                  ),
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(16.0),
-                            topRight: Radius.circular(16.0),
-                          ),
-                          child: Container(
-                            height: 200.0,
-                            color: Colors.white,
-                            child: Center(
-                              child: Text(questionDescription,
-                                  style: const TextStyle(fontSize: 18.0)),
+                    child: Icon(
+                      Icons.info,
+                      color: Theme.of(context).primaryColor,
+                      size: 21,
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ))
+                            child: Container(
+                              height: 200.0,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                child: Center(
+                                  child: Text(questionDescription,
+                                      style: const TextStyle(fontSize: 18.0)),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }))
             : Container(
                 width: 29,
               )

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:meu_rastro_carbono/ui/widgets/cards/survey_item_card.dart';
 
+import '../../stores/user_controller.dart';
 import '../widgets/models/menu_navigate_item_model.dart';
 
 class SurveysPage extends StatelessWidget {
   SurveysPage({super.key});
 
+  final UserController userController = Modular.get<UserController>();
+
   final List<CardItemModel> categories = [
     CardItemModel(
-        title: 'Água',        
+        title: 'Água',
         icon: Icons.water,
         color: Colors.blue,
         onTap: () => {Modular.to.pushNamed('/survey/agua')},
@@ -27,7 +32,7 @@ class SurveysPage extends StatelessWidget {
         onTap: () => {Modular.to.pushNamed('/survey/dispositivos')},
         status: SurveyStatus.answered),
     CardItemModel(
-        title: 'Locomoção',        
+        title: 'Locomoção',
         icon: Icons.directions_train,
         color: Colors.purple,
         onTap: () => {Modular.to.pushNamed('/survey/transporte')},
@@ -40,20 +45,22 @@ class SurveysPage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(children: [
-          const Row(
+          Row(
             children: [
-              Image(
+              const Image(
                 image: AssetImage('lib/ui/assets/images/leaf.png'),
                 width: 115,
               ),
               Flexible(
-                child: Text(
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.normal,
-                    // color: Colors.black54,
+                child: Observer(
+                  builder: (_) => Text(
+                    'Olá ${userController.name}, para te ajudar a reduzir sua pegada de carbono, preciso entender sua atual emissão de carbono. Vamos lá?',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal,
+                      // color: Colors.black54,
+                    ),
                   ),
-                  "Para ajudá-lo a reduzir sua pegada de carbono, preciso entender sua atual emissão de carbono. Vamos lá?",
                 ),
               ),
             ],
@@ -64,21 +71,19 @@ class SurveysPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: SurveyItemCard(
-                    title: chunk[0].title,
-                    icon: chunk[0].icon,
-                    color: chunk[0].color,
-                    status: chunk[0].status,
-                    onTap: chunk[0].onTap
-                  ),
+                      title: chunk[0].title,
+                      icon: chunk[0].icon,
+                      color: chunk[0].color,
+                      status: chunk[0].status,
+                      onTap: chunk[0].onTap),
                 ),
                 Expanded(
                   child: SurveyItemCard(
-                    title: chunk[1].title,
-                    icon: chunk[1].icon,
-                    color: chunk[1].color,
-                    status: chunk[1].status,
-                    onTap: chunk[1].onTap
-                  ),
+                      title: chunk[1].title,
+                      icon: chunk[1].icon,
+                      color: chunk[1].color,
+                      status: chunk[1].status,
+                      onTap: chunk[1].onTap),
                 ),
               ],
             ),

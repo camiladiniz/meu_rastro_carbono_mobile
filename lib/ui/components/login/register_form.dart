@@ -53,11 +53,11 @@ class RegisterForm extends StatelessWidget {
 
                   SizedBox(height: 40),
 
-                  RoundedInput(icon: Icons.mail, hint: 'Username'),
+                  // RoundedInput(icon: Icons.mail, hint: 'Username'),
 
-                  RoundedInput(icon: Icons.face_rounded, hint: 'Name'),
+                  // RoundedInput(icon: Icons.face_rounded, hint: 'Name'),
 
-                  RoundedPasswordInput(hint: 'Password'),
+                  // RoundedPasswordInput(hint: 'Password'),
 
                   SizedBox(height: 10),
 
