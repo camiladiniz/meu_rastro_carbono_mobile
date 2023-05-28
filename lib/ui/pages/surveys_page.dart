@@ -118,7 +118,7 @@ class _SurveysPageState extends State<SurveysPage> {
                 var datePicked = await showDatePicker(
                   helpText: "Select a datetime",
                   context: context,
-                  initialDate: DateTime.now(),
+                  initialDate: filterDate,
                   firstDate: DateTime(1995, 06, 16),
                   lastDate: DateTime.now(),
                 );

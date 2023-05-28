@@ -15,7 +15,7 @@ class API {
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/survey/food');
 
   static Uri postElectronicSurveyAnswer() =>
-      Uri.https('meu-rastro-carbono.azurewebsites.net', '/survey/electronic');
+      Uri.https('meu-rastro-carbono.azurewebsites.net', '/survey/electronics');
 
   static Uri postLocomotionSurveyAnswer() =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/survey/locomotion');

@@ -1,5 +1,8 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/data/datasets/transport/transportation_carbon_emission_dataset.dart';
 
+import '../../domain/survey/locomotion_survey_payload.dart';
+import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
 
@@ -83,7 +86,8 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
               .userAnswer !=
           'Moto',
       answerOptions: [
-        SurveyAnswerModel(id: 1, answer: defaultMotocycleMotor1, imagePath: '', value: 1),
+        SurveyAnswerModel(
+            id: 1, answer: defaultMotocycleMotor1, imagePath: '', value: 1),
         SurveyAnswerModel(
             id: 2, answer: defaultMotocycleMotor2, imagePath: '', value: 2),
         SurveyAnswerModel(
@@ -236,7 +240,7 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       description: 'A média de autonomia de um carro híbrido é de 20 km/litro',
       answerSuffix: 'km/litro'),
   SurveyQuestionModel(
-      identification: 'carHybridAutonomy',
+      identification: 'distanceKm',
       question: 'A distância percorrida no dia foi de',
       skipQuestion: (List<SurveyQuestionModel> questions) =>
           questions
@@ -250,20 +254,42 @@ final List<SurveyQuestionModel> transportationSurveyQuestions = [
       answerSuffix: 'km'),
 ];
 
-String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
+Future<String> transportationFootprintCalculation(
+    List<SurveyQuestionModel> survey, DateTime answerConsumptionDate) async {
+  final SurveyController surveyController = Modular.get<SurveyController>();
+
   // shared
   var transport =
       survey.firstWhere((s) => s.identification == 'transportType').userAnswer;
+
   var distanceKmResponse =
       survey.firstWhere((s) => s.identification == 'distanceKm').userAnswer ??
           '0'; // except by none
   var distanceKm = double.parse(distanceKmResponse);
-  // var amountOfPeople = survey.firstWhere((s) => s.identification == 'amountOfPeople').userAnswer; // for car and motorcycle
+
+  var payload = LocomotionSurveyPayload(
+      consumptionDate: answerConsumptionDate,
+      distanceInKm: distanceKm,
+      carbonEmissionInKgCO2e: 0,
+      transportType: TransportationTypes.walking,
+      motorcycleFuel: null,
+      motorCycleMotor: null,
+      carFuel: null,
+      carMotor: null,
+      carElectricFuel: null,
+      carHybridFuel: null,
+      carHybridAutonomy: null);
 
   //motorcycle
-  var motorcycleFuel = survey.firstWhere((s) => s.identification == 'motorcycleFuel').userAnswer ?? '0';
+  var motorcycleFuel = survey
+          .firstWhere((s) => s.identification == 'motorcycleFuel')
+          .userAnswer ??
+      '0';
 
-  var motorCycleMotor = survey.firstWhere((s) => s.identification == 'motorCycleMotor').userAnswer ?? '0';
+  var motorCycleMotor = survey
+          .firstWhere((s) => s.identification == 'motorCycleMotor')
+          .userAnswer ??
+      '0';
 
   // car
   var carFuel =
@@ -275,9 +301,8 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
       .firstWhere((s) => s.identification == 'carElectricFuel')
       .userAnswer;
   // hybrid car
-  var carHybridFuel = survey
-          .firstWhere((s) => s.identification == 'carHybridFuel')
-          .userAnswer;
+  var carHybridFuel =
+      survey.firstWhere((s) => s.identification == 'carHybridFuel').userAnswer;
   var carHybridAutonomyResponse = survey
           .firstWhere((s) => s.identification == 'carHybridAutonomy')
           .userAnswer ??
@@ -289,11 +314,19 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
 
   switch (transport) {
     case 'Nenhum':
+      payload.transportType = TransportationTypes.none;
+      break;
     case 'A pé':
+      payload.transportType = TransportationTypes.walking;
+      break;
     case 'Bicicleta':
+      payload.transportType = TransportationTypes.bicycle;
       break;
 
     case 'Carro':
+      payload.transportType = TransportationTypes.car;
+      payload.carFuel = carFuel;
+      payload.carMotor = carMotor;
       switch (carFuel) {
         case 'Diesel':
           fuelEmission = dieselKgCOEmission[carMotor] ?? 0;
@@ -313,12 +346,16 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
 
         case 'Elétrico':
           fuelEmission = carElectricKgCOPerModel[carElectricFuelModel] ?? 0;
+          payload.carElectricFuel = carElectricFuelModel;
           break;
 
         case 'Híbrido':
           // fator de emissão por km é calculado considerando emissão/autonomia
-          double carHybridFuelFactor = hybridCarKgCOEmission[carHybridFuel] ?? 0;
+          double carHybridFuelFactor =
+              hybridCarKgCOEmission[carHybridFuel] ?? 0;
           fuelEmission = carHybridFuelFactor / carHybridAutonomy;
+          payload.carHybridFuel = carHybridFuel;
+          payload.carHybridAutonomy = carHybridAutonomy;
           break;
       }
 
@@ -326,18 +363,25 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
       break;
 
     case 'Ônibus Municipal':
+      payload.transportType = TransportationTypes.bus;
       carbonEmissionKgPerCO = CollectiveTransport.municipalBus * distanceKm;
       break;
 
     case 'Ônibus de Viagem':
+      payload.transportType = TransportationTypes.travelBus;
       carbonEmissionKgPerCO = CollectiveTransport.travelBus * distanceKm;
       break;
 
     case 'Metrô':
+      payload.transportType = TransportationTypes.subway;
       carbonEmissionKgPerCO = CollectiveTransport.subway * distanceKm;
       break;
 
     case 'Moto':
+      payload.transportType = TransportationTypes.motorcycle;
+      payload.motorcycleFuel = motorcycleFuel;
+      payload.motorCycleMotor = motorCycleMotor;
+
       switch (motorcycleFuel) {
         case 'Gasolina':
           fuelEmission = motocyleGasolinaKgCOEmission[motorCycleMotor] ?? 0;
@@ -352,6 +396,7 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
       break;
 
     case 'Trem':
+      payload.transportType = TransportationTypes.train;
       carbonEmissionKgPerCO = CollectiveTransport.train * distanceKm;
       break;
 
@@ -359,6 +404,12 @@ String transportationFootprintCalculation(List<SurveyQuestionModel> survey) {
       break;
   }
 
-  return carbonEmissionKgPerCO == 0 ? 'Parabéns! Você não emitiu CO2e na atmosfera para realizar suas atividades hoje'
-  : 'Para sua locomoção você emitiu ${carbonEmissionKgPerCO.toStringAsFixed(4).replaceFirst('.', ',')} kg CO2e na atmosfera.';
+  payload.carbonEmissionInKgCO2e = carbonEmissionKgPerCO;
+  payload.distanceInKm = distanceKm;
+
+  await surveyController.postLocomotionSurveyAnswer(payload);
+
+  return carbonEmissionKgPerCO == 0
+      ? 'Parabéns! Você não emitiu CO2e na atmosfera para realizar suas atividades hoje'
+      : 'Para sua locomoção você emitiu ${carbonEmissionKgPerCO.toStringAsFixed(4).replaceFirst('.', ',')} kg CO2e na atmosfera.';
 }

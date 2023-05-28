@@ -98,7 +98,7 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
                     )),
                 const SizedBox(height: 8.0),
                 TextFormField(
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: false),
                   style: const TextStyle(
                     fontSize: 12,
                     // fontWeight: FontWeight.normal,

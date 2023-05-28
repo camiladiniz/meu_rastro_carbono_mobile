@@ -1,3 +1,7 @@
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/domain/survey/electronic_survey_payload.dart';
+
+import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
 import '../datasets/electronic/electronic_carbon_emission_dataset.dart';
@@ -166,7 +170,10 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
       answerSuffix: ''),
 ];
 
-String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
+Future<String> electricFootprintCalculation(
+    List<SurveyQuestionModel> survey, DateTime answerConsumptionDate) async {
+  final SurveyController surveyController = Modular.get<SurveyController>();
+
   String phoneUsageInHoursResponse = survey
           .firstWhere((s) => s.identification == 'cellphoneUsageInHours')
           .userAnswer ??
@@ -183,7 +190,8 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
           .firstWhere((s) => s.identification == 'computerTurnedOnInMinutes')
           .userAnswer ??
       '0';
-  double computerTurnedOnInMinutes = double.parse(computerTurnedOnInMinutesResponse);
+  double computerTurnedOnInMinutes =
+      double.parse(computerTurnedOnInMinutesResponse);
 
   String computerCoreType = survey
           .firstWhere((s) => s.identification == 'computerCoreType')
@@ -287,11 +295,30 @@ String electricFootprintCalculation(List<SurveyQuestionModel> survey) {
       electricityCarbonEmissionFactorPerkWh;
 
   //  ----- Summing up carbon footprints for all devices -----
-  String totalCarbonFootprint =
-      (phoneCarbon + computerCarbon + tvCarbon + lampsCarbon)
-          .toStringAsFixed(3);
+  var carbonSum = (phoneCarbon + computerCarbon + tvCarbon + lampsCarbon);
+  String totalCarbonFootprint = carbonSum.toStringAsFixed(3);
 
-  return 'Você emitiu $totalCarbonFootprint CO2 na atmosfera utilizando dispositivos';
+  var payload = ElectronicSurveyPayload(
+      consumptionDate: answerConsumptionDate,
+      carbonEmissionInKgCO2e: carbonSum,
+      cellphoneUsageInHours: phoneUsageInHours,
+      computerTurnedOnInMinutes: computerTurnedOnInMinutes,
+      computerCoreType: computerCoreType,
+      computerCoresAmount: computerCoresAmount,
+      computerCPUModel: computerCPUModel,
+      computerGPUModel: computerGPUModel,
+      computerAvailableMemory: computerAvailableMemoryResponse,
+      streamingUsageInMinutes: streamingUsageInMinutes,
+      lampsOperationTime: lampsOperationTimes.fold(0, (previousValue, element) => previousValue + element),
+      lampType: lampType,
+      computerCarbonEmissionInKgCO2e: computerCarbon,
+      lampCarbonEmissionInKgCO2e: lampsCarbon,
+      phoneCarbonEmissionInKgCO2e: phoneCarbon,
+      streamingCarbonEmissionInKgCO2e: streamingCarbonEmissionPerHourInKg);
+
+  await surveyController.postElectronicSurveyAnswer(payload);
+
+  return 'Você emitiu $totalCarbonFootprint kgCO2e na atmosfera utilizando dispositivos';
 }
 
 ComputerEmissionModel calculateComputerFootprint(
@@ -398,7 +425,6 @@ ComputerEmissionModel calculateComputerFootprint(
   result.energyNeeded = energyNeeded;
   result.powerNeeded = powerNeeded;
 
-  // CONTEXT
   result.treeMonths = carbonEmissions / ComputerReferenceValues.treeYear * 12;
 
 // TODO: AJUSTAR
