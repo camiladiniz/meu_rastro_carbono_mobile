@@ -98,7 +98,7 @@ class _RewardsWidgetState extends State<RewardsWidget> {
       itemBuilder: (context, index) {
         final level = levels[index];
         return LevelsWidget(level.imagePath, level.number, level.title,
-            level.color, level.isAvailable, level.userPontuationPercentage);
+            level.color, level.isAvailable, level.userPontuationPercentage, false);
       },
     );
   }

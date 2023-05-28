@@ -34,6 +34,9 @@ abstract class _UserController extends Disposable with Store {
 
   @observable
   String name = "";
+  
+  @observable
+  String registerDate = "";
 
   @action
   Future authenticate(String userEmail, String userPassword) async {

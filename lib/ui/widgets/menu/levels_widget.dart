@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 Widget LevelsWidget(
-    String image, String number, String title, Color color, bool isAvailable, double pontuationPercentage) {
+    String image, String number, String title, Color color, bool isAvailable, double pontuationPercentage, bool hideText) {
   return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +57,7 @@ Widget LevelsWidget(
           ],
         ),
         Visibility(
-          visible: isAvailable,
+          visible: isAvailable && !hideText,
           child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Text(
