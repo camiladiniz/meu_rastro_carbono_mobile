@@ -4,6 +4,7 @@ import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
 import 'package:meu_rastro_carbono/infra/shared_preference_service.dart';
 import 'package:mobx/mobx.dart';
 
+import '../data/models/evolution/badge_model.dart';
 import '../infra/shared_preference_constants.dart';
 part 'user_controller.g.dart';
 
@@ -34,14 +35,18 @@ abstract class _UserController extends Disposable with Store {
 
   @observable
   String name = "";
-  
+
   @observable
   String registerDate = "";
+
+  @observable
+  List<BadgeModel> rewards = [];
 
   @action
   Future authenticate(String userEmail, String userPassword) async {
     try {
-      var response = await accountRepo.login(UserEntity(email: userEmail, password: userPassword));
+      var response = await accountRepo
+          .login(UserEntity(email: userEmail, password: userPassword));
 
       await localStorage.setBoolValue(
           SharedPreferenceConstants.isAuthenticated, true);
@@ -64,7 +69,8 @@ abstract class _UserController extends Disposable with Store {
         localStorage.getBoolValue(SharedPreferenceConstants.isAuthenticated);
     var userName =
         await localStorage.getStringValue(SharedPreferenceConstants.name);
-        var userId = await localStorage.getStringValue(SharedPreferenceConstants.userId);
+    var userId =
+        await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
     if (isAuthenticated == true && userName != "" && userId != "") {
       return true;
@@ -75,5 +81,14 @@ abstract class _UserController extends Disposable with Store {
   @action
   Future<void> getName() async {
     name = await localStorage.getStringValue(SharedPreferenceConstants.name);
+  }
+
+  @action
+  Future getUserRewards() async {
+    var userId =
+        await localStorage.getStringValue(SharedPreferenceConstants.userId);
+
+    var response = await accountRepo.getUserRewards(userId);
+    rewards = response;
   }
 }

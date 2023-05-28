@@ -72,6 +72,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$rewardsAtom =
+      Atom(name: '_UserController.rewards', context: context);
+
+  @override
+  List<BadgeModel> get rewards {
+    _$rewardsAtom.reportRead();
+    return super.rewards;
+  }
+
+  @override
+  set rewards(List<BadgeModel> value) {
+    _$rewardsAtom.reportWrite(value, super.rewards, () {
+      super.rewards = value;
+    });
+  }
+
   late final _$authenticateAsyncAction =
       AsyncAction('_UserController.authenticate', context: context);
 
@@ -97,13 +113,22 @@ mixin _$UserController on _UserController, Store {
     return _$getNameAsyncAction.run(() => super.getName());
   }
 
+  late final _$getUserRewardsAsyncAction =
+      AsyncAction('_UserController.getUserRewards', context: context);
+
+  @override
+  Future<dynamic> getUserRewards() {
+    return _$getUserRewardsAsyncAction.run(() => super.getUserRewards());
+  }
+
   @override
   String toString() {
     return '''
 email: ${email},
 password: ${password},
 name: ${name},
-registerDate: ${registerDate}
+registerDate: ${registerDate},
+rewards: ${rewards}
     ''';
   }
 }

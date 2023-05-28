@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../data/models/evolution/badge_model.dart';
@@ -6,34 +7,13 @@ import '../../data/models/evolution/level_model.dart';
 import '../../stores/user_controller.dart';
 import '../widgets/menu/levels_widget.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final UserController userController = Modular.get<UserController>();
-
-  TextStyle _style() {
-    return TextStyle(fontWeight: FontWeight.bold);
-  }
-
-  final List<BadgeModel> locomotionBadges = [
-    BadgeModel(
-      title: 'Transporte público',
-      description: 'Utilizou meios de transporte públicos 3 vezes consecutivas',
-      icon: Icons.directions_train,
-      color: Colors.purple,
-    ),
-    BadgeModel(
-      title: 'Caminhada',
-      description:
-          'Caminhou o invés de usar veículo privado por no mínimo 2 vezes na semana',
-      icon: Icons.directions_train,
-      color: Colors.purple,
-    ),
-    BadgeModel(
-      title: 'Rodízio ecológico',
-      description: 'Não utilizou carro por 2 semanas consecutivas',
-      icon: Icons.directions_train,
-      color: Colors.purple,
-    ),
-  ];
 
   final level = LevelModel(
       title: 'Preparando o solo',
@@ -41,6 +21,12 @@ class ProfilePage extends StatelessWidget {
       imagePath: 'lib/ui/assets/images/leaf_05.png',
       color: Colors.blue[100]!,
       isAvailable: true);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userController.getUserRewards();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +72,25 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Text('Conquistas', style: Theme.of(context).textTheme.titleMedium),
-          for (int i = 0; i < locomotionBadges.length; i++)
-            SizedBox(
-              height: 80,
-              child: ListTile(
-                leading: Icon(
-                  locomotionBadges[i].icon,
-                  color: locomotionBadges[i].color,
-                ),
-                title: Text(locomotionBadges[i].title,
-                    style: Theme.of(context).textTheme.titleSmall),
-                subtitle: Text(locomotionBadges[i].description,
-                    style: Theme.of(context).textTheme.bodySmall),
-                dense: true,
-              ),
-            )
+          Observer(
+              builder: (_) =>
+                  Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
+                    for (int i = 0; i < userController.rewards.length; i++)
+                      SizedBox(
+                        height: 80,
+                        child: ListTile(
+                          leading: Icon(
+                            userController.rewards[i].icon,
+                            color: userController.rewards[i].color,
+                          ),
+                          title: Text(userController.rewards[i].title,
+                              style: Theme.of(context).textTheme.titleSmall),
+                          subtitle: Text(userController.rewards[i].description,
+                              style: Theme.of(context).textTheme.bodySmall),
+                          dense: true,
+                        ),
+                      )
+                  ]))
         ],
       ),
     );

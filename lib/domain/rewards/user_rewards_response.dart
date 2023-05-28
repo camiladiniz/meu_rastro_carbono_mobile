@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:meu_rastro_carbono/data/models/evolution/badge_model.dart';
 import 'package:meu_rastro_carbono/ui/pages/tips_page.dart';
 
-enum SurveyType { water, food, electronics, locomotion, general }
+import '../tips/user_tips_response.dart';
 
-class UserTipResponse {
+class UserRewardsResponse {
   final String title;
   final SurveyType type;
   final String description;
 
-  const UserTipResponse({
+  const UserRewardsResponse({
     required this.title,
     required this.type,
     required this.description,
   });
 
-  factory UserTipResponse.fromJson(Map<String, dynamic> json) {
-    return UserTipResponse(
+  factory UserRewardsResponse.fromJson(Map<String, dynamic> json) {
+    return UserRewardsResponse(
       title: json['title'],
       type: SurveyType.values[json['type']],
       description: json['description'],
@@ -32,10 +33,8 @@ class UserTipResponse {
         return Icons.electrical_services;
       case SurveyType.locomotion:
         return Icons.directions_train;
-      case SurveyType.general:
-        return Icons.workspace_premium_rounded;
       default:
-        return Icons.co2;
+        return Icons.workspace_premium;
     }
   }
 
@@ -49,24 +48,22 @@ class UserTipResponse {
         return Colors.indigo;
       case SurveyType.locomotion:
         return Colors.purple;
-      case SurveyType.general:
-        return Colors.green;
       default:
         return Colors.indigo;
     }
   }
 
-  static List<UserTipResponse> fromList(List<dynamic> jsonList) {
-    return jsonList.map((json) => UserTipResponse.fromJson(json)).toList();
+  static List<UserRewardsResponse> fromList(List<dynamic> jsonList) {
+    return jsonList.map((json) => UserRewardsResponse.fromJson(json)).toList();
   }
 
-  static List<Tip> toTipModel(List<UserTipResponse> list) {
+  static List<BadgeModel> toBadgeModel(List<UserRewardsResponse> list) {
     return list
-        .map((i) => Tip(
+        .map((i) => BadgeModel(
             title: i.title,
-            subtitle: i.description,
             icon: getIcon(i.type),
-            color: getColor(i.type)))
+            color: getColor(i.type),
+            description: i.description))
         .toList();
   }
 

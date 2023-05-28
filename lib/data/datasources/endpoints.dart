@@ -25,4 +25,7 @@ class API {
 
   static Uri getUserTips(String userId) =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/metrics/tips/$userId');
+
+  static Uri getUserRewards(String userId) =>
+      Uri.https('meu-rastro-carbono.azurewebsites.net', '/rewards/user/$userId');
 }
