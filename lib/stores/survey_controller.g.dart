@@ -18,6 +18,44 @@ mixin _$SurveyController on _SurveyController, Store {
         .run(() => super.getSurveysByDate(date));
   }
 
+  late final _$postWaterSurveyAnswerAsyncAction =
+      AsyncAction('_SurveyController.postWaterSurveyAnswer', context: context);
+
+  @override
+  Future<dynamic> postWaterSurveyAnswer(WaterSurveyPayload payload) {
+    return _$postWaterSurveyAnswerAsyncAction
+        .run(() => super.postWaterSurveyAnswer(payload));
+  }
+
+  late final _$postFoodSurveyAnswerAsyncAction =
+      AsyncAction('_SurveyController.postFoodSurveyAnswer', context: context);
+
+  @override
+  Future<dynamic> postFoodSurveyAnswer(FoodSurveyPayload payload) {
+    return _$postFoodSurveyAnswerAsyncAction
+        .run(() => super.postFoodSurveyAnswer(payload));
+  }
+
+  late final _$postElectronicSurveyAnswerAsyncAction = AsyncAction(
+      '_SurveyController.postElectronicSurveyAnswer',
+      context: context);
+
+  @override
+  Future<dynamic> postElectronicSurveyAnswer(ElectronicSurveyPayload payload) {
+    return _$postElectronicSurveyAnswerAsyncAction
+        .run(() => super.postElectronicSurveyAnswer(payload));
+  }
+
+  late final _$postLocomotionSurveyAnswerAsyncAction = AsyncAction(
+      '_SurveyController.postLocomotionSurveyAnswer',
+      context: context);
+
+  @override
+  Future<dynamic> postLocomotionSurveyAnswer(LocomotionSurveyPayload payload) {
+    return _$postLocomotionSurveyAnswerAsyncAction
+        .run(() => super.postLocomotionSurveyAnswer(payload));
+  }
+
   @override
   String toString() {
     return '''

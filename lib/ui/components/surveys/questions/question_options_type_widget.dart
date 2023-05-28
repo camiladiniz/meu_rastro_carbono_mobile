@@ -28,12 +28,6 @@ class _QuestionOptionTypeWidgetState extends State<QuestionOptionTypeWidget> {
         const SizedBox(height: 16.0),
         ..._buildAnswerButtons(),
         const SizedBox(height: 16.0),
-
-        // if (_selectedAnswer != null)
-        //   Text(
-        //     'You selected: $_selectedAnswer',
-        //     style: const TextStyle(fontSize: 16.0),
-        //   ),
       ],
     );
   }

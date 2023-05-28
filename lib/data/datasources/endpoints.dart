@@ -1,7 +1,7 @@
 class API {
   static Uri authenticate() =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/account/login');
-      
+
   static Uri getUserEvaluation(String userId) =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/Evolution/$userId');
 
@@ -19,4 +19,7 @@ class API {
 
   static Uri postLocomotionSurveyAnswer() =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/survey/locomotion');
+
+  static Uri getUserMetrics(String userId) =>
+      Uri.https('meu-rastro-carbono.azurewebsites.net', '/metrics/user/$userId');
 }

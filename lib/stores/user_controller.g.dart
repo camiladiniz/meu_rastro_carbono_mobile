@@ -56,6 +56,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$registerDateAtom =
+      Atom(name: '_UserController.registerDate', context: context);
+
+  @override
+  String get registerDate {
+    _$registerDateAtom.reportRead();
+    return super.registerDate;
+  }
+
+  @override
+  set registerDate(String value) {
+    _$registerDateAtom.reportWrite(value, super.registerDate, () {
+      super.registerDate = value;
+    });
+  }
+
   late final _$authenticateAsyncAction =
       AsyncAction('_UserController.authenticate', context: context);
 
@@ -86,7 +102,8 @@ mixin _$UserController on _UserController, Store {
     return '''
 email: ${email},
 password: ${password},
-name: ${name}
+name: ${name},
+registerDate: ${registerDate}
     ''';
   }
 }

@@ -1,134 +1,225 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/data/models/metrics/user_metrics_model.dart';
 
-class EcoMetricsDashboard extends StatelessWidget {
-  final double energyUsage;
-  final double transportationUsage;
-  final double wasteProduction;
-  final double waterUsage;
-  final double foodProduction;
-  final double paperUsage;
-  final double plasticUsage;
-  final double airTravel;
-  final double meatConsumption;
-  final double clothingProduction;
+import '../../stores/user_evolution_controller.dart';
+import '../assets/styles/app_theme.dart';
 
-  EcoMetricsDashboard({
-    required this.energyUsage,
-    required this.transportationUsage,
-    required this.wasteProduction,
-    required this.waterUsage,
-    required this.foodProduction,
-    required this.paperUsage,
-    required this.plasticUsage,
-    required this.airTravel,
-    required this.meatConsumption,
-    required this.clothingProduction,
+class EcoMetricsDashboard extends StatefulWidget {
+  @override
+  State<EcoMetricsDashboard> createState() => _EcoMetricsDashboardState();
+}
+
+class _EcoMetricsDashboardState extends State<EcoMetricsDashboard> {
+  final UserEvolutionController metricsCtrl =
+      Modular.get<UserEvolutionController>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    metricsCtrl.getUserMetrics();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: Colors.green,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text("Em um ano você precisará plantar",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+                const SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                            width: size.width * .15,
+                            child: Text("5",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white))),
+                        // SizedBox(
+                        //   width: size.width *
+                        //       .3,
+                        //   child: Text("árvores",
+                        //       textAlign: TextAlign.center,
+                        //       style: TextStyle(
+                        //         fontSize: 20,
+                        //         fontWeight: FontWeight.bold,
+                        //         color: Colors.white,
+                        //       )),
+                        // ),
+                      ],
+                    ),
+                    const Image(
+                      image: AssetImage('lib/ui/assets/images/tree.png'),
+                      width: 115,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: size.width * 0.9,
+                  child: const Text(
+                      "na mata atlântica para compensar as emissões nas atividades informadas durante a última semana",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.white,
+                      )),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(13),
+              boxShadow: const [
+                BoxShadow(
+                  offset: Offset(0, 17),
+                  blurRadius: 23,
+                  spreadRadius: -13,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Colors.grey[300],
+                  child:
+                      Image.asset('lib/ui/assets/images/leaf.png', height: 45),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                          "Veja abaixo o rastro de CO2e que você deixa no planeta através de seu estilo de vida",
+                          style: makeAppTheme().textTheme.bodySmall)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Observer(builder: (_) => _buildEmissionCards(metricsCtrl.metrics)),
+          Observer(
+              builder: (_) =>
+                  Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
+                    for (int i = 0; i < metricsCtrl.metrics.length; i++)
+                      EmissionCard(
+                          title: metricsCtrl.metrics[i].metricName,
+                          row1: metricsCtrl.metrics[i].useDescription,
+                          row2: metricsCtrl.metrics[i].emission,
+                          icon: metricsCtrl.metrics[i].icon)
+                  ])),
+        ],
+      ),
+    );
+  }
+}
+
+Widget _buildEmissionCards(List<UserMetricsModel> metrics) {
+  List<EmissionCard> list = [];
+  metrics.map((m) => list.add(EmissionCard(
+      title: m.metricName,
+      row1: m.useDescription,
+      row2: m.emission,
+      icon: m.icon)));
+
+  return Wrap(spacing: 10, runSpacing: 10, children: <Widget>[...list]);
+}
+
+class EmissionCard extends StatelessWidget {
+  final String title;
+  final String row1;
+  final String row2;
+  final IconData icon;
+
+  const EmissionCard({
+    super.key,
+    required this.title,
+    required this.row1,
+    required this.row2,
+    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(6.0, 0, 0, 8),
-                  child: const Image(
-                    image: AssetImage('lib/ui/assets/images/leaf.png'),
-                    width: 115,
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
-                    child: Text(
-                      style: Theme.of(context).textTheme.titleMedium,
-                      "Pegada de carbono semanal",
-                    ),
-                  ),
-                ),
-              ],
+    return LayoutBuilder(builder: (context, constraint) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(13),
+        child: Container(
+          width: constraint.maxWidth / 2 - 10,
+          height: 150,
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColorDark.withOpacity(0.7),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => {},
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+                  child: Column(
+                    children: [
+                      Text(title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )),
+                      Container(
+                        height: 35,
+                        width: 35,
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.green),
+                        ),
+                        child: Icon(
+                          icon,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(row1, style: Theme.of(context).textTheme.bodySmall),
+                      Text(row2, style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  )),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildMetricBox('Uso de Energia',
-                    energyUsage.toStringAsFixed(2) + ' kWh', Colors.pink),
-                // SizedBox(width: 16),
-                // _buildMetricBox('Locomoção', transportationUsage.toStringAsFixed(2) + ' mi', Colors.blue),
-                SizedBox(width: 16),
-                _buildMetricBox('Desperdício',
-                    wasteProduction.toStringAsFixed(2) + ' CO2e', Colors.purple),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildMetricBox('Consumo de alimentos',
-                    foodProduction.toStringAsFixed(2) + ' CO2e', Colors.indigo),
-                SizedBox(width: 16),
-                _buildMetricBox('Combustível',
-                    paperUsage.toStringAsFixed(2) + ' CO2e', Colors.blue),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildMetricBox('Entretenimento',
-                    plasticUsage.toStringAsFixed(2) + ' CO2', Colors.purple),
-                SizedBox(width: 16),
-                // _buildMetricBox('Air Travel', airTravel.toStringAsFixed(2) + ' mi', Colors.indigo),
-                _buildMetricBox('Consumo de água',
-                    meatConsumption.toStringAsFixed(2) + ' CO2e', Colors.pink),
-              ],
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildMetricBox('Uso de água na produção de alimento',
-                    clothingProduction.toStringAsFixed(2) + ' CO2e', Colors.blue),
-              ],
-            ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildMetricBox(String label, String value, Color color) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 }
