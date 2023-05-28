@@ -62,6 +62,14 @@ class _LoginFormState extends State<LoginForm> {
                     icon: Icons.mail, hint: 'Email', controller: txtEmailCtrl),
                 RoundedPasswordInput(
                     hint: 'Senha', controller: txtPasswordCtrl),
+                Text(
+                  userController.loginError,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.red,
+                  ),
+                ),
                 InputContainer(
                     backgroundColor: false,
                     child:

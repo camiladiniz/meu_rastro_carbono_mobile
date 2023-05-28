@@ -40,6 +40,9 @@ abstract class _UserController extends Disposable with Store {
   String registerDate = "";
 
   @observable
+  String loginError = "";
+
+  @observable
   List<BadgeModel> rewards = [];
 
   @action
@@ -58,8 +61,7 @@ abstract class _UserController extends Disposable with Store {
           SharedPreferenceConstants.userId, response.userId);
       Modular.to.navigate('/home/surveys');
     } catch (ex) {
-      // TODO
-      var a = 0;
+      loginError = "Dados inválidos";
     }
   }
 
