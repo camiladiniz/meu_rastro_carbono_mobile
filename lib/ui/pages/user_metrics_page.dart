@@ -50,23 +50,13 @@ class _EcoMetricsDashboardState extends State<EcoMetricsDashboard> {
                       children: [
                         SizedBox(
                             width: size.width * .15,
-                            child: Text("5",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white))),
-                        // SizedBox(
-                        //   width: size.width *
-                        //       .3,
-                        //   child: Text("árvores",
-                        //       textAlign: TextAlign.center,
-                        //       style: TextStyle(
-                        //         fontSize: 20,
-                        //         fontWeight: FontWeight.bold,
-                        //         color: Colors.white,
-                        //       )),
-                        // ),
+                            child: Observer(
+                                builder: (_) => Text(metricsCtrl.treesAmount,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)))),
                       ],
                     ),
                     const Image(
@@ -128,7 +118,6 @@ class _EcoMetricsDashboardState extends State<EcoMetricsDashboard> {
               ],
             ),
           ),
-          // Observer(builder: (_) => _buildEmissionCards(metricsCtrl.metrics)),
           Observer(
               builder: (_) =>
                   Wrap(spacing: 10, runSpacing: 10, children: <Widget>[

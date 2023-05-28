@@ -25,6 +25,38 @@ mixin _$UserEvolutionController on _UserEvolutionController, Store {
     });
   }
 
+  late final _$treesAmountAtom =
+      Atom(name: '_UserEvolutionController.treesAmount', context: context);
+
+  @override
+  String get treesAmount {
+    _$treesAmountAtom.reportRead();
+    return super.treesAmount;
+  }
+
+  @override
+  set treesAmount(String value) {
+    _$treesAmountAtom.reportWrite(value, super.treesAmount, () {
+      super.treesAmount = value;
+    });
+  }
+
+  late final _$tipsAtom =
+      Atom(name: '_UserEvolutionController.tips', context: context);
+
+  @override
+  List<Tip> get tips {
+    _$tipsAtom.reportRead();
+    return super.tips;
+  }
+
+  @override
+  set tips(List<Tip> value) {
+    _$tipsAtom.reportWrite(value, super.tips, () {
+      super.tips = value;
+    });
+  }
+
   late final _$getUserElovutionPointsAsyncAction = AsyncAction(
       '_UserEvolutionController.getUserElovutionPoints',
       context: context);
@@ -33,6 +65,14 @@ mixin _$UserEvolutionController on _UserEvolutionController, Store {
   Future<int> getUserElovutionPoints() {
     return _$getUserElovutionPointsAsyncAction
         .run(() => super.getUserElovutionPoints());
+  }
+
+  late final _$getUserTipsAsyncAction =
+      AsyncAction('_UserEvolutionController.getUserTips', context: context);
+
+  @override
+  Future<dynamic> getUserTips() {
+    return _$getUserTipsAsyncAction.run(() => super.getUserTips());
   }
 
   late final _$getUserMetricsAsyncAction =
@@ -46,7 +86,9 @@ mixin _$UserEvolutionController on _UserEvolutionController, Store {
   @override
   String toString() {
     return '''
-metrics: ${metrics}
+metrics: ${metrics},
+treesAmount: ${treesAmount},
+tips: ${tips}
     ''';
   }
 }

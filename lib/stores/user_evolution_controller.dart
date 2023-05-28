@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 
 import '../data/repositories/evolution_repository.dart';
 import '../infra/shared_preference_constants.dart';
+import '../ui/pages/tips_page.dart';
 part 'user_evolution_controller.g.dart';
 
 class UserEvolutionController = _UserEvolutionController
@@ -19,6 +20,12 @@ abstract class _UserEvolutionController extends Disposable with Store {
 
   @observable
   List<UserMetricsModel> metrics = [];
+
+  @observable
+  String treesAmount = "-";
+
+  @observable
+  List<Tip> tips = [];
 
   _UserEvolutionController() {
     initializeSharedPreferences();
@@ -36,20 +43,67 @@ abstract class _UserEvolutionController extends Disposable with Store {
   }
 
   @action
+  Future getUserTips() async {
+    var userId =
+        await localStorage.getStringValue(SharedPreferenceConstants.userId);
+
+    var response = await evolutionRepo.getUserTips(userId);
+    tips = response;
+  }
+
+  @action
   Future getUserMetrics() async {
     var userId =
         await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
     var response = await evolutionRepo.getUserMetrics(userId);
 
+    var number = response.treesAmountToCompensateInAYear?.toInt() ?? 0;
+
+    treesAmount = int.parse(number.toString()).toString();
+
     List<UserMetricsModel> metricsTemp = [];
-    metricsTemp.add(UserMetricsModel(metricName: 'Tempo no chuveiro', useDescription: '${response.showersMedia?.toInt()} min é média de duração', emission: '${response.showersEmissionByGPerCO2} gCO2e', icon: Icons.shower));
-    metricsTemp.add(UserMetricsModel(metricName: 'Transporte privado', useDescription: 'Distância: ${response.carDistanceTraveled?.toInt()}km', emission: '${response.carEmissionByGPerCO2} gCO2e', icon: Icons.car_rental));
-    metricsTemp.add(UserMetricsModel(metricName: 'Celular', useDescription: 'Passou ${response.phoneInChargeInHours?.toInt()}h carregando', emission: '${response.carEmissionByGPerCO2} gCO2e', icon: Icons.battery_charging_full_rounded));
-    metricsTemp.add(UserMetricsModel(metricName: 'Alimentação', useDescription: '', emission: '${response.foodEmissionByGPerCO2} gCO2e nas porções informadas', icon: Icons.food_bank));
-    metricsTemp.add(UserMetricsModel(metricName: 'Lâmpadas', useDescription: 'Ficaram ligadas por ${response.lampsOperationTimeInHours?.toInt()}h', emission: '${response.lampsEmissionByGPerCO2} gCO2e', icon: Icons.lightbulb));
-    metricsTemp.add(UserMetricsModel(metricName: 'Computador', useDescription: 'Utilizado por ${response.computerTurnedOnInMinutes?.toInt()} min', emission: '${response.computerEmissionByGPerCO2} gCO2e', icon: Icons.computer));
-    metricsTemp.add(UserMetricsModel(metricName: 'Streaming', useDescription: 'Assistiu por ${response.streamingTimeInHours?.toInt()}h', emission: '${response.streamingEmissionByGPerCO2} gCO2e', icon: Icons.tv));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Tempo no chuveiro',
+        useDescription:
+            '${response.showersMedia?.toInt()} min é média de duração',
+        emission: '${response.showersEmissionByGPerCO2} gCO2e',
+        icon: Icons.shower));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Transporte privado',
+        useDescription: 'Distância: ${response.carDistanceTraveled?.toInt()}km',
+        emission: '${response.carEmissionByGPerCO2} gCO2e',
+        icon: Icons.car_rental));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Celular',
+        useDescription:
+            'Passou ${response.phoneInChargeInHours?.toInt()}h carregando',
+        emission: '${response.carEmissionByGPerCO2} gCO2e',
+        icon: Icons.battery_charging_full_rounded));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Alimentação',
+        useDescription: '',
+        emission:
+            '${response.foodEmissionByGPerCO2} gCO2e nas porções informadas',
+        icon: Icons.food_bank));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Lâmpadas',
+        useDescription:
+            'Ficaram ligadas por ${response.lampsOperationTimeInHours?.toInt()}h',
+        emission: '${response.lampsEmissionByGPerCO2} gCO2e',
+        icon: Icons.lightbulb));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Computador',
+        useDescription:
+            'Utilizado por ${response.computerTurnedOnInMinutes?.toInt()} min',
+        emission: '${response.computerEmissionByGPerCO2} gCO2e',
+        icon: Icons.computer));
+    metricsTemp.add(UserMetricsModel(
+        metricName: 'Streaming',
+        useDescription:
+            'Assistiu por ${response.streamingTimeInHours?.toInt()}h',
+        emission: '${response.streamingEmissionByGPerCO2} gCO2e',
+        icon: Icons.tv));
     metrics = metricsTemp;
   }
 

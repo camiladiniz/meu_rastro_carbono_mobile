@@ -22,4 +22,7 @@ class API {
 
   static Uri getUserMetrics(String userId) =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/metrics/user/$userId');
+
+  static Uri getUserTips(String userId) =>
+      Uri.https('meu-rastro-carbono.azurewebsites.net', '/metrics/tips/$userId');
 }

@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
+
+import '../../data/models/evolution/level_model.dart';
+import '../../stores/user_evolution_controller.dart';
+import '../assets/styles/app_theme.dart';
+import '../widgets/menu/levels_widget.dart';
 
 class Tip {
   final String title;
@@ -14,85 +22,122 @@ class Tip {
   });
 }
 
-class CarbonWasteTipsScreen extends StatelessWidget {
-  final List<Tip> tips = [
-    Tip(
-      title: 'Use sacolas reutilizáveis',
-      subtitle: 'Traga sua própria sacola ao fazer compras',
-      icon: Icons.shopping_bag,
-      color: Colors.green,
-    ),
-    Tip(
-      title: 'Reduza o uso de água',
-      subtitle: 'Tome banhos mais curtos e conserte vazamentos',
-      icon: Icons.water_drop,
-      color: Colors.blue,
-    ),
-    Tip(
-      title: 'Evite desperdício de alimentos',
-      subtitle: 'Planeje suas refeições e utilize sobras',
-      icon: Icons.food_bank,
-      color: Colors.orange,
-    ),
-  ];
+class CarbonWasteTipsScreen extends StatefulWidget {
+  @override
+  State<CarbonWasteTipsScreen> createState() => _CarbonWasteTipsScreenState();
+}
+
+class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
+  final UserEvolutionController metricsCtrl =
+      Modular.get<UserEvolutionController>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    metricsCtrl.getUserTips();
+  }
+
+  final level = LevelModel(
+      title: 'Preparando o solo',
+      number: '1',
+      imagePath: 'lib/ui/assets/images/leaf_05.png',
+      color: Colors.blue[100]!,
+      isAvailable: true);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        SizedBox(
-          height: 15,
-        ),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-              child: const Image(
-                image: AssetImage('lib/ui/assets/images/leaf.png'),
-                width: 115,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ClipPath(
+            clipper: MyClipper(),
+            child: Container(
+              padding: const EdgeInsets.only(top: 4),
+              decoration: const BoxDecoration(
+                color: Colors.green,
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
-                child: Text(
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  "Tenho algumas dicas para você!",
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: tips.length,
-            itemBuilder: (context, index) {
-              final tip = tips[index];
-              return Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
-                  child: Card(
-                    elevation: 5,
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: Icon(
-                        tip.icon,
-                        color: tip.color,
-                      ),
-                      title: Text(
-                        tip.title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      subtitle: Text(tip.subtitle),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
+                    padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(13),
+                      boxShadow: const [
+                        BoxShadow(
+                          offset: Offset(0, 17),
+                          blurRadius: 23,
+                          spreadRadius: -13,
+                          color: Colors.green,
+                        ),
+                      ],
                     ),
-                  ));
-            },
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 35,
+                          backgroundColor: Colors.lightGreen[100],
+                          child: Image.asset('lib/ui/assets/images/leaf.png',
+                              height: 45),
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                  "Com base em seus hábitos preparei algumas dicas para você!",
+                                  style: makeAppTheme().textTheme.bodyMedium)
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 60),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
-    ));
+          Observer(
+              builder: (_) =>
+                  Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
+                    for (int i = 0; i < metricsCtrl.tips.length; i++)
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(12.0, 0, 12, 0),
+                          child: Card(
+                            elevation: 5,
+                            color: Colors.white,
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  Icon(
+                                    metricsCtrl.tips[i].icon,
+                                    color: metricsCtrl.tips[i].color,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Expanded(
+                                    child: Text(
+                                      metricsCtrl.tips[i].title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.visible,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Text(metricsCtrl.tips[i].subtitle,
+                              style: Theme.of(context).textTheme.bodySmall),
+                            ),
+                          ))
+                  ])),
+        ],
+      ),
+    );
   }
 }

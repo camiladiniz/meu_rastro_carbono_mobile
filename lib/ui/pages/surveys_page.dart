@@ -6,6 +6,7 @@ import 'package:meu_rastro_carbono/ui/widgets/cards/survey_item_card.dart';
 
 import '../../stores/survey_controller.dart';
 import '../../stores/user_controller.dart';
+import '../assets/styles/app_theme.dart';
 import '../widgets/models/menu_navigate_item_model.dart';
 
 class SurveysPage extends StatefulWidget {
@@ -60,25 +61,25 @@ class _SurveysPageState extends State<SurveysPage> {
 
     if (!surveys.waterSurvey) {
       categories[0].status = SurveyStatus.pending;
-    }else {
+    } else {
       categories[0].status = SurveyStatus.answered;
     }
 
     if (!surveys.foodSurvey) {
       categories[1].status = SurveyStatus.pending;
-    }else {
+    } else {
       categories[1].status = SurveyStatus.answered;
     }
 
     if (!surveys.electronicSurvey) {
       categories[2].status = SurveyStatus.pending;
-    }else {
+    } else {
       categories[2].status = SurveyStatus.answered;
     }
 
     if (!surveys.locomotionSurvey) {
       categories[3].status = SurveyStatus.pending;
-    }else {
+    } else {
       categories[3].status = SurveyStatus.answered;
     }
     setState(() {
@@ -90,28 +91,8 @@ class _SurveysPageState extends State<SurveysPage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
         child: Column(children: [
-          Row(
-            children: [
-              const Image(
-                image: AssetImage('lib/ui/assets/images/leaf.png'),
-                width: 115,
-              ),
-              Flexible(
-                child: Observer(
-                  builder: (_) => Text(
-                    'Olá ${userController.name}, para te ajudar a reduzir sua pegada de carbono, preciso entender sua atual emissão. Vamos lá?',
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal,
-                      // color: Colors.black54,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
           GestureDetector(
               child: DatetimeWidget(filterDate: filterDate),
               onTap: () async {
@@ -130,7 +111,51 @@ class _SurveysPageState extends State<SurveysPage> {
                   loadSurveyData();
                 }
               }),
-          const SizedBox(height: 15),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 0, 5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(13),
+              boxShadow: const [
+                BoxShadow(
+                  offset: Offset(0, 17),
+                  blurRadius: 23,
+                  spreadRadius: -13,
+                  color: Colors.green,
+                ),
+              ],
+            ),
+            child: Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Colors.lightGreen[100],
+                  child:
+                      Image.asset('lib/ui/assets/images/leaf.png', height: 45),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Observer(
+                        builder: (_) => Text(
+                          'Olá ${userController.name}, para te ajudar a reduzir sua pegada de carbono, preciso entender sua atual emissão. Vamos lá?',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromRGBO(103, 103, 101, 1),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 25),
           for (var chunk in _chunkedItems(categories, 2))
             Row(
               children: [
@@ -140,7 +165,12 @@ class _SurveysPageState extends State<SurveysPage> {
                       icon: chunk[0].icon,
                       color: chunk[0].color,
                       status: chunk[0].status,
-                      onTap: () => {Modular.to.pushNamed('/survey/${chunk[0].surveyName}?datetime=$filterDate').then((_) => loadSurveyData())}),
+                      onTap: () => {
+                            Modular.to
+                                .pushNamed(
+                                    '/survey/${chunk[0].surveyName}?datetime=$filterDate')
+                                .then((_) => loadSurveyData())
+                          }),
                 ),
                 Expanded(
                   child: SurveyItemCard(
@@ -148,7 +178,12 @@ class _SurveysPageState extends State<SurveysPage> {
                       icon: chunk[1].icon,
                       color: chunk[1].color,
                       status: chunk[1].status,
-                      onTap: () => {Modular.to.pushNamed('/survey/${chunk[1].surveyName}?datetime=$filterDate').then((_) => loadSurveyData())}),
+                      onTap: () => {
+                            Modular.to
+                                .pushNamed(
+                                    '/survey/${chunk[1].surveyName}?datetime=$filterDate')
+                                .then((_) => loadSurveyData())
+                          }),
                 ),
               ],
             ),
