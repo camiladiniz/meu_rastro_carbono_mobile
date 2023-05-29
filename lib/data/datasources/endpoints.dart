@@ -28,4 +28,7 @@ class API {
 
   static Uri getUserRewards(String userId) =>
       Uri.https('meu-rastro-carbono.azurewebsites.net', '/rewards/user/$userId');
+
+  static Uri registerNewUser() =>
+      Uri.https('meu-rastro-carbono.azurewebsites.net', '/account/register');
 }

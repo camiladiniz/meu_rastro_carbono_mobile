@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../data/models/evolution/badge_model.dart';
 import '../../data/models/evolution/level_model.dart';
 import '../../stores/user_controller.dart';
 import '../widgets/menu/levels_widget.dart';

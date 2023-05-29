@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class DefaultButtonWidget extends StatelessWidget {
   final String text;
   final Function onPressed;
+  final bool whiteBackground;
 
   const DefaultButtonWidget(
-      {super.key, required this.text, required this.onPressed});
+      {super.key, required this.text, required this.onPressed, required this.whiteBackground});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class DefaultButtonWidget extends StatelessWidget {
       onPressed: () => {onPressed()},
       style: ButtonStyle(
         backgroundColor:
-            MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+            MaterialStateProperty.all<Color>(whiteBackground ? Colors.white : Theme.of(context).primaryColor),
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
         overlayColor: MaterialStateProperty.all<Color>(Colors.lightGreen),
         shadowColor:
@@ -24,9 +25,10 @@ class DefaultButtonWidget extends StatelessWidget {
       ),
       child: Center(
           child: Text(text.toUpperCase(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
+                color: whiteBackground ? Theme.of(context).primaryColor : Colors.white
               ))),
     );
   }

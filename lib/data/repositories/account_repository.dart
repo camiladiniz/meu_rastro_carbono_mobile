@@ -30,6 +30,19 @@ class AccountRepository {
     }
   }
 
+  Future<bool> register(UserEntity userEntity) async {
+    final headers = {'Content-Type': 'application/json'};
+
+    final response = await client.post(API.registerNewUser(),
+        headers: headers, body: json.encode(userEntity));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception();
+    }
+  }
+
   Future<List<BadgeModel>> getUserRewards(String userId) async {
     final response = await client.post(API.getUserRewards(userId));
 

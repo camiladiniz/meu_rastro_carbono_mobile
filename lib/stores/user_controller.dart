@@ -46,10 +46,10 @@ abstract class _UserController extends Disposable with Store {
   List<BadgeModel> rewards = [];
 
   @action
-  Future authenticate(String userEmail, String userPassword) async {
+  Future<String> authenticate(String userEmail, String userPassword) async {
     try {
       var response = await accountRepo
-          .login(UserEntity(email: userEmail, password: userPassword));
+          .login(UserEntity(name: '', email: userEmail, password: userPassword));
 
       await localStorage.setBoolValue(
           SharedPreferenceConstants.isAuthenticated, true);
@@ -60,8 +60,22 @@ abstract class _UserController extends Disposable with Store {
       await localStorage.setStringValue(
           SharedPreferenceConstants.userId, response.userId);
       Modular.to.navigate('/home/surveys');
+          return response.name;
     } catch (ex) {
       loginError = "Dados inválidos";
+      return "erro";
+    }
+  }
+
+  @action
+  Future<bool> register(String userName, String userEmail, String userPassword) async {
+    try {
+      var response = await accountRepo
+          .register(UserEntity(name: userName, email: userEmail, password: userPassword));
+      return true;
+    } catch (ex) {
+      loginError = "Verifique se os dados foram informados corretamente";
+      return false;
     }
   }
 
@@ -81,8 +95,13 @@ abstract class _UserController extends Disposable with Store {
   }
 
   @action
-  Future<void> getName() async {
+  getName() async {
     name = await localStorage.getStringValue(SharedPreferenceConstants.name);
+  }
+
+  @action
+  Future<void> cleanError() async {
+    loginError = "";
   }
 
   @action

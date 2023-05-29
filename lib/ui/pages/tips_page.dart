@@ -89,7 +89,7 @@ class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                  "Com base em seus hábitos preparei algumas dicas para você!",
+                                  "Com base em seus hábitos ${metricsCtrl.tips.length > 0 ? 'preparei' : 'vou preparar'} algumas dicas para você!",
                                   style: makeAppTheme().textTheme.bodyMedium)
                             ],
                           ),

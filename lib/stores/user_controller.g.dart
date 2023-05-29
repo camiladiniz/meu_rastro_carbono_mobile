@@ -72,6 +72,22 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
+  late final _$loginErrorAtom =
+      Atom(name: '_UserController.loginError', context: context);
+
+  @override
+  String get loginError {
+    _$loginErrorAtom.reportRead();
+    return super.loginError;
+  }
+
+  @override
+  set loginError(String value) {
+    _$loginErrorAtom.reportWrite(value, super.loginError, () {
+      super.loginError = value;
+    });
+  }
+
   late final _$rewardsAtom =
       Atom(name: '_UserController.rewards', context: context);
 
@@ -92,9 +108,19 @@ mixin _$UserController on _UserController, Store {
       AsyncAction('_UserController.authenticate', context: context);
 
   @override
-  Future<dynamic> authenticate(String userEmail, String userPassword) {
+  Future<String> authenticate(String userEmail, String userPassword) {
     return _$authenticateAsyncAction
         .run(() => super.authenticate(userEmail, userPassword));
+  }
+
+  late final _$registerAsyncAction =
+      AsyncAction('_UserController.register', context: context);
+
+  @override
+  Future<bool> register(
+      String userName, String userEmail, String userPassword) {
+    return _$registerAsyncAction
+        .run(() => super.register(userName, userEmail, userPassword));
   }
 
   late final _$isAuthenticatedAsyncAction =
@@ -109,8 +135,16 @@ mixin _$UserController on _UserController, Store {
       AsyncAction('_UserController.getName', context: context);
 
   @override
-  Future<void> getName() {
+  Future getName() {
     return _$getNameAsyncAction.run(() => super.getName());
+  }
+
+  late final _$cleanErrorAsyncAction =
+      AsyncAction('_UserController.cleanError', context: context);
+
+  @override
+  Future<void> cleanError() {
+    return _$cleanErrorAsyncAction.run(() => super.cleanError());
   }
 
   late final _$getUserRewardsAsyncAction =
@@ -128,6 +162,7 @@ email: ${email},
 password: ${password},
 name: ${name},
 registerDate: ${registerDate},
+loginError: ${loginError},
 rewards: ${rewards}
     ''';
   }

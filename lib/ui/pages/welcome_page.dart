@@ -50,6 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 const SizedBox(height: 25),
                 DefaultButtonWidget(
+                  whiteBackground: false,
                   text: 'Vamos lá',
                   onPressed: () => Modular.to.navigate('/login'),
                 ),

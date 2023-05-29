@@ -13,12 +13,16 @@ class LoginForm extends StatefulWidget {
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
+    required this.doLogin,
+    required this.errorMessage,
   });
 
   final bool isLogin;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
+  final Function doLogin;
+  final String errorMessage;
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -27,10 +31,9 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   TextEditingController txtEmailCtrl = TextEditingController();
   TextEditingController txtPasswordCtrl = TextEditingController();
-  final UserController userController = Modular.get<UserController>();
 
-  signIn() {
-    userController.authenticate(txtEmailCtrl.text, txtPasswordCtrl.text);
+  signin() {
+    widget.doLogin(txtEmailCtrl.text, txtPasswordCtrl.text);
   }
 
   @override
@@ -58,22 +61,33 @@ class _LoginFormState extends State<LoginForm> {
                   width: 200,
                 ),
                 const SizedBox(height: 20),
-                RoundedInput(
-                    icon: Icons.mail, hint: 'Email', controller: txtEmailCtrl),
+                // RoundedInput(
+                //     icon: Icons.mail,
+                //     hint: 'Email',
+                //     controller: txtEmailCtrl,
+                //     whiteBackground: false),
                 RoundedPasswordInput(
-                    hint: 'Senha', controller: txtPasswordCtrl),
-                Text(
-                  userController.loginError,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.red,
-                  ),
+                  hint: 'Senha',
+                  controller: txtPasswordCtrl,
+                  whiteBackground: false,
                 ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(
+                      widget.errorMessage,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                 InputContainer(
                     backgroundColor: false,
-                    child:
-                        DefaultButtonWidget(text: 'LOGIN', onPressed: signIn)),
+                    child: DefaultButtonWidget(
+                        text: 'LOGIN',
+                        onPressed: signin,
+                        whiteBackground: false)),
                 const SizedBox(height: 10),
               ],
             ),
