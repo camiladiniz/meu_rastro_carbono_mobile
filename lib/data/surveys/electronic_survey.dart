@@ -71,8 +71,6 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
         SurveyAnswerModel(id: 1, answer: '2', imagePath: '', value: 2),
         SurveyAnswerModel(id: 2, answer: '4', imagePath: '', value: 4),
         SurveyAnswerModel(id: 3, answer: '8', imagePath: '', value: 8),
-        SurveyAnswerModel(id: 4, answer: '10', imagePath: '', value: 10),
-        SurveyAnswerModel(id: 5, answer: '12', imagePath: '', value: 12),
         SurveyAnswerModel(id: 6, answer: '16', imagePath: '', value: 16)
       ],
       answerPrefix: '',
@@ -309,7 +307,8 @@ Future<String> electricFootprintCalculation(
       computerGPUModel: computerGPUModel,
       computerAvailableMemory: computerAvailableMemoryResponse,
       streamingUsageInMinutes: streamingUsageInMinutes,
-      lampsOperationTime: lampsOperationTimes.fold(0, (previousValue, element) => previousValue + element),
+      lampsOperationTime: lampsOperationTimes.fold(
+          0, (previousValue, element) => previousValue + element),
       lampType: lampType,
       computerCarbonEmissionInKgCO2e: computerCarbon,
       lampCarbonEmissionInKgCO2e: lampsCarbon,
@@ -332,7 +331,6 @@ ComputerEmissionModel calculateComputerFootprint(
   double n_GPUs = 1;
 
   // Runtime
-  double test_runTime = 1;
   double actual_runTime_hours = 0;
   double runTime = 0;
   double cpuPower = 0;
@@ -425,20 +423,6 @@ ComputerEmissionModel calculateComputerFootprint(
   result.energyNeeded = energyNeeded;
   result.powerNeeded = powerNeeded;
 
-  result.treeMonths = carbonEmissions / ComputerReferenceValues.treeYear * 12;
-
-// TODO: AJUSTAR
-  if (carbonEmissions < 0.5 * ComputerReferenceValues.flightNY_SF) {
-    result.flyingContext = ComputerReferenceValues.flightPAR_LON;
-    result.flyingText = 'Paris-Londres';
-  } else if (carbonEmissions < 0.5 * ComputerReferenceValues.flightNYC_MEL) {
-    result.flyingContext = ComputerReferenceValues.flightNY_SF;
-    result.flyingText = 'Nova York-São Francisco';
-  } else {
-    result.flyingContext = ComputerReferenceValues.flightNYC_MEL;
-    result.flyingText = 'Nova York-Melbourne';
-  }
-
   result.carbonEmissionsUnit = "g";
   var carbonEmissions_value = carbonEmissions;
   var carbonEmissions_unit = "g";
@@ -452,49 +436,6 @@ ComputerEmissionModel calculateComputerFootprint(
   } else if (carbonEmissions_value < 1) {
     carbonEmissions_value *= 1e3;
     carbonEmissions_unit = "mg";
-  }
-
-  if ((carbonEmissions_value != 0) &
-      ((carbonEmissions_value >= 1e3) | (carbonEmissions_value < 1))) {
-    result.carbonEmissionText =
-        "$carbonEmissions_value $carbonEmissions_unit CO2e";
-  } else {
-    result.carbonEmissionText =
-        "$carbonEmissions_value $carbonEmissions_unit CO2e";
-  }
-
-  // text energy
-  var energyNeeded_value = energyNeeded; // in kWh
-  var energyNeeded_unit = "kWh";
-  if (energyNeeded_value >= 1e3) {
-    energyNeeded_value /= 1e3;
-    energyNeeded_unit = "MWh";
-  } else if (energyNeeded_value < 1) {
-    energyNeeded_value *= 1e3;
-    energyNeeded_unit = "Wh";
-  }
-
-  if ((energyNeeded_value != 0) &
-      ((energyNeeded_value >= 1e3) | (energyNeeded_value < 1))) {
-    result.textEnergyNeeded = "$energyNeeded_value $energyNeeded_unit";
-  } else {
-    result.textEnergyNeeded = "$energyNeeded_value $energyNeeded_unit";
-  }
-
-  // Text tree-months
-  var treeTime_value = result.treeMonths; // in tree-months
-  var treeTime_unit = "tree-months";
-  if (treeTime_value >= 24) {
-    treeTime_value /= 12;
-    treeTime_unit = "tree-years";
-  }
-
-  // TODO: AJUSTAR
-  if ((treeTime_value != 0) &
-      ((treeTime_value >= 1e3) | (treeTime_value < 0.1))) {
-    result.treeYear = "$treeTime_value $treeTime_unit";
-  } else {
-    result.treeYear = "$treeTime_value $treeTime_unit";
   }
 
   return result;

@@ -80,12 +80,6 @@ class ComputerEmissionModel {
   late final double carbonEmissionMemory;
   late final double energyNeeded;
   late final double powerNeeded;
-  late final double treeMonths;
-  late final String treeYear;
-  late final double flyingContext;
-  late final String flyingText;
-  late final String carbonEmissionText;
-  late final String textEnergyNeeded;
 
   ComputerEmissionModel();
   

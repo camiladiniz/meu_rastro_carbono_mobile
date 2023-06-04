@@ -19,15 +19,15 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
       List.generate(9, (index) => LampData(isOn: false, operationTime: 0.0));
 
   var rooms = [
-    'Lâmpada da sala',
-    'Lâmpada da cozinha',
-    'Lâmpada do banheiro',
-    'Lâmpada do quarto 1',
-    'Lâmpada do quarto 2',
-    'Lâmpada do quarto 3',
-    'Lâmpada de serviços',
-    'Lâmpada do jardim',
-    'Lâmpada da garagem',
+    'Lâmpada sala',
+    'Lâmpada cozinha',
+    'Lâmpada banheiro',
+    'Lâmpada quarto 1',
+    'Lâmpada quarto 2',
+    'Lâmpada quarto 3',
+    'Lâmpada serviços',
+    'Lâmpada jardim',
+    'Lâmpada garagem',
   ];
 
   updateWidgetAnswer() {

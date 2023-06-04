@@ -69,7 +69,7 @@ class _EcoMetricsDashboardState extends State<EcoMetricsDashboard> {
                 SizedBox(
                   width: size.width * 0.9,
                   child: const Text(
-                      "na mata atlântica para compensar as emissões nas atividades informadas durante a última semana",
+                      "na mata atlântica se os hábitos dos últimos 7 dias forem mantidos por 1 ano",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 17,

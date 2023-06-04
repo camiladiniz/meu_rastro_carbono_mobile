@@ -13,7 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final List<NavigateItemModel> pages = [
     NavigateItemModel('Minha evolução', Icons.workspace_premium_rounded, () => {Modular.to.navigate('./rewards')}),
-    NavigateItemModel('Minhas recomendações', Icons.tips_and_updates, () => {Modular.to.navigate('./tips')}),
+    NavigateItemModel('Recomendações', Icons.tips_and_updates, () => {Modular.to.navigate('./tips')}),
     NavigateItemModel('Meu consumo', Icons.home, () => {Modular.to.navigate('./surveys')}),
     NavigateItemModel('Meu rastro', Icons.graphic_eq, () => {Modular.to.navigate('./metrics')}),
     NavigateItemModel('Perfil', Icons.person, () => {Modular.to.navigate('./profile')}),
