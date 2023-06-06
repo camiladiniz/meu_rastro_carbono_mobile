@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/data/repositories/account_repository.dart';
 import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
 import 'package:meu_rastro_carbono/infra/shared_preference_service.dart';
+import 'package:meu_rastro_carbono/stores/state_controller.dart';
 import 'package:mobx/mobx.dart';
 
 import '../data/models/evolution/badge_model.dart';
@@ -14,6 +15,7 @@ abstract class _UserController extends Disposable with Store {
   final SharedPreferencesService localStorage =
       Modular.get<SharedPreferencesService>();
   final AccountRepository accountRepo = Modular.get<AccountRepository>();
+  final StateController stateCtrl = Modular.get<StateController>();
 
   _UserController() {
     initializeSharedPreferences();
@@ -40,9 +42,6 @@ abstract class _UserController extends Disposable with Store {
   String registerDate = "";
 
   @observable
-  String loginError = "";
-
-  @observable
   List<BadgeModel> rewards = [];
 
   @action
@@ -60,10 +59,9 @@ abstract class _UserController extends Disposable with Store {
       await localStorage.setStringValue(
           SharedPreferenceConstants.userId, response.userId);
       Modular.to.navigate('/home/surveys');
-          return response.name;
+      return "";
     } catch (ex) {
-      loginError = "Dados inválidos";
-      return "erro";
+      return '$ex';
     }
   }
 
@@ -74,7 +72,6 @@ abstract class _UserController extends Disposable with Store {
           .register(UserEntity(name: userName, email: userEmail, password: userPassword));
       return true;
     } catch (ex) {
-      loginError = "Verifique se os dados foram informados corretamente";
       return false;
     }
   }
@@ -100,16 +97,11 @@ abstract class _UserController extends Disposable with Store {
   }
 
   @action
-  Future<void> cleanError() async {
-    loginError = "";
-  }
-
-  @action
   Future getUserRewards() async {
     var userId =
         await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
-    var response = await accountRepo.getUserRewards(userId);
-    rewards = response;
+    // var response = await accountRepo.getUserRewards(userId);
+    // rewards = response;
   }
 }

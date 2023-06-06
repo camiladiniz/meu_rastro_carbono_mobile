@@ -72,22 +72,6 @@ mixin _$UserController on _UserController, Store {
     });
   }
 
-  late final _$loginErrorAtom =
-      Atom(name: '_UserController.loginError', context: context);
-
-  @override
-  String get loginError {
-    _$loginErrorAtom.reportRead();
-    return super.loginError;
-  }
-
-  @override
-  set loginError(String value) {
-    _$loginErrorAtom.reportWrite(value, super.loginError, () {
-      super.loginError = value;
-    });
-  }
-
   late final _$rewardsAtom =
       Atom(name: '_UserController.rewards', context: context);
 
@@ -139,14 +123,6 @@ mixin _$UserController on _UserController, Store {
     return _$getNameAsyncAction.run(() => super.getName());
   }
 
-  late final _$cleanErrorAsyncAction =
-      AsyncAction('_UserController.cleanError', context: context);
-
-  @override
-  Future<void> cleanError() {
-    return _$cleanErrorAsyncAction.run(() => super.cleanError());
-  }
-
   late final _$getUserRewardsAsyncAction =
       AsyncAction('_UserController.getUserRewards', context: context);
 
@@ -162,7 +138,6 @@ email: ${email},
 password: ${password},
 name: ${name},
 registerDate: ${registerDate},
-loginError: ${loginError},
 rewards: ${rewards}
     ''';
   }

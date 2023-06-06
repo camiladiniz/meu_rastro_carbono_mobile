@@ -12,6 +12,7 @@ import '../data/repositories/account_repository.dart';
 import '../data/repositories/evolution_repository.dart';
 import '../data/repositories/survey_repository.dart';
 import '../infra/shared_preference_service.dart';
+import '../stores/state_controller.dart';
 import '../stores/survey_controller.dart';
 import '../stores/user_evolution_controller.dart';
 import '../ui/pages/references_page.dart';
@@ -36,6 +37,7 @@ class AppModule extends Module {
         Bind.lazySingleton((i) => SurveyRepository(i())),
 
         // controllers
+        Bind((i) => StateController()),
         Bind((i) => UserController()),
         Bind((i) => UserEvolutionController()),
         Bind((i) => SurveyController()),

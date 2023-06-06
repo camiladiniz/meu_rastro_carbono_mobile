@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/stores/state_controller.dart';
 
 import '../../stores/user_controller.dart';
 import '../assets/styles/app_theme.dart';
@@ -25,6 +27,7 @@ class _LoginPageState extends State<LoginPage>
   Duration animationDuration = const Duration(milliseconds: 270);
 
   final UserController userController = Modular.get<UserController>();
+  final StateController stateCtrl = Modular.get<StateController>();
 
   TextEditingController txtEmailLoginCtrl = TextEditingController();
   TextEditingController txtPasswordLoginCtrl = TextEditingController();
@@ -39,7 +42,7 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-    var resp = "n";
+  var resp = "n";
   signIn() async {
     if (isLoading) {
       return;
@@ -49,10 +52,10 @@ class _LoginPageState extends State<LoginPage>
     });
     var email = txtEmailLoginCtrl.text;
     var pass = txtPasswordLoginCtrl.text;
-    var r = await userController.authenticate(email, pass);
+    var error = await userController.authenticate(email, pass);
+
     setState(() {
       isLoading = false;
-      resp = r;
     });
   }
 
@@ -71,7 +74,6 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void didChangeDependencies() {
-    // signIn();
     super.didChangeDependencies();
   }
 
@@ -163,10 +165,19 @@ class _LoginPageState extends State<LoginPage>
                         image: AssetImage('lib/ui/assets/images/leaf.png'),
                         width: 200,
                       ),
-                      // Text("login ${txtEmailLoginCtrl.text} senha ${txtPasswordLoginCtrl.text} resp $resp"),
                       const SizedBox(height: 20),
+                      Observer(
+                        builder: (_) => Text(
+                          isLoading == true ? 'Aguarde, carregando...' : '',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromRGBO(103, 103, 101, 1),
+                          ),
+                        ),
+                      ),
                       RoundedInput(
-                        onInputChanged: userController.cleanError,
+                          onInputChanged: () => {stateCtrl.setErrorMessage("")},
                           icon: Icons.mail,
                           hint: 'Email',
                           controller: txtEmailLoginCtrl,
@@ -178,13 +189,15 @@ class _LoginPageState extends State<LoginPage>
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          userController.loginError,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.red,
+                        child: Observer(
+                          builder: (_) => Text(
+                            stateCtrl.errorMessage,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
@@ -218,12 +231,12 @@ class _LoginPageState extends State<LoginPage>
 
           // Register Form
           RegisterForm(
-            onInputChanged: userController.cleanError,
+              onInputChanged: () => {stateCtrl.setErrorMessage("")},
               isLogin: isLogin,
               animationDuration: animationDuration,
               size: size,
               defaultLoginSize: defaultRegisterSize,
-              errorMessage: userController.loginError,
+              errorMessage: stateCtrl.errorMessage,
               signup: signUp,
               closeRegister: () => {
                     setState(() {
