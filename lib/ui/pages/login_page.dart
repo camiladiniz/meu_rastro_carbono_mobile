@@ -21,7 +21,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   bool isLogin = true;
-  bool isLoading = false;
+  String isLoading = "";
   late Animation<double> containerSize;
   AnimationController? animationController;
   Duration animationDuration = const Duration(milliseconds: 270);
@@ -33,29 +33,65 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController txtPasswordLoginCtrl = TextEditingController();
 
   signUp(String name, String email, String password) async {
+    if (isLoading != "") {
+      return;
+    }
+
+    if (name == "") {
+      stateCtrl.setErrorMessage("Informe o nome");
+      return;
+    }
+    if (email == "") {
+      stateCtrl.setErrorMessage("Informe o e-mail");
+      return;
+    }
+    if (password == "") {
+      stateCtrl.setErrorMessage("Informe a senha");
+      return;
+    }
+
+    setState(() {
+      isLoading = "Aguarde, realizando cadastro...";
+    });
+
     var response = await userController.register(name, email, password);
     if (response) {
       animationController!.reverse();
       setState(() {
         isLogin = !isLogin;
+        isLoading = 'Cadastro realizado com sucesso!';
+      });
+    } else {
+      setState(() {
+        isLoading = '';
       });
     }
   }
 
-  var resp = "n";
   signIn() async {
-    if (isLoading) {
+    if (isLoading != "") {
       return;
     }
-    setState(() {
-      isLoading = true;
-    });
+
     var email = txtEmailLoginCtrl.text;
     var pass = txtPasswordLoginCtrl.text;
-    var error = await userController.authenticate(email, pass);
+
+    if (email == "") {
+      stateCtrl.setErrorMessage("Informe o e-mail");
+      return;
+    }
+    if (pass == "") {
+      stateCtrl.setErrorMessage("Informe a senha");
+      return;
+    }
 
     setState(() {
-      isLoading = false;
+      isLoading = 'Aguarde, carregando...';
+    });
+    await userController.authenticate(email, pass);
+
+    setState(() {
+      isLoading = '';
     });
   }
 
@@ -133,8 +169,6 @@ class _LoginPageState extends State<LoginPage>
                     });
                   },
           ),
-
-          // Login Form
           // LoginForm(
           //   isLogin: isLogin,
           //   animationDuration: animationDuration,
@@ -168,11 +202,11 @@ class _LoginPageState extends State<LoginPage>
                       const SizedBox(height: 20),
                       Observer(
                         builder: (_) => Text(
-                          isLoading == true ? 'Aguarde, carregando...' : '',
-                          style: const TextStyle(
+                          isLoading,
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
-                            color: Color.fromRGBO(103, 103, 101, 1),
+                            color: makeAppTheme().primaryColor,
                           ),
                         ),
                       ),
@@ -230,22 +264,25 @@ class _LoginPageState extends State<LoginPage>
           ),
 
           // Register Form
-          RegisterForm(
-              onInputChanged: () => {stateCtrl.setErrorMessage("")},
-              isLogin: isLogin,
-              animationDuration: animationDuration,
-              size: size,
-              defaultLoginSize: defaultRegisterSize,
-              errorMessage: stateCtrl.errorMessage,
-              signup: signUp,
-              closeRegister: () => {
-                    setState(() {
-                      animationController!.reverse();
+          Observer(
+            builder: (_) => RegisterForm(
+                onInputChanged: () => {stateCtrl.setErrorMessage("")},
+                isLogin: isLogin,
+                isLoadingMessage: isLoading,
+                animationDuration: animationDuration,
+                size: size,
+                defaultLoginSize: defaultRegisterSize,
+                errorMessage: stateCtrl.errorMessage,
+                signup: signUp,
+                closeRegister: () => {
                       setState(() {
-                        isLogin = !isLogin;
-                      });
-                    })
-                  }),
+                        animationController!.reverse();
+                        setState(() {
+                          isLogin = !isLogin;
+                        });
+                      })
+                    }),
+          )
         ],
       ),
     );
@@ -269,7 +306,7 @@ class _LoginPageState extends State<LoginPage>
               ? null
               : () {
                   animationController!.forward();
-
+                  stateCtrl.setErrorMessage("");
                   setState(() {
                     isLogin = !isLogin;
                   });

@@ -29,16 +29,15 @@ class AccountRepository {
     }
   }
 
-  Future<bool> register(UserEntity userEntity) async {
-    // final response = await client.post(API.registerNewUser(),
-    //     headers: headers, body: json.encode(userEntity));
+  Future<LoginResponse> register(UserEntity userEntity) async {
+    final response =
+        await stateCtrl.post(API.registerNewUser(), "", userEntity);
 
-    // if (response.statusCode == 200) {
-    //   return true;
-    // } else {
-    //   throw Exception();
-    // }
-    return false;
+    if (response.statusCode == 200) {
+      return LoginResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception();
+    }
   }
 
   // Future<List<BadgeModel>> getUserRewards(String userId) async {

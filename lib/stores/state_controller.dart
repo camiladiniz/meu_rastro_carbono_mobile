@@ -94,9 +94,13 @@ abstract class _StateController extends Disposable with Store {
             '${response.statusCode} - ${response.body.toString()}');
       case 401:
       case 403:
-        // if(response.request.url.path == '/account/login')
-        throw UnauthorisedException(
-            '${response.statusCode} - ${response.body.toString()}');
+        if (response.request?.url.path == '/account/login') {
+          throw UnauthorisedException(response.body.toString());
+        } else {
+          throw UnauthorisedException(
+              '${response.statusCode} - ${response.body.toString()}');
+        }
+
       case 500:
         throw FetchDataException(
             'Ops ocorreu um erro, tente novamente mais tarde!');

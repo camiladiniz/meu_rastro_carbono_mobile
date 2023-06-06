@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../../../stores/user_controller.dart';
 import '../../widgets/buttons/default_button.dart';
 import '../../widgets/inputs/input_container_widget.dart';
 import '../../widgets/inputs/rounded_input_widget.dart';
@@ -11,6 +10,7 @@ class RegisterForm extends StatefulWidget {
   const RegisterForm({
     Key? key,
     required this.isLogin,
+    required this.isLoadingMessage,
     required this.onInputChanged,
     required this.closeRegister,
     required this.animationDuration,
@@ -21,6 +21,7 @@ class RegisterForm extends StatefulWidget {
   }) : super(key: key);
 
   final bool isLogin;
+  final String isLoadingMessage;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
@@ -81,25 +82,24 @@ class _RegisterFormState extends State<RegisterForm> {
                         height: 100),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(
-                      widget.errorMessage,
-                      style: const TextStyle(
-                        fontSize: 15,
+                  Observer(
+                    builder: (_) => Text(
+                      widget.isLoadingMessage != "" ? widget.isLoadingMessage : widget.errorMessage,
+                      style: TextStyle(
+                        fontSize: 16,
                         fontWeight: FontWeight.normal,
-                        color: Colors.red,
+                        color: widget.isLoadingMessage != "" ? const Color.fromRGBO(103, 103, 101, 1) : Colors.red,
                       ),
                     ),
-                  ),
+                  ),                  
                   RoundedInput(
-                    onInputChanged: widget.onInputChanged,
+                      onInputChanged: widget.onInputChanged,
                       icon: Icons.person,
                       hint: 'Nome',
                       whiteBackground: true,
                       controller: txtNameCtrl),
                   RoundedInput(
-                    onInputChanged: widget.onInputChanged,
+                      onInputChanged: widget.onInputChanged,
                       icon: Icons.mail,
                       hint: 'Email',
                       whiteBackground: true,
