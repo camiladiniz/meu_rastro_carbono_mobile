@@ -3,7 +3,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../data/models/evolution/level_model.dart';
+import '../../stores/state_controller.dart';
 import '../../stores/user_controller.dart';
+import '../assets/styles/app_theme.dart';
+import '../components/loading.dart';
 import '../widgets/menu/levels_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -13,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final UserController userController = Modular.get<UserController>();
+  final StateController stateCtrl = Modular.get<StateController>();
 
   final level = LevelModel(
       title: 'Preparando o solo',
@@ -71,6 +75,44 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Text('Conquistas', style: Theme.of(context).textTheme.titleMedium),
+          Observer(
+              builder: (_) =>
+                  stateCtrl.loading ? loadingIndicatorWidget() : Container()),
+          Observer(
+              builder: (_) => !stateCtrl.loading &&
+                      userController.rewards.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                      child: Card(
+                          elevation: 5,
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(width: 3,),
+                              CircleAvatar(
+                                radius: 35,
+                                backgroundColor: Colors.lightGreen[100],
+                                child: Image.asset(
+                                    'lib/ui/assets/images/leaf.png',
+                                    height: 45),
+                              ),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                        "Opa, você ainda não possui nenhuma conquista. Mantenha hábitos sustentáveis e logo receberá!",
+                                        style:
+                                            makeAppTheme().textTheme.bodyMedium)
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )))
+                  : Container()),
           Observer(
               builder: (_) =>
                   Wrap(spacing: 10, runSpacing: 10, children: <Widget>[

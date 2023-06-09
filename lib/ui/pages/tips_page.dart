@@ -94,7 +94,7 @@ class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
                                   builder: (_) => !stateCtrl.loading &&
                                           metricsCtrl.tips.isEmpty
                                       ? Text(
-                                          "As recomendações são personalizadas conforme seus hábitos, por favor responda algumas pesquisas para que eu possa gerar as dicas!",
+                                          "As recomendações são personalizadas conforme seus hábitos. Por favor responda algumas pesquisas para que eu possa gerar as dicas!",
                                           style: makeAppTheme()
                                               .textTheme
                                               .bodyMedium)

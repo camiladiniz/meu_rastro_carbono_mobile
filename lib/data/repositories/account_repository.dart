@@ -39,18 +39,14 @@ class AccountRepository {
     }
   }
 
-  // Future<List<BadgeModel>> getUserRewards(String userId) async {
-  // var token = await localStorage.getStringValue(SharedPreferenceConstants.token);
-  //   // final response = await client.post(API.getUserRewards(userId));
+  Future<List<BadgeModel>> getUserRewards() async {
+    final response = await stateCtrl.post(API.getUserRewards(), null);
 
-  //   // if (response.statusCode == 200) {
-  //   //   var tips = UserRewardsResponse.fromList(json.decode(response.body));
-  //   //   return UserRewardsResponse.toBadgeModel(tips);
-  //   // } else {
-  //   //   throw Exception();
-  //   // }
-  //   var list = List<BadgeModel>;
-  //   await Future.delayed(const Duration(seconds: 1), (){});
-  //   return list;
-  // }
+    if (response.statusCode == 200) {
+      var rewards = UserRewardsResponse.fromList(json.decode(response.body));
+      return UserRewardsResponse.toBadgeModel(rewards);
+    } else {
+      throw Exception();
+    }
+  }
 }

@@ -47,8 +47,8 @@ abstract class _UserController extends Disposable with Store {
   @action
   Future<String> authenticate(String userEmail, String userPassword) async {
     try {
-      var response = await accountRepo
-          .login(UserEntity(name: '', email: userEmail, password: userPassword));
+      var response = await accountRepo.login(
+          UserEntity(name: '', email: userEmail, password: userPassword));
 
       await localStorage.setBoolValue(
           SharedPreferenceConstants.isAuthenticated, true);
@@ -66,10 +66,11 @@ abstract class _UserController extends Disposable with Store {
   }
 
   @action
-  Future<bool> register(String userName, String userEmail, String userPassword) async {
+  Future<bool> register(
+      String userName, String userEmail, String userPassword) async {
     try {
-      var response = await accountRepo
-          .register(UserEntity(name: userName, email: userEmail, password: userPassword));
+      var response = await accountRepo.register(
+          UserEntity(name: userName, email: userEmail, password: userPassword));
       return true;
     } catch (ex) {
       return false;
@@ -98,10 +99,7 @@ abstract class _UserController extends Disposable with Store {
 
   @action
   Future getUserRewards() async {
-    var userId =
-        await localStorage.getStringValue(SharedPreferenceConstants.userId);
-
-    // var response = await accountRepo.getUserRewards(userId);
-    // rewards = response;
+    var response = await accountRepo.getUserRewards();
+    rewards = response;
   }
 }
