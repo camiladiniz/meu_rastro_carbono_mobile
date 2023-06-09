@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../data/datasets/levels_dataset.dart';
 import '../../data/models/evolution/level_model.dart';
 import '../../stores/state_controller.dart';
 import '../../stores/user_controller.dart';
+import '../../stores/user_evolution_controller.dart';
 import '../assets/styles/app_theme.dart';
 import '../components/loading.dart';
 import '../widgets/menu/levels_widget.dart';
@@ -17,8 +19,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final UserController userController = Modular.get<UserController>();
   final StateController stateCtrl = Modular.get<StateController>();
+  final UserEvolutionController evolutionCtrl =
+      Modular.get<UserEvolutionController>();
 
-  final level = LevelModel(
+  var level = LevelModel(
       title: 'Preparando o solo',
       number: '1',
       imagePath: 'lib/ui/assets/images/leaf_05.png',
@@ -29,6 +33,44 @@ class _ProfilePageState extends State<ProfilePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     userController.getUserRewards();
+    getUserEvolutionPontuation();
+  }
+
+  Future<void> getUserEvolutionPontuation() async {
+    var evolutionLevels = getLevels();
+    await evolutionCtrl.initializeSharedPreferences();
+    var pontuation = await evolutionCtrl.getUserElovutionPoints();
+    pontuation = 21;
+    var pontuationTemp = pontuation;
+
+    int n0 = 5;
+    int n = n0;
+
+    for (int i = 0; i <= evolutionLevels.length; i++) {
+      int nextNumber = n + (n.abs() ~/ 2);
+      evolutionLevels[i].pontuationToBeReached = nextNumber;
+
+      if (pontuationTemp == 0) {
+        break;
+      }
+
+      if (nextNumber <= pontuationTemp) {
+        pontuationTemp = pontuationTemp - nextNumber;
+        evolutionLevels[i].userPontuationPercentage =
+            getLevelProgressInPercentage(nextNumber, nextNumber);
+      } else {
+        evolutionLevels[i].userPontuationPercentage =
+            getLevelProgressInPercentage(pontuationTemp, nextNumber);
+        pontuationTemp = 0;
+      }
+      n = nextNumber;
+      evolutionLevels[i].isAvailable = true;
+    }
+
+    var currentLevel = evolutionLevels.lastWhere((l) => l.isAvailable);
+    setState(() {
+      level = currentLevel;
+    });
   }
 
   @override
@@ -88,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.white,
                           child: Row(
                             children: <Widget>[
-                              SizedBox(width: 3,),
+                              const SizedBox(width: 3),
                               CircleAvatar(
                                 radius: 35,
                                 backgroundColor: Colors.lightGreen[100],

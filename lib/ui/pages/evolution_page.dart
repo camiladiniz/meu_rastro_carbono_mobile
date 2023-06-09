@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/data/models/evolution/level_model.dart';
 import 'package:meu_rastro_carbono/ui/widgets/menu/levels_widget.dart';
 
+import '../../data/datasets/levels_dataset.dart';
 import '../../stores/user_evolution_controller.dart';
 
 class RewardsWidget extends StatefulWidget {
@@ -13,49 +14,12 @@ class _RewardsWidgetState extends State<RewardsWidget> {
   final UserEvolutionController evolutionCtrl =
       Modular.get<UserEvolutionController>();
 
-  final List<LevelModel> levels = [
-    LevelModel(
-        title: 'Preparando o solo',
-        number: '1',
-        imagePath: 'lib/ui/assets/images/leaf.png',
-        color: Colors.blue[100]!,
-        isAvailable: false),
-    LevelModel(
-        title: 'Plantando a sementinha',
-        number: '2',
-        imagePath: 'lib/ui/assets/images/leaf_03.png',
-        color: Colors.orange[100]!,
-        isAvailable: false),
-    LevelModel(
-        title: 'Regando as sementes',
-        number: '3',
-        imagePath: 'lib/ui/assets/images/leaf_02.png',
-        color: Colors.teal[100]!,
-        isAvailable: false),
-    LevelModel(
-        title: 'Adicionando adubo',
-        number: '4',
-        imagePath: 'lib/ui/assets/images/leaf_04.png',
-        color: Colors.blue[100]!,
-        isAvailable: false),
-    LevelModel(
-        title: 'Cuidando do brotinho',
-        number: '5',
-        imagePath: 'lib/ui/assets/images/leaf_05.png',
-        color: Colors.blue[100]!,
-        isAvailable: false),
-  ];
+  final List<LevelModel> levels = getLevels();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     getUserEvolutionPontuation();
-  }
-
-  double getLevelProgressInPercentage(
-      int userPontuationPercentage, int pontuationToBeReached) {
-    double percentage = (userPontuationPercentage / pontuationToBeReached);
-    return percentage;
   }
 
   Future<void> getUserEvolutionPontuation() async {
