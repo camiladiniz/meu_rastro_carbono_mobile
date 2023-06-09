@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController txtPasswordLoginCtrl = TextEditingController();
 
   signUp(String name, String email, String password) async {
-    if (isLoading != "") {
+    if (isLoading != "" && isLoading != "Cadastro realizado com sucesso!") {
       return;
     }
 
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   signIn() async {
-    if (isLoading != "") {
+    if (isLoading != "" && isLoading != "Cadastro realizado com sucesso!") {
       return;
     }
 

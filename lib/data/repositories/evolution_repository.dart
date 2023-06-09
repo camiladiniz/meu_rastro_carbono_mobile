@@ -1,20 +1,21 @@
 import 'dart:convert';
 
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:meu_rastro_carbono/data/datasources/endpoints.dart';
-import 'package:http/http.dart' as http;
 import 'package:meu_rastro_carbono/domain/evolution/user_evolution_response.dart';
 import 'package:meu_rastro_carbono/ui/pages/tips_page.dart';
 
 import '../../domain/metrics/user_metric_response.dart';
 import '../../domain/tips/user_tips_response.dart';
+import '../../stores/state_controller.dart';
 
 class UserRevolutionRepository {
-  final http.Client client;
+  final StateController stateCtrl = Modular.get<StateController>();
 
-  UserRevolutionRepository(this.client);
+  UserRevolutionRepository(httpHelper);
 
-  Future<int> getUserEvolutionPontuation(String userId) async {
-    final response = await client.get(API.getUserEvaluation(userId));
+  Future<int> getUserEvolutionPontuation() async {
+    final response = await stateCtrl.get(API.getUserEvaluation());
 
     if (response.statusCode == 200) {
       var pontuation =
@@ -25,8 +26,8 @@ class UserRevolutionRepository {
     }
   }
 
-  Future<UserMetricsResponse> getUserMetrics(String userId) async {
-    final response = await client.post(API.getUserMetrics(userId));
+  Future<UserMetricsResponse> getUserMetrics(String token) async {
+    final response = await stateCtrl.post(API.getUserMetrics(), token, null);
 
     if (response.statusCode == 200) {
       var metrics = UserMetricsResponse.fromJson(json.decode(response.body));
@@ -36,8 +37,8 @@ class UserRevolutionRepository {
     }
   }
 
-  Future<List<Tip>> getUserTips(String userId) async {
-    final response = await client.post(API.getUserTips(userId));
+  Future<List<Tip>> getUserTips(String token) async {
+    final response = await stateCtrl.post(API.getUserTips(), token, null);
 
     if (response.statusCode == 200) {
       var tips = UserTipResponse.fromList(json.decode(response.body));

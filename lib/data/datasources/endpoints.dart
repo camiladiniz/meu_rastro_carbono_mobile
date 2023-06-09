@@ -2,8 +2,8 @@ class API {
   static Uri authenticate() =>
       Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/account/login');
 
-  static Uri getUserEvaluation(String userId) =>
-      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/Evolution/$userId');
+  static Uri getUserEvaluation() =>
+      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/Evolution');
 
   static Uri getSurveyAnswersByDay() =>
       Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/survey/answered');
@@ -20,11 +20,11 @@ class API {
   static Uri postLocomotionSurveyAnswer() =>
       Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/survey/locomotion');
 
-  static Uri getUserMetrics(String userId) =>
-      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/metrics/user/$userId');
+  static Uri getUserMetrics() =>
+      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/metrics');
 
-  static Uri getUserTips(String userId) =>
-      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/metrics/tips/$userId');
+  static Uri getUserTips() =>
+      Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/metrics/tips');
 
   static Uri getUserRewards(String userId) =>
       Uri.https('meu-rastro-de-carbono-v2.azurewebsites.net', '/rewards/user/$userId');

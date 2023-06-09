@@ -37,9 +37,7 @@ abstract class _UserEvolutionController extends Disposable with Store {
 
   @action
   Future<int> getUserElovutionPoints() async {
-    var userId =
-        await localStorage.getStringValue(SharedPreferenceConstants.userId);
-    return await evolutionRepo.getUserEvolutionPontuation(userId);
+    return await evolutionRepo.getUserEvolutionPontuation();
   }
 
   @action

@@ -5,11 +5,17 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:meu_rastro_carbono/infra/requests/requests_base_exception.dart';
 
+import '../infra/shared_preference_constants.dart';
+import '../infra/shared_preference_service.dart';
+
 part 'state_controller.g.dart';
 
 class StateController = _StateController with _$StateController;
 
 abstract class _StateController extends Disposable with Store {
+  final SharedPreferencesService localStorage =
+      Modular.get<SharedPreferencesService>();
+      
   @observable
   bool loading = false;
 
@@ -17,7 +23,11 @@ abstract class _StateController extends Disposable with Store {
   String errorMessage = "";
 
   _StateController() {
-    // initializeSharedPreferences();
+    initializeSharedPreferences();
+  }
+
+    Future<void> initializeSharedPreferences() async {
+    await localStorage.initializeSharedPreferences();
   }
 
   @override
@@ -40,9 +50,16 @@ abstract class _StateController extends Disposable with Store {
   }
 
   Future<dynamic> get(Uri endpoint) async {
+    var token = await localStorage.getStringValue(SharedPreferenceConstants.token);
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+
     var responseJson;
     try {
-      final response = await http.get(endpoint);
+      var token = await localStorage.getStringValue(SharedPreferenceConstants.token);
+      final response = await http.get(endpoint, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
       throw FetchDataException('Ops, você está sem conexão com a internet.');
@@ -83,13 +100,14 @@ abstract class _StateController extends Disposable with Store {
   }
 
   @action
-  dynamic _returnResponse(http.Response response) {
+  dynamic _returnResponse(http.Response response) async {
     switch (response.statusCode) {
       case 200:
         var responseJson = response;
         print(responseJson);
         return responseJson;
       case 400:
+            errorMessage = response.body.toString();
         throw BadRequestException(
             '${response.statusCode} - ${response.body.toString()}');
       case 401:
@@ -97,8 +115,8 @@ abstract class _StateController extends Disposable with Store {
         if (response.request?.url.path == '/account/login') {
           throw UnauthorisedException(response.body.toString());
         } else {
-          throw UnauthorisedException(
-              '${response.statusCode} - ${response.body.toString()}');
+          await localStorage.setBoolValue(SharedPreferenceConstants.isAuthenticated, false);
+          Modular.to.navigate('/login');
         }
 
       case 500:
