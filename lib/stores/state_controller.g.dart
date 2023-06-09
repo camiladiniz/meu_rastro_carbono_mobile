@@ -45,8 +45,9 @@ mixin _$StateController on _StateController, Store {
       AsyncAction('_StateController.post', context: context);
 
   @override
-  Future<dynamic> post(Uri endpoint, dynamic body) {
-    return _$postAsyncAction.run(() => super.post(endpoint, body));
+  Future<dynamic> post(Uri endpoint, dynamic body, [bool? notEncodeBody]) {
+    return _$postAsyncAction
+        .run(() => super.post(endpoint, body, notEncodeBody));
   }
 
   late final _$_returnResponseAsyncAction =

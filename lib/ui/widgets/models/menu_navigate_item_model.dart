@@ -23,4 +23,4 @@ class CardItemModel {
       required this.status});
 }
 
-enum SurveyStatus { pending, answered }
+enum SurveyStatus { pending, answered, loading }

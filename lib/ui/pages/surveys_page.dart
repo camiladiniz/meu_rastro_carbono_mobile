@@ -4,9 +4,11 @@ import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:meu_rastro_carbono/ui/widgets/cards/survey_item_card.dart';
 
+import '../../stores/state_controller.dart';
 import '../../stores/survey_controller.dart';
 import '../../stores/user_controller.dart';
 import '../assets/styles/app_theme.dart';
+import '../components/loading.dart';
 import '../widgets/models/menu_navigate_item_model.dart';
 
 class SurveysPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class SurveysPage extends StatefulWidget {
 class _SurveysPageState extends State<SurveysPage> {
   final UserController userController = Modular.get<UserController>();
   final SurveyController surveyController = Modular.get<SurveyController>();
+  final StateController stateCtrl = Modular.get<StateController>();
 
   DateTime filterDate = DateTime.now();
 
@@ -28,25 +31,25 @@ class _SurveysPageState extends State<SurveysPage> {
         icon: Icons.water,
         color: Colors.blue,
         surveyName: 'agua',
-        status: SurveyStatus.answered),
+        status: SurveyStatus.loading),
     CardItemModel(
         title: 'Alimentação',
         icon: Icons.food_bank,
         color: Colors.pink,
         surveyName: 'alimentos',
-        status: SurveyStatus.answered),
+        status: SurveyStatus.loading),
     CardItemModel(
         title: 'Eletrônicos',
         icon: Icons.electrical_services,
         color: Colors.indigo,
         surveyName: 'dispositivos',
-        status: SurveyStatus.answered),
+        status: SurveyStatus.loading),
     CardItemModel(
         title: 'Locomoção',
         icon: Icons.directions_train,
         color: Colors.purple,
         surveyName: 'transporte',
-        status: SurveyStatus.answered),
+        status: SurveyStatus.loading),
   ];
 
   @override
@@ -156,37 +159,44 @@ class _SurveysPageState extends State<SurveysPage> {
             ),
           ),
           const SizedBox(height: 25),
-          for (var chunk in _chunkedItems(categories, 2))
-            Row(
-              children: [
-                Expanded(
-                  child: SurveyItemCard(
-                      title: chunk[0].title,
-                      icon: chunk[0].icon,
-                      color: chunk[0].color,
-                      status: chunk[0].status,
-                      onTap: () => {
-                            Modular.to
-                                .pushNamed(
-                                    '/survey/${chunk[0].surveyName}?datetime=$filterDate')
-                                .then((_) => loadSurveyData())
-                          }),
-                ),
-                Expanded(
-                  child: SurveyItemCard(
-                      title: chunk[1].title,
-                      icon: chunk[1].icon,
-                      color: chunk[1].color,
-                      status: chunk[1].status,
-                      onTap: () => {
-                            Modular.to
-                                .pushNamed(
-                                    '/survey/${chunk[1].surveyName}?datetime=$filterDate')
-                                .then((_) => loadSurveyData())
-                          }),
-                ),
-              ],
-            ),
+          Observer(
+              builder: (_) => stateCtrl.loading
+                  ? loadingIndicatorWidget()
+                  : Column(
+                      children: [
+                        for (var chunk in _chunkedItems(categories, 2))
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SurveyItemCard(
+                                    title: chunk[0].title,
+                                    icon: chunk[0].icon,
+                                    color: chunk[0].color,
+                                    status: chunk[0].status,
+                                    onTap: () => {
+                                          Modular.to
+                                              .pushNamed(
+                                                  '/survey/${chunk[0].surveyName}?datetime=$filterDate')
+                                              .then((_) => loadSurveyData())
+                                        }),
+                              ),
+                              Expanded(
+                                child: SurveyItemCard(
+                                    title: chunk[1].title,
+                                    icon: chunk[1].icon,
+                                    color: chunk[1].color,
+                                    status: chunk[1].status,
+                                    onTap: () => {
+                                          Modular.to
+                                              .pushNamed(
+                                                  '/survey/${chunk[1].surveyName}?datetime=$filterDate')
+                                              .then((_) => loadSurveyData())
+                                        }),
+                              ),
+                            ],
+                          ),
+                      ],
+                    )),
         ]),
       ),
     );

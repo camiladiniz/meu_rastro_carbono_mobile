@@ -16,6 +16,26 @@ class SurveyItemCard extends StatelessWidget {
       required this.status,
       required this.onTap});
 
+      String getSurveyStatus(SurveyStatus s) {
+        if(s == SurveyStatus.pending){
+          return "pendente";
+        }else if(s == SurveyStatus.answered){
+          return "respondido";
+        }else {
+          return "carregando";
+        }
+      }
+
+      IconData getSurveyStatusIcon(SurveyStatus s) {
+        if(s == SurveyStatus.pending){
+          return Icons.pending;
+        }else if(s == SurveyStatus.answered){
+          return Icons.check_circle;
+        }else {
+          return Icons.bolt;
+        }
+      }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -51,17 +71,11 @@ class SurveyItemCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    status == SurveyStatus.answered
-                        ? Icons.check_circle
-                        : Icons.pending,
+                  Icon(getSurveyStatusIcon(status),
                     color: Colors.white,
                   ),
                   const SizedBox(width: 4.0),
-                  Text(
-                      status == SurveyStatus.answered
-                          ? 'respondido'
-                          : 'pendente',
+                  Text(getSurveyStatus(status),
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 16.0,

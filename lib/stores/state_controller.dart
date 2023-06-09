@@ -68,7 +68,7 @@ abstract class _StateController extends Disposable with Store {
   }
 
   @action
-  Future<dynamic> post(Uri endpoint, dynamic body) async {
+  Future<dynamic> post(Uri endpoint, dynamic body, [bool? notEncodeBody]) async {
     startLoading();
     var token = await localStorage.getStringValue(SharedPreferenceConstants.token);
     final headers = {
@@ -79,8 +79,10 @@ abstract class _StateController extends Disposable with Store {
     var responseJson;
 
     var payload;
-    if (body != null) {
+    if (body != null && notEncodeBody == null) {
       payload = json.encode(body);
+    } else {
+      payload = body;
     }
 
     try {
