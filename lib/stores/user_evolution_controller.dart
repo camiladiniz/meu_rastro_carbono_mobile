@@ -42,10 +42,7 @@ abstract class _UserEvolutionController extends Disposable with Store {
 
   @action
   Future getUserTips() async {
-    var userId =
-        await localStorage.getStringValue(SharedPreferenceConstants.userId);
-
-    var response = await evolutionRepo.getUserTips(userId);
+    var response = await evolutionRepo.getUserTips();
     tips = response;
   }
 

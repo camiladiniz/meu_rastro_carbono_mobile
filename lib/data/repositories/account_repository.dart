@@ -7,7 +7,6 @@ import 'package:meu_rastro_carbono/domain/user/user_entity.dart';
 
 import '../../domain/rewards/user_rewards_response.dart';
 import '../../domain/user/login_response.dart';
-import '../../infra/shared_preference_constants.dart';
 import '../../infra/shared_preference_service.dart';
 import '../../stores/state_controller.dart';
 
@@ -20,7 +19,7 @@ class AccountRepository {
   AccountRepository(httpHelper);
 
   Future<LoginResponse> login(UserEntity userEntity) async {
-    final response = await stateCtrl.post(API.authenticate(), "", userEntity);
+    final response = await stateCtrl.post(API.authenticate(), userEntity);
 
     if (response.statusCode == 200) {
       return LoginResponse.fromJson(json.decode(response.body));
@@ -31,7 +30,7 @@ class AccountRepository {
 
   Future<LoginResponse> register(UserEntity userEntity) async {
     final response =
-        await stateCtrl.post(API.registerNewUser(), "", userEntity);
+        await stateCtrl.post(API.registerNewUser(), userEntity);
 
     if (response.statusCode == 200) {
       return LoginResponse.fromJson(json.decode(response.body));

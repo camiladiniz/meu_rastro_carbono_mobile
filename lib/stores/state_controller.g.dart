@@ -45,8 +45,17 @@ mixin _$StateController on _StateController, Store {
       AsyncAction('_StateController.post', context: context);
 
   @override
-  Future<dynamic> post(Uri endpoint, String token, dynamic body) {
-    return _$postAsyncAction.run(() => super.post(endpoint, token, body));
+  Future<dynamic> post(Uri endpoint, dynamic body) {
+    return _$postAsyncAction.run(() => super.post(endpoint, body));
+  }
+
+  late final _$_returnResponseAsyncAction =
+      AsyncAction('_StateController._returnResponse', context: context);
+
+  @override
+  Future _returnResponse(http.Response response) {
+    return _$_returnResponseAsyncAction
+        .run(() => super._returnResponse(response));
   }
 
   late final _$_StateControllerActionController =
@@ -80,17 +89,6 @@ mixin _$StateController on _StateController, Store {
         name: '_StateController.setErrorMessage');
     try {
       return super.setErrorMessage(message);
-    } finally {
-      _$_StateControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic _returnResponse(http.Response response) {
-    final _$actionInfo = _$_StateControllerActionController.startAction(
-        name: '_StateController._returnResponse');
-    try {
-      return super._returnResponse(response);
     } finally {
       _$_StateControllerActionController.endAction(_$actionInfo);
     }

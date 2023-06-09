@@ -27,7 +27,7 @@ class UserRevolutionRepository {
   }
 
   Future<UserMetricsResponse> getUserMetrics(String token) async {
-    final response = await stateCtrl.post(API.getUserMetrics(), token, null);
+    final response = await stateCtrl.post(API.getUserMetrics(), null);
 
     if (response.statusCode == 200) {
       var metrics = UserMetricsResponse.fromJson(json.decode(response.body));
@@ -37,10 +37,10 @@ class UserRevolutionRepository {
     }
   }
 
-  Future<List<Tip>> getUserTips(String token) async {
-    final response = await stateCtrl.post(API.getUserTips(), token, null);
+  Future<List<Tip>> getUserTips() async {
+    final response = await stateCtrl.post(API.getUserTips(), null);
 
-    if (response.statusCode == 200) {
+    if (response?.statusCode == 200) {
       var tips = UserTipResponse.fromList(json.decode(response.body));
       return UserTipResponse.toTipModel(tips);
     } else {

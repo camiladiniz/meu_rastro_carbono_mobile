@@ -68,8 +68,9 @@ abstract class _StateController extends Disposable with Store {
   }
 
   @action
-  Future<dynamic> post(Uri endpoint, String token, dynamic body) async {
+  Future<dynamic> post(Uri endpoint, dynamic body) async {
     startLoading();
+    var token = await localStorage.getStringValue(SharedPreferenceConstants.token);
     final headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token'
@@ -87,6 +88,7 @@ abstract class _StateController extends Disposable with Store {
           await http.post(endpoint, headers: headers, body: payload);
       responseJson = _returnResponse(response);
     } on SocketException {
+      stopLoading();
       errorMessage = 'Opa, você está sem conexão com a internet.';
       throw FetchDataException('Opa, você está sem conexão com a internet.');
     } catch (e) {

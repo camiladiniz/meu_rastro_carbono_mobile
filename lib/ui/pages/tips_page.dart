@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:meu_rastro_carbono/stores/state_controller.dart';
 import 'package:meu_rastro_carbono/ui/pages/profile_page.dart';
 
 import '../../data/models/evolution/level_model.dart';
 import '../../stores/user_evolution_controller.dart';
 import '../assets/styles/app_theme.dart';
-import '../widgets/menu/levels_widget.dart';
+import '../components/loading.dart';
 
 class Tip {
   final String title;
@@ -30,6 +31,7 @@ class CarbonWasteTipsScreen extends StatefulWidget {
 class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
   final UserEvolutionController metricsCtrl =
       Modular.get<UserEvolutionController>();
+  final StateController stateCtrl = Modular.get<StateController>();
 
   @override
   void didChangeDependencies() {
@@ -88,9 +90,19 @@ class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                  "Com base em seus hábitos ${metricsCtrl.tips.length > 0 ? 'preparei' : 'vou preparar'} algumas dicas para você!",
-                                  style: makeAppTheme().textTheme.bodyMedium)
+                              Observer(
+                                  builder: (_) => !stateCtrl.loading &&
+                                          metricsCtrl.tips.isEmpty
+                                      ? Text(
+                                          "As recomendações são personalizadas conforme seus hábitos, por favor responda algumas pesquisas para que eu possa gerar as dicas!",
+                                          style: makeAppTheme()
+                                              .textTheme
+                                              .bodyMedium)
+                                      : Text(
+                                          "Com base em seus hábitos ${metricsCtrl.tips.isEmpty ? 'prepararei' : 'preparei'} algumas dicas para você!",
+                                          style: makeAppTheme()
+                                              .textTheme
+                                              .bodyMedium)),
                             ],
                           ),
                         ),
@@ -102,6 +114,9 @@ class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
               ),
             ),
           ),
+          Observer(
+              builder: (_) =>
+                  stateCtrl.loading ? loadingIndicatorWidget() : Container()),
           Observer(
               builder: (_) =>
                   Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
@@ -132,7 +147,7 @@ class _CarbonWasteTipsScreenState extends State<CarbonWasteTipsScreen> {
                                 ],
                               ),
                               subtitle: Text(metricsCtrl.tips[i].subtitle,
-                              style: Theme.of(context).textTheme.bodySmall),
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ),
                           ))
                   ])),
