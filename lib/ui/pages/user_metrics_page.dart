@@ -110,7 +110,7 @@ class _EcoMetricsDashboardState extends State<EcoMetricsDashboard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                          "Veja abaixo o rastro de CO2e que você deixa no planeta através de seu estilo de vida",
+                          "Veja abaixo o rastro de CO2e que você deixou no planeta nos últimos 7 dias",
                           style: makeAppTheme().textTheme.bodySmall)
                     ],
                   ),
@@ -166,7 +166,7 @@ class EmissionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(13),
         child: Container(
           width: constraint.maxWidth / 2 - 10,
-          height: 150,
+          height: 165,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColorDark.withOpacity(0.7),
             borderRadius: BorderRadius.circular(13),
@@ -201,8 +201,10 @@ class EmissionCard extends StatelessWidget {
                           color: Colors.green,
                         ),
                       ),
-                      Text(row1, style: Theme.of(context).textTheme.bodySmall),
-                      Text(row2, style: Theme.of(context).textTheme.bodySmall),
+                      Text(row1, style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.center),
+                      Padding(padding: const EdgeInsets.only(left: 2, right: 2),
+                      child: Text(row2, style: Theme.of(context).textTheme.bodySmall, textAlign: TextAlign.left),
+                      )
                     ],
                   )),
             ),

@@ -150,7 +150,7 @@ final List<SurveyQuestionModel> electronicSurveyQuestions = [
       answerSuffix: 'minutos'),
   SurveyQuestionModel(
       identification: 'lampsOperationTime',
-      question: 'Indique as lâmpadas ligadas e o respectivo tempo de uso:',
+      question: 'Indique as lâmpadas ligadas e o tempo de uso (em horas):',
       questionType: SurveyQuestionType.turnOnLamps,
       answerOptions: [],
       answerPrefix: '',
@@ -258,7 +258,7 @@ Future<String> electricFootprintCalculation(
         1000;
 
     // ex: 0.012 kWh/charge x 1,562.4 pounds CO2/MWh delivered electricity x 1 MWh/1,000 kWh x 1 metric ton/2,204.6 lbs = 8.22 x 10-6 metric tons CO2/smartphone charged
-    phoneCarbon = energy * 1562.4 * (1 / 1000) * (1 / 2204.6);
+    phoneCarbon = energy * 1562.4 * 1 / 1000 * 1 / 2204.6;
   }
 
   // ----- computer usage calculation -----

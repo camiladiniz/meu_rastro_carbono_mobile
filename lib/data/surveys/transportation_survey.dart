@@ -333,15 +333,15 @@ Future<String> transportationFootprintCalculation(
           break;
 
         case 'Etanol':
-          fuelEmission = dieselKgCOEmission[etanolKgCOEmission] ?? 0;
+          fuelEmission = etanolKgCOEmission[carMotor] ?? 0;
           break;
 
         case 'Gasolina':
-          fuelEmission = dieselKgCOEmission[gasolinaKgCOEmission] ?? 0;
+          fuelEmission = gasolinaKgCOEmission[carMotor] ?? 0;
           break;
 
         case 'GNV':
-          fuelEmission = dieselKgCOEmission[gnvKgCOEmission] ?? 0;
+          fuelEmission = gnvKgCOEmission[carMotor] ?? 0;
           break;
 
         case 'Elétrico':

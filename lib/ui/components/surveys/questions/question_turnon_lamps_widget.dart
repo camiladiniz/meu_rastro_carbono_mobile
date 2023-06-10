@@ -14,27 +14,26 @@ class TurnOnLampsWidget extends StatefulWidget {
 }
 
 class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
-
   List<LampData> lampsData =
       List.generate(9, (index) => LampData(isOn: false, operationTime: 0.0));
 
   var rooms = [
-    'Lâmpada sala',
-    'Lâmpada cozinha',
-    'Lâmpada banheiro',
-    'Lâmpada quarto 1',
-    'Lâmpada quarto 2',
-    'Lâmpada quarto 3',
-    'Lâmpada serviços',
-    'Lâmpada jardim',
-    'Lâmpada garagem',
+    'Sala',
+    'Cozinha',
+    'Banheiro',
+    'Quarto 1',
+    'Quarto 2',
+    'Quarto 3',
+    'Serviços',
+    'Jardim',
+    'Garagem',
   ];
 
   updateWidgetAnswer() {
     var operationTime = "";
     for (var l in lampsData) {
-      if(l.operationTime > 0.0) {
-        if(operationTime != "") {
+      if (l.operationTime > 0.0) {
+        if (operationTime != "") {
           operationTime += ",";
         }
         operationTime += l.operationTime.toString();
@@ -50,15 +49,15 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
       children: [
         Text(
           widget.question.question,
-          style: const TextStyle(fontSize: 23.0),
+          style: const TextStyle(fontSize: 22.0),
         ),
-        const SizedBox(height: 12.0),
+        // const SizedBox(height: 12.0),
         GridView.builder(
           shrinkWrap: true,
           physics: const ScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            crossAxisSpacing: 6.0,
+            crossAxisSpacing: 3.0,
             mainAxisSpacing: 8.0,
           ),
           itemCount: lampsData.length,
@@ -97,8 +96,10 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
                       ],
                     )),
                 const SizedBox(height: 8.0),
-                TextFormField(
-                  keyboardType: const TextInputType.numberWithOptions(decimal: false),
+                Expanded(
+                    child: TextFormField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: false),
                   style: const TextStyle(
                     fontSize: 12,
                     // fontWeight: FontWeight.normal,
@@ -111,14 +112,14 @@ class _TurnOnLampsWidgetState extends State<TurnOnLampsWidget> {
                     updateWidgetAnswer();
                   },
                   decoration: InputDecoration(
-                    labelText: 'Uso em horas',
+                    labelText: 'Horas',
                     enabled: lampsData[index].isOn == true,
-                    labelStyle: const TextStyle(fontSize: 15),
+                    labelStyle: const TextStyle(fontSize: 13),
                     enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                ),
+                )),
               ],
             );
           },
