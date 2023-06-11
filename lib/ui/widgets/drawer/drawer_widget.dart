@@ -16,6 +16,9 @@ Drawer drawerWidget(BuildContext context) {
     await localStorage.initializeSharedPreferences();
     await localStorage.setBoolValue(
         SharedPreferenceConstants.isAuthenticated, false);
+    await localStorage.setStringValue(SharedPreferenceConstants.name, '');
+    await localStorage.setStringValue(SharedPreferenceConstants.token, '');
+    await localStorage.setStringValue(SharedPreferenceConstants.userId, '');
     onSelectItem('/login');
   }
 

@@ -59,6 +59,7 @@ class _SurveysPageState extends State<SurveysPage> {
   }
 
   Future<void> loadSurveyData() async {
+    await userController.getName();
     await surveyController.initializeSharedPreferences();
     var surveys = await surveyController.getSurveysByDate(filterDate);
 
@@ -88,6 +89,7 @@ class _SurveysPageState extends State<SurveysPage> {
     setState(() {
       categories;
     });
+    await userController.getName();
   }
 
   @override

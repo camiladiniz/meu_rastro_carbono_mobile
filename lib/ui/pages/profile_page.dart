@@ -40,7 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
     var evolutionLevels = getLevels();
     await evolutionCtrl.initializeSharedPreferences();
     var pontuation = await evolutionCtrl.getUserElovutionPoints();
-    pontuation = 21;
     var pontuationTemp = pontuation;
 
     int n0 = 5;

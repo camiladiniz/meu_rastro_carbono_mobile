@@ -59,6 +59,7 @@ abstract class _UserController extends Disposable with Store {
       await localStorage.setStringValue(
           SharedPreferenceConstants.userId, response.userId);
       Modular.to.navigate('/home/surveys');
+      name = response.name;
       return "";
     } catch (ex) {
       return '$ex';
