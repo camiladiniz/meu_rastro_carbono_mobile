@@ -4,6 +4,7 @@ import '../../domain/survey/water_survey_payload.dart';
 import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
+import '../datasets/levels_dataset.dart';
 import '../datasets/water/water_carbon_emission_dataset.dart';
 
 final List<SurveyQuestionModel> waterSurveyQuestions = [
@@ -74,7 +75,11 @@ final List<SurveyQuestionModel> waterSurveyQuestions = [
     // - diferencialDeTemperatura - diferença entre a temparatura da água gelada e a temperatura alcançada após o aquecimento do chuveiro em graus Celsius. Padrão de 30 graus foi aplicado
 
     var payload = WaterSurveyPayload(consumptionDate: answerConsumptionDate, showersAmount: quantidadeDeBanhos, eachShowerDuration: duracaoDoBanhoEmMinutos, carbonEmissionInKgCO2e: emissaodiariaCO2emKg);
-    await surveyController.postWaterSurveyAnswer(payload);
+    var response = await surveyController.postWaterSurveyAnswer(payload);
+
+    if(!response){
+      return surveyErrorMessage;
+    }
 
     return 'A sua pegada de carbono diária proveniente do banho é de ${emissaodiariaCO2emKg.toStringAsFixed(3)} kg CO2e';
   }

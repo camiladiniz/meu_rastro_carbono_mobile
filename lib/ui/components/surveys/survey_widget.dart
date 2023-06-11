@@ -7,6 +7,7 @@ import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_text
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_turnon_lamps_widget.dart';
 import 'package:meu_rastro_carbono/ui/components/surveys/questions/question_yes_or_no_type_widget.dart';
 import '../../../data/datasets/food/menu_dataset.dart';
+import '../../../data/datasets/levels_dataset.dart';
 import '../../widgets/models/surveys/survey_question_model.dart';
 import 'questions/question_any_text_type_widget.dart';
 import 'questions/question_options_type_widget.dart';
@@ -47,7 +48,8 @@ class _SurveyWidgetState extends State<SurveyWidget> {
 
   bool _skipQuestionValidation() {
     if (widget.surveyQuestions[_currentPageIndex].skipQuestion != null) {
-      bool skipQuestion = widget.surveyQuestions[_currentPageIndex].skipQuestion!(widget.surveyQuestions);
+      bool skipQuestion = widget.surveyQuestions[_currentPageIndex]
+          .skipQuestion!(widget.surveyQuestions);
       return skipQuestion;
     }
     return false;
@@ -78,16 +80,19 @@ class _SurveyWidgetState extends State<SurveyWidget> {
   }
 
   void showAnswerSurveyDialog(context) async {
-    var calculationResponse = await widget.onSurveyAnswered(surveyWithAnswers, widget.answerDatetime);
+    var calculationResponse =
+        await widget.onSurveyAnswered(surveyWithAnswers, widget.answerDatetime);
 
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(
-          'Obrigada por informar!',
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-        ),
+        title: calculationResponse != surveyErrorMessage
+            ? Text(
+                'Obrigada por informar!',
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              )
+            : Container(),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -99,11 +104,13 @@ class _SurveyWidgetState extends State<SurveyWidget> {
               width: 115,
             ),
             const SizedBox(height: 15),
-            Text(
-              'Com base em seu consumo vou te dar dicas de como reduzir sua pegada de carbono!',
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
+            calculationResponse != surveyErrorMessage
+                ? Text(
+                    'Com base em seu consumo vou te dar dicas de como reduzir sua pegada de carbono!',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  )
+                : Container(),
           ],
         ),
         actions: [
@@ -191,7 +198,7 @@ class _SurveyWidgetState extends State<SurveyWidget> {
             child: Stepper(
               elevation: 0,
               currentStep: _currentPageIndex,
-              onStepTapped: (step){},
+              onStepTapped: (step) {},
               controlsBuilder: (context, controller) {
                 return const SizedBox.shrink();
               },
@@ -218,28 +225,28 @@ class _SurveyWidgetState extends State<SurveyWidget> {
           Expanded(
             flex: 1,
             child: Padding(
-      padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Visibility(
-                  visible: _currentPageIndex > 0,
-                  child: FloatingActionButton(
-                    heroTag: 'btn_previous_page',
-                    onPressed: _goToPreviousPage,
-                    child: const Icon(Icons.arrow_back),
-                  ),
-                ),
-                FloatingActionButton(
-                  heroTag: 'btn_next_page',
-                  onPressed: () => _goToNextPage(context),
-                  child: Icon(
-                      _currentPageIndex < widget.surveyQuestions.length - 1
-                          ? Icons.arrow_forward
-                          : Icons.check),
-                ),
-              ],
-            )),
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Visibility(
+                      visible: _currentPageIndex > 0,
+                      child: FloatingActionButton(
+                        heroTag: 'btn_previous_page',
+                        onPressed: _goToPreviousPage,
+                        child: const Icon(Icons.arrow_back),
+                      ),
+                    ),
+                    FloatingActionButton(
+                      heroTag: 'btn_next_page',
+                      onPressed: () => _goToNextPage(context),
+                      child: Icon(
+                          _currentPageIndex < widget.surveyQuestions.length - 1
+                              ? Icons.arrow_forward
+                              : Icons.check),
+                    ),
+                  ],
+                )),
           ),
         ],
       ),

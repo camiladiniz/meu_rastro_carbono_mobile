@@ -22,7 +22,7 @@ mixin _$SurveyController on _SurveyController, Store {
       AsyncAction('_SurveyController.postWaterSurveyAnswer', context: context);
 
   @override
-  Future<dynamic> postWaterSurveyAnswer(WaterSurveyPayload payload) {
+  Future<bool> postWaterSurveyAnswer(WaterSurveyPayload payload) {
     return _$postWaterSurveyAnswerAsyncAction
         .run(() => super.postWaterSurveyAnswer(payload));
   }
@@ -31,7 +31,7 @@ mixin _$SurveyController on _SurveyController, Store {
       AsyncAction('_SurveyController.postFoodSurveyAnswer', context: context);
 
   @override
-  Future<dynamic> postFoodSurveyAnswer(FoodSurveyPayload payload) {
+  Future<bool> postFoodSurveyAnswer(FoodSurveyPayload payload) {
     return _$postFoodSurveyAnswerAsyncAction
         .run(() => super.postFoodSurveyAnswer(payload));
   }
@@ -41,7 +41,7 @@ mixin _$SurveyController on _SurveyController, Store {
       context: context);
 
   @override
-  Future<dynamic> postElectronicSurveyAnswer(ElectronicSurveyPayload payload) {
+  Future<bool> postElectronicSurveyAnswer(ElectronicSurveyPayload payload) {
     return _$postElectronicSurveyAnswerAsyncAction
         .run(() => super.postElectronicSurveyAnswer(payload));
   }
@@ -51,7 +51,7 @@ mixin _$SurveyController on _SurveyController, Store {
       context: context);
 
   @override
-  Future<dynamic> postLocomotionSurveyAnswer(LocomotionSurveyPayload payload) {
+  Future<bool> postLocomotionSurveyAnswer(LocomotionSurveyPayload payload) {
     return _$postLocomotionSurveyAnswerAsyncAction
         .run(() => super.postLocomotionSurveyAnswer(payload));
   }

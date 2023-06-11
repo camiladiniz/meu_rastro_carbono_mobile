@@ -25,7 +25,6 @@ class _RewardsWidgetState extends State<RewardsWidget> {
   Future<void> getUserEvolutionPontuation() async {
     await evolutionCtrl.initializeSharedPreferences();
     var pontuation = await evolutionCtrl.getUserElovutionPoints();
-    pontuation = 21;
     var pontuationTemp = pontuation;
 
     int n0 = 5;

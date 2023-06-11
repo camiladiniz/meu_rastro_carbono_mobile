@@ -42,3 +42,5 @@ double getLevelProgressInPercentage(
   double percentage = (userPontuationPercentage / pontuationToBeReached);
   return percentage;
 }
+
+String surveyErrorMessage = 'Dados inválidos, verifique se preencheu todos os campos corretamente';

@@ -43,55 +43,55 @@ abstract class _SurveyController extends Disposable with Store {
   }
 
   @action
-  Future postWaterSurveyAnswer(WaterSurveyPayload payload) async {
+  Future<bool> postWaterSurveyAnswer(WaterSurveyPayload payload) async {
     try {
       var userId =
           await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
       payload.userId = userId;
       var response = await surveyRepo.postWaterSurveyAnswer(payload);
-      return response;
+      return true;
     } catch (ex) {
-      // TODO
+      return false;
     }
   }
   @action
-  Future postFoodSurveyAnswer(FoodSurveyPayload payload) async {
+  Future<bool> postFoodSurveyAnswer(FoodSurveyPayload payload) async {
     try {
       var userId =
           await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
       payload.userId = userId;
       var response = await surveyRepo.postFoodSurveyAnswer(payload);
-      return response;
+      return true;
     } catch (ex) {
-      // TODO
+      return false;
     }
   }
   @action
-  Future postElectronicSurveyAnswer(ElectronicSurveyPayload payload) async {
+  Future<bool> postElectronicSurveyAnswer(ElectronicSurveyPayload payload) async {
     try {
       var userId =
           await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
       payload.userId = userId;
       var response = await surveyRepo.postElectronicSurveyAnswer(payload);
-      return response;
+      return true;
     } catch (ex) {
-      // TODO
+      return false;
     }
   }
   @action
-  Future postLocomotionSurveyAnswer(LocomotionSurveyPayload payload) async {
+  Future<bool> postLocomotionSurveyAnswer(LocomotionSurveyPayload payload) async {
     try {
       var userId =
           await localStorage.getStringValue(SharedPreferenceConstants.userId);
 
       payload.userId = userId;
       var response = await surveyRepo.postLocomotionSurveyAnswer(payload);
-      return response;
+      return true;
     } catch (ex) {
-      // TODO
+      return false;
     }
   }
 }

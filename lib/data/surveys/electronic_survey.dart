@@ -5,6 +5,7 @@ import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
 import '../datasets/electronic/electronic_carbon_emission_dataset.dart';
+import '../datasets/levels_dataset.dart';
 
 final List<SurveyQuestionModel> electronicSurveyQuestions = [
   SurveyQuestionModel(
@@ -315,7 +316,11 @@ Future<String> electricFootprintCalculation(
       phoneCarbonEmissionInKgCO2e: phoneCarbon,
       streamingCarbonEmissionInKgCO2e: streamingCarbonEmissionPerHourInKg);
 
-  await surveyController.postElectronicSurveyAnswer(payload);
+  var response = await surveyController.postElectronicSurveyAnswer(payload);
+
+  if (!response) {
+    return surveyErrorMessage;
+  }
 
   return 'Você emitiu $totalCarbonFootprint kgCO2e na atmosfera utilizando dispositivos';
 }

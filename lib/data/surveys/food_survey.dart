@@ -5,6 +5,7 @@ import 'package:meu_rastro_carbono/domain/survey/food_survey_payload.dart';
 
 import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
+import '../datasets/levels_dataset.dart';
 import '../models/food/meal_model.dart';
 
 final List<SurveyQuestionModel> foodSurveyQuestions = [
@@ -49,7 +50,11 @@ Future<String> mealsFootprintCalculation(
 
   payload.carbonEmissionInKgCO2e = emissiongCO2eqPerPortion / 1000;
 
-  await surveyController.postFoodSurveyAnswer(payload);
+  var response = await surveyController.postFoodSurveyAnswer(payload);
+
+  if (!response) {
+    return surveyErrorMessage;
+  }
 
   return 'Para essa refeição você emitiu $emissiongCO2eqPerPortion gCO2e na atmosfera';
 }

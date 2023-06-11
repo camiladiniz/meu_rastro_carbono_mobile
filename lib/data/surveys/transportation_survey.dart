@@ -5,6 +5,7 @@ import '../../domain/survey/locomotion_survey_payload.dart';
 import '../../stores/survey_controller.dart';
 import '../../ui/widgets/models/surveys/survey_answer_model.dart';
 import '../../ui/widgets/models/surveys/survey_question_model.dart';
+import '../datasets/levels_dataset.dart';
 
 final List<SurveyQuestionModel> transportationSurveyQuestions = [
   SurveyQuestionModel(
@@ -407,7 +408,11 @@ Future<String> transportationFootprintCalculation(
   payload.carbonEmissionInKgCO2e = carbonEmissionKgPerCO;
   payload.distanceInKm = distanceKm;
 
-  await surveyController.postLocomotionSurveyAnswer(payload);
+  var response = await surveyController.postLocomotionSurveyAnswer(payload);
+
+  if(!response){
+      return surveyErrorMessage;
+    }
 
   return carbonEmissionKgPerCO == 0
       ? 'Parabéns! Você não emitiu CO2e na atmosfera para realizar suas atividades hoje'

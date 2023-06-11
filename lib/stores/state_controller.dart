@@ -62,6 +62,9 @@ abstract class _StateController extends Disposable with Store {
       final response = await http.get(endpoint, headers: headers);
       responseJson = _returnResponse(response);
     } on SocketException {
+      setErrorMessage("Opa, parece que você perdeu a conexão.");
+      Modular.to.navigate('/login');
+      setErrorMessage("Opa, parece que você perdeu a conexão.");
       throw FetchDataException('Ops, você está sem conexão com a internet.');
     }
     return responseJson;
